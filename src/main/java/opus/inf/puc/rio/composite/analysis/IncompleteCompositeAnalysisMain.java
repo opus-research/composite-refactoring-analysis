@@ -5,18 +5,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
+import inf.puc.rio.opus.composite.model.IncompleteCompositeDTO;
 import inf.puc.rio.opus.composite.model.Refactoring;
 
 public class IncompleteCompositeAnalysisMain {
 
 	public static void main(String[] args) {
-
-		ObjectMapper mapper = new ObjectMapper();
 		IncompleteCompositeAnalysisMain analyzer = new IncompleteCompositeAnalysisMain();
+		//analyzer.collectIncompleteComposites();
+		analyzer.collectMostCommonIncompleteComposites();
+		
+
+	}
+	
+	protected void collectIncompleteComposites() {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
 
 		try {
 
@@ -25,7 +35,7 @@ public class IncompleteCompositeAnalysisMain {
 
 			List<CompositeRefactoring> compositeList = Arrays.asList(composites);
 
-			List<CompositeRefactoring> incompleteCompositeList = analyzer.getIncompleteComposites(compositeList);
+			List<CompositeRefactoring> incompleteCompositeList = getIncompleteComposites(compositeList);
 
 			//mapper.writeValue(new File("incomplete-presto-commmit-based.json"), incompleteCompositeList);
 			mapper.writeValue(new File("incomplete-composite-presto-range-based.json"), incompleteCompositeList);
@@ -34,7 +44,48 @@ public class IncompleteCompositeAnalysisMain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	protected void collectMostCommonIncompleteComposites() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
 
+			IncompleteCompositeDTO[] incompleteComposites = mapper.
+					readValue(new File("incomplete-composites-dto/incomplete-composite-dto-test.json"),
+					IncompleteCompositeDTO[].class);
+
+			List<IncompleteCompositeDTO> incompleteCompositeList = Arrays.asList(incompleteComposites);
+
+			System.out.println(incompleteCompositeList.get(1).getRefactorings().size());
+			
+			RefactoringPermutation permutation  = new RefactoringPermutation();
+
+			System.out.println(incompleteCompositeList.get(1).toString());
+			
+			permutation.performPermutations(incompleteCompositeList.get(1).getRefactorings());
+			
+			List<ArrayList<Refactoring>> permutationsList = permutation.getRefactoringSequencePermutations();
+			
+		    permutationsList.forEach( permutations -> {
+		       	
+		    	System.out.println(permutations.toString());
+		    	System.out.println();
+		    });			
+		    
+		    java.util.Map<String, Long> rankingRefactoringTypesMapAsComposite = permutationsList
+					.stream().collect(
+							Collectors.groupingBy(permutations -> permutations.toString(),
+									Collectors.counting()));
+			
+			rankingRefactoringTypesMapAsComposite.entrySet().forEach( incomplete -> {
+				System.out.println(incomplete.getKey() + ":" + incomplete.getValue());
+			});
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private List<CompositeRefactoring> getIncompleteComposites(List<CompositeRefactoring> composites) {

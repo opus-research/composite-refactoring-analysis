@@ -97,4 +97,11 @@ public class Refactoring {
 		this.additionalProperties.put(name, value);
 	}
 
+	@Override
+	public String toString() {
+		return refactoringType ;
+	}
+	
+	
+
 }
