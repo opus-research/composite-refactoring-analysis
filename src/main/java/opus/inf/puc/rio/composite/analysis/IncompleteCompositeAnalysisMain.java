@@ -2,9 +2,13 @@ package opus.inf.puc.rio.composite.analysis;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,16 +21,46 @@ public class IncompleteCompositeAnalysisMain {
 
 	public static void main(String[] args) {
 		IncompleteCompositeAnalysisMain analyzer = new IncompleteCompositeAnalysisMain();
-		//analyzer.collectIncompleteComposites();
-		analyzer.collectMostCommonIncompleteComposites();
+		// analyzer.collectIncompleteComposites();
+		// analyzer.collectMostCommonIncompleteComposites();
+
 		
+	  containsAllRefs(null, null);
 
 	}
+
+	private static boolean containsAllRefs(List<String> refTextList, List<String> refList) {
+		// TODO Auto-generated method stub
+		
+		List<String> list = new ArrayList<String>(Arrays.asList("Extract Method", "Extract Method", "Extract Method"));
+	    List<String> list2 = new ArrayList<String>(Arrays.asList("Extract Method", "Rename Method", "Rename Method"));
+
+
+	    for(int i = 0; i<list.size(); i++) {
+	    	
+	    	for(int j = 0; j<list2.size(); j++) {
+	    	
+	    		if(list.get(i).equals(list2.get(j))) {
+	    			
+	    			list2.remove(j);
+	    			
+	    		}
+	    		
+	    	}
+	    	
+	    }
 	
+	    	System.out.println(list.toString());
+	    	System.out.println(list2.toString());
+	    	
+	    
+	    
+		return false;
+	}
+
 	protected void collectIncompleteComposites() {
-		
+
 		ObjectMapper mapper = new ObjectMapper();
-		
 
 		try {
 
@@ -37,50 +71,89 @@ public class IncompleteCompositeAnalysisMain {
 
 			List<CompositeRefactoring> incompleteCompositeList = getIncompleteComposites(compositeList);
 
-			//mapper.writeValue(new File("incomplete-presto-commmit-based.json"), incompleteCompositeList);
+			// mapper.writeValue(new File("incomplete-presto-commmit-based.json"),
+			// incompleteCompositeList);
 			mapper.writeValue(new File("incomplete-composite-presto-range-based.json"), incompleteCompositeList);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	protected void collectMostCommonIncompleteComposites() {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 
-			IncompleteCompositeDTO[] incompleteComposites = mapper.
-					readValue(new File("incomplete-composites-dto/incomplete-composite-dto-test.json"),
+			IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
+					"incomplete-composites-dto/incomplete-composite-couchbase-java-client-commit-based-saida.json"),
 					IncompleteCompositeDTO[].class);
 
 			List<IncompleteCompositeDTO> incompleteCompositeList = Arrays.asList(incompleteComposites);
 
-			System.out.println(incompleteCompositeList.get(1).getRefactorings().size());
-			
-			RefactoringPermutation permutation  = new RefactoringPermutation();
+			Map<List<String>, Long> mostCommonIncompleteComposites = new HashMap<List<String>, Long>();
 
-			System.out.println(incompleteCompositeList.get(1).toString());
-			
-			permutation.performPermutations(incompleteCompositeList.get(1).getRefactorings());
-			
-			List<ArrayList<Refactoring>> permutationsList = permutation.getRefactoringSequencePermutations();
-			
-		    permutationsList.forEach( permutations -> {
-		       	
-		    	System.out.println(permutations.toString());
-		    	System.out.println();
-		    });			
-		    
-		    java.util.Map<String, Long> rankingRefactoringTypesMapAsComposite = permutationsList
-					.stream().collect(
-							Collectors.groupingBy(permutations -> permutations.toString(),
-									Collectors.counting()));
-			
-			rankingRefactoringTypesMapAsComposite.entrySet().forEach( incomplete -> {
-				System.out.println(incomplete.getKey() + ":" + incomplete.getValue());
+			for (IncompleteCompositeDTO incomplete : incompleteCompositeList) {
+				List<String> refactoringTextList = incomplete.getRefactoringsAsTextList();
+
+				mostCommonIncompleteComposites.entrySet().forEach(refTextList -> {
+
+					if (refTextList.getKey().containsAll(refactoringTextList)) {
+
+						long quantityRefList = refTextList.getValue();
+
+						refTextList.setValue(quantityRefList++);
+
+					}
+				});
+
+				if (!mostCommonIncompleteComposites.keySet().contains(refactoringTextList)) {
+
+					mostCommonIncompleteComposites.put(refactoringTextList, Long.valueOf(1));
+				}
+
+			}
+
+			writeMostCommonIncompleteCompositesRanking(mostCommonIncompleteComposites);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	protected void collectMostCommonIncompleteCompositesPerPermutations() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+
+			IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
+					"incomplete-composites-dto/incomplete-composite-couchbase-java-client-commit-based-saida.json"),
+					IncompleteCompositeDTO[].class);
+
+			List<IncompleteCompositeDTO> incompleteCompositeList = Arrays.asList(incompleteComposites);
+
+			List<ArrayList<Refactoring>> permutationsList = new ArrayList<ArrayList<Refactoring>>();
+
+			for (IncompleteCompositeDTO incomplete : incompleteCompositeList) {
+				RefactoringPermutation permutation = new RefactoringPermutation();
+
+				permutation.performPermutations(incomplete.getRefactorings());
+
+				permutationsList.addAll(permutation.getRefactoringSequencePermutations());
+			}
+
+			permutationsList.forEach(permutations -> {
+
+				System.out.println(permutations.toString());
+				System.out.println();
 			});
+
+			java.util.Map<String, Long> mostCommonIncompleteCompositesRanking = permutationsList.stream()
+					.collect(Collectors.groupingBy(permutations -> permutations.toString(), Collectors.counting()));
+
+			// writeMostCommonIncompleteCompositesRanking(mostCommonIncompleteCompositesRanking);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -94,16 +167,16 @@ public class IncompleteCompositeAnalysisMain {
 
 		for (CompositeRefactoring composite : composites) {
 			String refactoringTypes = getRefactoringAsText(composite.getRefactorings());
-			
+
 			if (refactoringTypes.contains("Extract Method") || refactoringTypes.contains("Move Method")
 					|| refactoringTypes.contains("Pull Up Method")) {
 
 				incompleteCompositeList.add(composite);
-                System.out.println(composite.getId());
-			
+				System.out.println(composite.getId());
+
 			}
 		}
-        
+
 		return incompleteCompositeList;
 
 	}
@@ -111,17 +184,46 @@ public class IncompleteCompositeAnalysisMain {
 	private String getRefactoringAsText(List<Refactoring> refactorings) {
 
 		List<String> refactoringTypesList = new ArrayList<String>();
-		
+
 		for (Refactoring refactoring : refactorings) {
 
 			refactoringTypesList.add(refactoring.getRefactoringType());
 
 		}
-		
+
 		String refactoringTypesAsText = String.join(",", refactoringTypesList);
 		System.out.println(refactoringTypesAsText);
 		return refactoringTypesAsText;
 
+	}
+
+	private void writeMostCommonIncompleteCompositesRanking(Map<List<String>, Long> mostCommonIncompleteComposites) {
+		CsvWriter csv = new CsvWriter("most-common-incomplete-composites-couchbase-java-client-commit-based.csv", ',',
+				Charset.forName("ISO-8859-1"));
+		try {
+			csv.write("Composite");
+			csv.write("Number of occurrence");
+
+			csv.endRecord();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		mostCommonIncompleteComposites.entrySet().forEach(incomplete -> {
+
+			try {
+				csv.write(incomplete.getKey().toString());
+				csv.write(String.valueOf(incomplete.getValue()));
+
+				csv.endRecord();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		});
+
+		csv.close();
 	}
 
 }

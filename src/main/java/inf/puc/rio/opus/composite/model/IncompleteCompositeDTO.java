@@ -71,4 +71,17 @@ public class IncompleteCompositeDTO {
 		
 		return refactoringTypesAsText;
 	}
+	
+	public List<String> getRefactoringsAsTextList(){
+		
+		List<String> refactoringTypesList = new ArrayList<String>();
+
+		for (Refactoring refactoring : refactorings) {
+
+			refactoringTypesList.add(refactoring.getRefactoringType());
+
+		}
+		return refactoringTypesList;
+	}
+	
 }
