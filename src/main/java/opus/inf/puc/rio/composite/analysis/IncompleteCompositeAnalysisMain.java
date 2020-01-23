@@ -30,32 +30,23 @@ public class IncompleteCompositeAnalysisMain {
 	}
 
 	private static boolean containsAllRefs(List<String> refTextList, List<String> refList) {
-		// TODO Auto-generated method stub
+	   // TODO Auto-generated method stub
 		
-		List<String> list = new ArrayList<String>(Arrays.asList("Extract Method", "Extract Method", "Extract Method"));
-	    List<String> list2 = new ArrayList<String>(Arrays.asList("Extract Method", "Rename Method", "Rename Method"));
-
-
-	    for(int i = 0; i<list.size(); i++) {
+	    int equalsRefs = 0;
+	    for(int i = 0; i<refTextList.size(); i++) {
 	    	
-	    	for(int j = 0; j<list2.size(); j++) {
+	    	for(int j = 0; j<refList.size(); j++) {
 	    	
-	    		if(list.get(i).equals(list2.get(j))) {
-	    			
-	    			list2.remove(j);
-	    			
+	    		if(refTextList.get(i).equals(refList.get(j))) {
+	    			refList.remove(j);
+				equalsRefs++;
 	    		}
 	    		
 	    	}
 	    	
 	    }
-	
-	    	System.out.println(list.toString());
-	    	System.out.println(list2.toString());
-	    	
-	    
-	    
-		return false;
+	    	   
+	    return refList.isEmpty() && (refTextList.size() == equalsRefs);
 	}
 
 	protected void collectIncompleteComposites() {
