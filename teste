@@ -1,36 +1,16 @@
-	List<String> refactoringsA = new ArrayList<String>();
-		refactoringsA.add("Extract Method");
-		refactoringsA.add("Move Method");
-		refactoringsA.add("Rename Method");
-
-		List<String> refactoringsB = new ArrayList<String>();
-		refactoringsB.add("Extract Method");
-		refactoringsB.add("Extract Method");
-		refactoringsB.add("Rename Method");
-
-		List<String> refactoringsC = new ArrayList<String>();
-		refactoringsC.add("Extract Method");
-		refactoringsC.add("Move Method");
-		refactoringsC.add("Rename Method");
-
-		List<List<String>> refs = new ArrayList<List<String>>();
-		refs.add(refactoringsA);
-		refs.add(refactoringsB);
-		refs.add(refactoringsC);
-
-
-		Map<List<String>, Long> mostCommonComposites = new HashMap<List<String>, Long>();
+			Map<List<String>, Long> mostCommonComposites = new HashMap<List<String>, Long>();
 
 		for(List<String> refList : refs) {
 			
 			mostCommonComposites.entrySet().forEach(refTextList -> {
 	
-				if(containsAllRefs(refTextList.getKey(), refList)) {
+				
+				if(analyzer.containsAllRefs(refTextList.getKey(), refList)) {
 					
 					long quantityRefList = refTextList.getValue();
 					
 					quantityRefList = quantityRefList + 1;
-					System.out.println(quantityRefList);
+		
 					
 					refTextList.setValue(quantityRefList);
 					
@@ -50,4 +30,5 @@
 			System.out.println(composite.getKey());
 			System.out.println(composite.getValue());
 		});
+		
 		s

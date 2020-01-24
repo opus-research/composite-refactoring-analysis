@@ -24,29 +24,91 @@ public class IncompleteCompositeAnalysisMain {
 		// analyzer.collectIncompleteComposites();
 		// analyzer.collectMostCommonIncompleteComposites();
 
+		List<String> refactoringsA = new ArrayList<String>();
+		refactoringsA.add("Extract Method");
+		refactoringsA.add("Move Method");
+		refactoringsA.add("Rename Method");
+
+		List<String> refactoringsB = new ArrayList<String>();
+		refactoringsB.add("Extract Method");
+		refactoringsB.add("Extract Method");
+		refactoringsB.add("Rename Method");
+
+		List<String> refactoringsC = new ArrayList<String>();
+		refactoringsC.add("Extract Method");
+		refactoringsC.add("Move Method");
+		refactoringsC.add("Rename Method");
 		
-	  containsAllRefs(null, null);
+		
+		List<String> refactoringsD = new ArrayList<String>();
+		refactoringsD.add("Extract Method");
+		refactoringsD.add("Rename Method");
+		refactoringsD.add("Extract Method");
+	
+
+		List<List<String>> refs = new ArrayList<List<String>>();
+		refs.add(refactoringsA);
+		refs.add(refactoringsB);
+		refs.add(refactoringsC);
+		refs.add(refactoringsD);
+		
+		Map<List<String>, Long> mostCommonComposites = new HashMap<List<String>, Long>();
+
+		for (List<String> refList : refs) {
+			
+			boolean[] wasFound = {false};
+			
+			mostCommonComposites.entrySet().forEach(refTextList -> {
+				
+				if (analyzer.containsAllRefs(refTextList.getKey(), refList)) {
+                    
+					long quantityRefList = refTextList.getValue();
+
+					quantityRefList = quantityRefList + 1;
+
+					refTextList.setValue(quantityRefList);
+					wasFound[0] = true;
+					
+				}
+			});
+
+			if (!wasFound[0]) {
+
+				mostCommonComposites.put(refList, Long.valueOf(1));
+				// System.out.println("Add list: " + refList.toString());
+			}
+		}
+
+		mostCommonComposites.entrySet().forEach(composite -> {
+			System.out.println(composite.getKey());
+			System.out.println(composite.getValue());
+		});
 
 	}
 
-	private static boolean containsAllRefs(List<String> refTextList, List<String> refList) {
-	   // TODO Auto-generated method stub
-		
-	    int equalsRefs = 0;
-	    for(int i = 0; i<refTextList.size(); i++) {
-	    	
-	    	for(int j = 0; j<refList.size(); j++) {
-	    	
-	    		if(refTextList.get(i).equals(refList.get(j))) {
-	    			refList.remove(j);
-				equalsRefs++;
-	    		}
-	    		
-	    	}
-	    	
-	    }
-	    	   
-	    return refList.isEmpty() && (refTextList.size() == equalsRefs);
+	private boolean containsAllRefs(List<String> refTextList, List<String> refList) {
+		// TODO Auto-generated method stub
+
+		List<Integer> equalsRefIIndex = new ArrayList<Integer>();
+		List<Integer> equalsRefJIndex = new ArrayList<Integer>();
+
+		for (int i = 0; i < refTextList.size(); i++) {
+
+			for (int j = 0; j < refList.size(); j++) {
+
+				if (refTextList.get(i).equals(refList.get(j)) && !equalsRefIIndex.contains(i)
+						&& !equalsRefJIndex.contains(j)) {
+
+					equalsRefIIndex.add(i);
+					equalsRefJIndex.add(j);
+
+				}
+
+			}
+
+		}
+
+		return !refList.isEmpty() && (refTextList.size() == equalsRefIIndex.size());
 	}
 
 	protected void collectIncompleteComposites() {
