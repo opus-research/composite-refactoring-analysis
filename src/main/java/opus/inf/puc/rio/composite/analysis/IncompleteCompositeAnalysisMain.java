@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,9 @@ import inf.puc.rio.opus.composite.model.IncompleteCompositeDTO;
 import inf.puc.rio.opus.composite.model.Refactoring;
 
 public class IncompleteCompositeAnalysisMain {
-
+	
+	private static long ID = 0;
+	
 	public static void main(String[] args) throws IOException {
 		IncompleteCompositeAnalysisMain analyzer = new IncompleteCompositeAnalysisMain();
 		// analyzer.collectIncompleteComposites();
@@ -91,7 +94,7 @@ public class IncompleteCompositeAnalysisMain {
 				if (!wasFound[0]) {
 
 					mostCommonIncompleteComposites.put(refList, Long.valueOf(1));
-					// System.out.println("Add list: " + refList.toString());
+					//System.out.println("Add list: " + refList.toString());
 				}
 			}
 
@@ -113,6 +116,7 @@ public class IncompleteCompositeAnalysisMain {
 
 	}
 
+	@SuppressWarnings("unused")
 	private List<IncompleteCompositeDTO> getAllIncompleteComposites() 
 			throws IOException {
 		// TODO Auto-generated method stub
@@ -222,8 +226,19 @@ public class IncompleteCompositeAnalysisMain {
 		for (CompositeRefactoring composite : composites) {
 			String refactoringTypes = getRefactoringAsText(composite.getRefactorings());
 
-			if (refactoringTypes.contains("Extract Method") || refactoringTypes.contains("Move Method")
-					|| refactoringTypes.contains("Pull Up Method")) {
+			int count = 0;
+			
+			if(refactoringTypes.contains("Extract Method")){
+				count++;
+			}
+			if(refactoringTypes.contains("Move Method")){
+				count++;
+			}
+			if(refactoringTypes.contains("Pull Up Method")){
+				count++;
+			}
+			
+			if (count > 0) {
 
 				incompleteCompositeList.add(composite);
 				System.out.println(composite.getId());
@@ -280,28 +295,14 @@ public class IncompleteCompositeAnalysisMain {
 	}
 	
 	private boolean containsAllRefs(List<String> refTextList, List<String> refList) {
-		// TODO Auto-generated method stub
-
-		List<Integer> equalsRefIIndex = new ArrayList<Integer>();
-		List<Integer> equalsRefJIndex = new ArrayList<Integer>();
-
-		for (int i = 0; i < refTextList.size(); i++) {
-
-			for (int j = 0; j < refList.size(); j++) {
-
-				if (refTextList.get(i).equals(refList.get(j)) && !equalsRefIIndex.contains(i)
-						&& !equalsRefJIndex.contains(j)) {
-
-					equalsRefIIndex.add(i);
-					equalsRefJIndex.add(j);
-
-				}
-
-			}
-
-		}
-
-		return !equalsRefIIndex.isEmpty() && (refTextList.size() == equalsRefIIndex.size());
+		List<String> one = new ArrayList<String>();
+		List<String> two = new ArrayList<String>();
+		one.addAll(refTextList);
+		two.addAll(refList);
+		Collections.sort(one);
+		Collections.sort(two);
+		
+		return one.equals(two);
 	}
 
 }
