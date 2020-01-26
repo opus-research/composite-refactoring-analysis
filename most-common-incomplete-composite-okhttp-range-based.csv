@@ -1,0 +1,22 @@
+Composite,Number of occurrence
+"[Extract Method, Inline Variable]",2
+"[Change Attribute Type, Change Attribute Type, Change Parameter Type, Rename Attribute, Rename Attribute, Rename Method, Rename Parameter, Change Return Type, Rename Method, Change Return Type, Move Method, Rename Attribute, Rename Attribute, Rename Method, Rename Parameter, Change Parameter Type, Change Parameter Type, Change Attribute Type, Rename Method, Change Return Type, Rename Parameter, Change Attribute Type]",1
+"[Move Method, Move Method, Move Method, Move Method, Move Method, Extract Class, Move Method, Move Method]",1
+"[Move Attribute, Move Method, Rename Attribute, Move Attribute, Inline Variable, Change Attribute Type]",1
+"[Extract Method, Extract Method]",15
+"[Rename Attribute, Rename Attribute, Extract Method, Rename Attribute, Rename Attribute]",1
+"[Rename Method, Move Attribute, Move Attribute, Move Method, Move Method, Move Method, Extract Class, Rename Parameter, Move Method, Move Attribute, Change Parameter Type, Rename Variable, Move Method]",1
+"[Rename Parameter, Extract Method]",7
+"[Extract Method, Rename Variable, Rename Method]",6
+"[Move Method, Move Attribute]",4
+"[Extract Variable, Extract Method]",3
+"[Move Method, Move Method, Move Method, Rename Parameter, Move Method, Rename Method, Move Method]",1
+"[Rename Variable, Move Method, Move Method, Move Method, Move Class, Change Variable Type, Rename Variable, Rename Attribute, Rename Attribute, Rename Method, Rename Variable]",1
+"[Move Method, Move Method, Move Method, Rename Method, Extract Class]",2
+"[Extract Method, Change Variable Type, Move Method, Move Method, Rename Variable, Change Return Type, Change Variable Type, Rename Variable, Extract Class, Move Method, Move Method, Extract Class, Rename Variable, Change Variable Type, Rename Variable, Move Method, Change Variable Type, Move Method]",1
+"[Rename Method, Rename Method, Rename Method, Rename Method, Rename Method, Rename Method, Rename Method, Move Method, Rename Method, Rename Method, Rename Method, Rename Method, Change Attribute Type, Rename Method, Rename Method, Rename Method, Rename Method, Rename Method, Rename Method, Rename Method, Change Attribute Type]",1
+"[Change Attribute Type, Extract Method, Rename Attribute]",4
+"[Rename Variable, Change Variable Type, Change Variable Type, Change Variable Type, Rename Variable, Rename Method, Change Variable Type, Rename Variable, Extract Method, Change Variable Type, Change Variable Type, Rename Variable, Change Variable Type, Change Variable Type, Change Variable Type]",2
+"[Extract Method, Move Method]",3
+"[Rename Variable, Extract Method]",8
+"[Rename Attribute, Replace Variable With Attribute, Inline Method, Extract Method]",1

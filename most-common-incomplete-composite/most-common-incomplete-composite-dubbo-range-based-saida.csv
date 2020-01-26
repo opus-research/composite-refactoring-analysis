@@ -1,0 +1,22 @@
+Composite,Number of occurrence
+"[Rename Attribute, Pull Up Attribute, Change Return Type, Change Return Type, Rename Parameter, Rename Method, Pull Up Method, Rename Method, Pull Up Method]",2
+"[Inline Method, Extract Method]",5
+"[Move Method, Rename Parameter, Move Method, Rename Variable, Rename Variable]",1
+"[Extract Method, Extract Method]",31
+"[Move Method, Move Method, Move Method, Move Method, Move Method, Extract Class, Extract Class, Move Method, Move Method]",1
+"[Move Method, Move Method, Extract Class]",6
+"[Extract Method, Extract Variable]",12
+"[Rename Method, Rename Method, Move Method]",5
+"[Rename Attribute, Extract Method]",6
+"[Change Return Type, Rename Method, Rename Method, Change Parameter Type, Rename Parameter, Change Return Type, Rename Method, Rename Method, Extract Method, Change Variable Type, Change Parameter Type, Rename Parameter, Change Attribute Type, Rename Parameter, Change Variable Type, Rename Parameter, Change Return Type, Rename Parameter]",1
+"[Move Attribute, Move Method, Rename Parameter]",5
+"[Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Extract Superclass, Pull Up Method]",2
+"[Change Return Type, Rename Method, Change Variable Type, Extract Variable, Change Variable Type, Extract Method, Change Variable Type, Inline Variable]",1
+"[Move Attribute, Move Method]",4
+"[Change Variable Type, Extract Method]",13
+"[Move Method, Move Attribute, Move Method, Move Attribute]",3
+"[Rename Method, Change Return Type, Change Variable Type, Rename Variable, Rename Variable, Change Return Type, Change Variable Type, Inline Variable, Rename Method, Change Return Type, Change Variable Type, Inline Variable, Rename Parameter, Pull Up Method, Change Variable Type]",1
+"[Move Method, Move Method]",11
+"[Pull Up Method, Pull Up Method]",9
+"[Change Parameter Type, Change Parameter Type, Move Method]",4
+"[Rename Variable, Extract Method]",31

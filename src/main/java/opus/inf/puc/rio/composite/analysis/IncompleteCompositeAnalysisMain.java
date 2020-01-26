@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
@@ -19,96 +21,14 @@ import inf.puc.rio.opus.composite.model.Refactoring;
 
 public class IncompleteCompositeAnalysisMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		IncompleteCompositeAnalysisMain analyzer = new IncompleteCompositeAnalysisMain();
 		// analyzer.collectIncompleteComposites();
-		// analyzer.collectMostCommonIncompleteComposites();
-
-		List<String> refactoringsA = new ArrayList<String>();
-		refactoringsA.add("Extract Method");
-		refactoringsA.add("Move Method");
-		refactoringsA.add("Rename Method");
-
-		List<String> refactoringsB = new ArrayList<String>();
-		refactoringsB.add("Extract Method");
-		refactoringsB.add("Extract Method");
-		refactoringsB.add("Rename Method");
-
-		List<String> refactoringsC = new ArrayList<String>();
-		refactoringsC.add("Extract Method");
-		refactoringsC.add("Move Method");
-		refactoringsC.add("Rename Method");
 		
 		
-		List<String> refactoringsD = new ArrayList<String>();
-		refactoringsD.add("Extract Method");
-		refactoringsD.add("Rename Method");
-		refactoringsD.add("Extract Method");
-	
-
-		List<List<String>> refs = new ArrayList<List<String>>();
-		refs.add(refactoringsA);
-		refs.add(refactoringsB);
-		refs.add(refactoringsC);
-		refs.add(refactoringsD);
+		analyzer.collectMostCommonIncompleteComposites();
 		
-		Map<List<String>, Long> mostCommonComposites = new HashMap<List<String>, Long>();
 
-		for (List<String> refList : refs) {
-			
-			boolean[] wasFound = {false};
-			
-			mostCommonComposites.entrySet().forEach(refTextList -> {
-				
-				if (analyzer.containsAllRefs(refTextList.getKey(), refList)) {
-                    
-					long quantityRefList = refTextList.getValue();
-
-					quantityRefList = quantityRefList + 1;
-
-					refTextList.setValue(quantityRefList);
-					wasFound[0] = true;
-					
-				}
-			});
-
-			if (!wasFound[0]) {
-
-				mostCommonComposites.put(refList, Long.valueOf(1));
-				// System.out.println("Add list: " + refList.toString());
-			}
-		}
-
-		mostCommonComposites.entrySet().forEach(composite -> {
-			System.out.println(composite.getKey());
-			System.out.println(composite.getValue());
-		});
-
-	}
-
-	private boolean containsAllRefs(List<String> refTextList, List<String> refList) {
-		// TODO Auto-generated method stub
-
-		List<Integer> equalsRefIIndex = new ArrayList<Integer>();
-		List<Integer> equalsRefJIndex = new ArrayList<Integer>();
-
-		for (int i = 0; i < refTextList.size(); i++) {
-
-			for (int j = 0; j < refList.size(); j++) {
-
-				if (refTextList.get(i).equals(refList.get(j)) && !equalsRefIIndex.contains(i)
-						&& !equalsRefJIndex.contains(j)) {
-
-					equalsRefIIndex.add(i);
-					equalsRefJIndex.add(j);
-
-				}
-
-			}
-
-		}
-
-		return !refList.isEmpty() && (refTextList.size() == equalsRefIIndex.size());
 	}
 
 	protected void collectIncompleteComposites() {
@@ -139,36 +59,52 @@ public class IncompleteCompositeAnalysisMain {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 
+		
 			IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
-					"incomplete-composites-dto/incomplete-composite-couchbase-java-client-commit-based-saida.json"),
+					"incomplete-composites-dto/incomplete-composite-okhttp-range-based-saida.json"),
 					IncompleteCompositeDTO[].class);
-
-			List<IncompleteCompositeDTO> incompleteCompositeList = Arrays.asList(incompleteComposites);
-
+			List<IncompleteCompositeDTO> incompleteCompositeDTOList = Arrays.asList(incompleteComposites);
+			
 			Map<List<String>, Long> mostCommonIncompleteComposites = new HashMap<List<String>, Long>();
-
-			for (IncompleteCompositeDTO incomplete : incompleteCompositeList) {
-				List<String> refactoringTextList = incomplete.getRefactoringsAsTextList();
-
+			
+			List<List<String>> incompleteCompositeTextList = new ArrayList<List<String>>();
+			incompleteCompositeTextList = getIncompleteCompositeTextList(incompleteCompositeDTOList);
+			
+			for (List<String> refList : incompleteCompositeTextList) {
+				
+				boolean[] wasFound = {false};
+				
 				mostCommonIncompleteComposites.entrySet().forEach(refTextList -> {
-
-					if (refTextList.getKey().containsAll(refactoringTextList)) {
-
+					
+					if (containsAllRefs(refTextList.getKey(), refList)) {
+	                    
 						long quantityRefList = refTextList.getValue();
 
-						refTextList.setValue(quantityRefList++);
+						quantityRefList = quantityRefList + 1;
 
+						refTextList.setValue(quantityRefList);
+						wasFound[0] = true;
+						
 					}
 				});
 
-				if (!mostCommonIncompleteComposites.keySet().contains(refactoringTextList)) {
+				if (!wasFound[0]) {
 
-					mostCommonIncompleteComposites.put(refactoringTextList, Long.valueOf(1));
+					mostCommonIncompleteComposites.put(refList, Long.valueOf(1));
+					// System.out.println("Add list: " + refList.toString());
 				}
-
 			}
 
-			writeMostCommonIncompleteCompositesRanking(mostCommonIncompleteComposites);
+			mostCommonIncompleteComposites.entrySet().forEach(composite -> {
+				System.out.print(composite.getKey());
+				System.out.print(composite.getValue());
+				System.out.println();
+			});
+			
+			writeMostCommonIncompleteCompositesRanking(mostCommonIncompleteComposites,
+					"most-common-incomplete-composite-okhttp-range-based.csv");
+			
+			System.out.println(mostCommonIncompleteComposites.size());
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -177,12 +113,77 @@ public class IncompleteCompositeAnalysisMain {
 
 	}
 
+	private List<IncompleteCompositeDTO> getAllIncompleteComposites() 
+			throws IOException {
+		// TODO Auto-generated method stub
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
+				"incomplete-composites-dto/incomplete-composite-couchbase-java-client-range-based-saida.json"),
+				IncompleteCompositeDTO[].class);
+		List<IncompleteCompositeDTO> incompleteCompositeDTOList = Arrays.asList(incompleteComposites);
+		System.out.println(incompleteComposites.length);
+		
+		incompleteComposites =  mapper.readValue(new File(
+				"incomplete-composites-dto/incomplete-composite-couchbase-jvm-core-range-based-saida.json"),
+				IncompleteCompositeDTO[].class);
+		System.out.println(incompleteComposites.length);
+		List<IncompleteCompositeDTO> incompleteCompositeDTOList1 = new ArrayList<>(incompleteCompositeDTOList);
+		incompleteCompositeDTOList1.addAll(Arrays.asList(incompleteComposites));
+		
+		
+		
+		incompleteComposites =  mapper.readValue(new File(
+				"incomplete-composites-dto/incomplete-composite-dubbo-range-based-saida.json"),
+				IncompleteCompositeDTO[].class);
+		System.out.println(incompleteComposites.length);
+		List<IncompleteCompositeDTO> incompleteCompositeDTOList2 = new ArrayList<>(incompleteCompositeDTOList1);
+		incompleteCompositeDTOList2.addAll(Arrays.asList(incompleteComposites));
+			
+		
+		incompleteComposites =  mapper.readValue(new File(
+				"incomplete-composites-dto/incomplete-composite-fresco-range-based-saida.json"),
+				IncompleteCompositeDTO[].class);
+		System.out.println(incompleteComposites.length);
+
+		List<IncompleteCompositeDTO> incompleteCompositeDTOList3 = new ArrayList<>(incompleteCompositeDTOList2);
+		incompleteCompositeDTOList3.addAll(Arrays.asList(incompleteComposites));
+		
+		
+		incompleteComposites =  mapper.readValue(new File(
+				"incomplete-composites-dto/incomplete-composite-jgit-range-based-saida.json"),
+				IncompleteCompositeDTO[].class);
+		System.out.println(incompleteComposites.length);
+
+		List<IncompleteCompositeDTO> incompleteCompositeDTOList4 = new ArrayList<>(incompleteCompositeDTOList3);
+		incompleteCompositeDTOList4.addAll(Arrays.asList(incompleteComposites));
+	
+        return incompleteCompositeDTOList4;	
+		
+	}
+
+
+
+	private List<List<String>> getIncompleteCompositeTextList(List<IncompleteCompositeDTO> incompleteCompositeList) {
+		// TODO Auto-generated method stub
+		List<List<String>> incompleteCompositeTextList = new ArrayList<List<String>>();
+		
+		incompleteCompositeList.forEach(incompleteComposite -> {
+			
+			List<String> incompleteCompositeText = incompleteComposite.getRefactoringsAsTextList();
+			incompleteCompositeTextList.add(incompleteCompositeText);
+		});
+		
+		return incompleteCompositeTextList;
+	}
+
 	protected void collectMostCommonIncompleteCompositesPerPermutations() {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 
 			IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
-					"incomplete-composites-dto/incomplete-composite-couchbase-java-client-commit-based-saida.json"),
+					"incomplete-composites-dto/incomplete-composite-couchbase-java-client-range-based-saida.json"),
 					IncompleteCompositeDTO[].class);
 
 			List<IncompleteCompositeDTO> incompleteCompositeList = Arrays.asList(incompleteComposites);
@@ -245,18 +246,17 @@ public class IncompleteCompositeAnalysisMain {
 		}
 
 		String refactoringTypesAsText = String.join(",", refactoringTypesList);
-		System.out.println(refactoringTypesAsText);
+		
 		return refactoringTypesAsText;
 
 	}
 
-	private void writeMostCommonIncompleteCompositesRanking(Map<List<String>, Long> mostCommonIncompleteComposites) {
-		CsvWriter csv = new CsvWriter("most-common-incomplete-composites-couchbase-java-client-commit-based.csv", ',',
+	private void writeMostCommonIncompleteCompositesRanking(Map<List<String>, Long> mostCommonIncompleteComposites, String pathfile) {
+		CsvWriter csv = new CsvWriter(pathfile, ',',
 				Charset.forName("ISO-8859-1"));
 		try {
 			csv.write("Composite");
 			csv.write("Number of occurrence");
-
 			csv.endRecord();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -277,6 +277,31 @@ public class IncompleteCompositeAnalysisMain {
 		});
 
 		csv.close();
+	}
+	
+	private boolean containsAllRefs(List<String> refTextList, List<String> refList) {
+		// TODO Auto-generated method stub
+
+		List<Integer> equalsRefIIndex = new ArrayList<Integer>();
+		List<Integer> equalsRefJIndex = new ArrayList<Integer>();
+
+		for (int i = 0; i < refTextList.size(); i++) {
+
+			for (int j = 0; j < refList.size(); j++) {
+
+				if (refTextList.get(i).equals(refList.get(j)) && !equalsRefIIndex.contains(i)
+						&& !equalsRefJIndex.contains(j)) {
+
+					equalsRefIIndex.add(i);
+					equalsRefJIndex.add(j);
+
+				}
+
+			}
+
+		}
+
+		return !equalsRefIIndex.isEmpty() && (refTextList.size() == equalsRefIIndex.size());
 	}
 
 }

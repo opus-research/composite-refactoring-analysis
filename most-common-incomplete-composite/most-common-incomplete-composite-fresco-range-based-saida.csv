@@ -1,0 +1,19 @@
+Composite,Number of occurrence
+"[Extract Method, Rename Variable, Extract Method, Extract Method]",6
+"[Extract Method, Parameterize Variable, Extract Method, Extract Method, Parameterize Variable, Extract Method, Extract Method, Parameterize Variable, Extract Method, Extract Method, Extract Method, Parameterize Variable, Extract Method]",1
+"[Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method]",1
+"[Extract Method, Extract Method]",19
+"[Change Parameter Type, Move Attribute, Rename Method, Change Parameter Type, Extract Method]",3
+"[Change Variable Type, Change Parameter Type, Extract Method]",2
+"[Move Attribute, Move Attribute, Move Method]",1
+"[Rename Variable, Rename Variable, Extract Method, Rename Variable, Extract Variable, Change Variable Type, Rename Variable]",1
+"[Move Method, Rename Parameter, Extract Method]",1
+"[Extract Method, Rename Method]",16
+"[Rename Variable, Extract Method, Change Variable Type]",2
+"[Extract Variable, Extract Method, Extract Variable]",1
+"[Rename Attribute, Extract Method, Change Attribute Type]",4
+"[Move Method, Move Method]",6
+"[Extract Method, Extract Method, Extract Method, Extract Method]",8
+"[Extract Method, Rename Attribute, Extract Variable]",2
+"[Change Return Type, Pull Up Method, Pull Up Method]",1
+"[Extract Method, Change Return Type]",2
