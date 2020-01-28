@@ -1,0 +1,125 @@
+Composite,Number of occurrence
+"[Change Variable Type, Change Attribute Type, Move Method, Change Attribute Type, Change Attribute Type, Rename Variable, Change Variable Type, Change Variable Type, Extract Variable, Move Attribute, Inline Variable]",1
+"[Pull Up Method, Rename Variable, Pull Up Attribute]",1
+"[Parameterize Variable, Extract Method, Extract Method, Parameterize Variable]",1
+"[Move Method, Move Attribute, Move Attribute, Move Attribute, Extract Method, Move Method, Move Method, Extract Class, Move Method]",1
+"[Extract Method, Extract Method]",14
+"[Extract Attribute, Change Return Type, Extract Attribute, Extract Attribute, Extract Attribute, Rename Variable, Extract Method, Extract Variable, Rename Variable, Extract Method, Extract Attribute, Extract Attribute, Rename Variable, Extract Attribute, Extract Attribute, Extract Attribute]",1
+"[Change Attribute Type, Change Parameter Type, Extract Method, Change Return Type]",1
+"[Rename Parameter, Move Attribute, Move Method, Change Parameter Type, Move Attribute]",1
+"[Rename Attribute, Rename Attribute, Rename Attribute, Move Method, Rename Parameter, Rename Parameter]",1
+"[Move Method, Extract Class, Move Method]",1
+"[Change Return Type, Extract Method, Move Attribute, Move Attribute, Move Attribute]",1
+"[Extract Method, Inline Method]",1
+"[Extract Method, Extract Method, Change Attribute Type]",1
+"[Inline Variable, Extract Method, Extract Method, Extract Method, Extract Variable, Pull Up Attribute, Extract Method, Extract Method, Extract Method]",1
+"[Move Method, Move Method, Change Attribute Type, Change Parameter Type, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Change Variable Type, Change Attribute Type, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Change Return Type, Change Variable Type, Move Method, Move Method, Move Method, Change Parameter Type, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method]",1
+"[Extract Superclass, Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method]",1
+"[Change Attribute Type, Rename Variable, Change Variable Type, Extract Method, Extract Method, Change Variable Type, Rename Variable, Rename Variable]",1
+"[Extract Method, Pull Up Method, Rename Method]",1
+"[Extract Method, Change Variable Type, Extract Method, Extract Method, Extract Method, Extract Method, Change Variable Type, Change Variable Type]",1
+"[Merge Variable, Extract Method]",1
+"[Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method]",1
+"[Extract Method, Extract Method, Extract Method]",7
+"[Extract Method, Parameterize Variable]",1
+"[Rename Parameter, Pull Up Attribute, Rename Parameter, Pull Up Method, Rename Parameter, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Rename Parameter]",1
+"[Extract Method, Rename Parameter, Rename Parameter, Extract Method, Extract Method, Rename Parameter, Change Variable Type, Extract Method, Rename Variable, Extract Method, Change Variable Type, Rename Variable, Rename Parameter, Rename Variable, Extract Method, Rename Variable, Rename Parameter]",1
+"[Change Variable Type, Extract Method, Change Parameter Type, Change Parameter Type, Extract Method, Rename Method, Change Parameter Type]",1
+"[Extract Method, Rename Variable, Change Parameter Type, Extract Method, Change Variable Type, Change Variable Type, Rename Variable]",1
+"[Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Extract Variable, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Extract Method, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Extract Variable, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Extract Superclass, Pull Up Attribute, Pull Up Attribute, Extract Variable, Pull Up Method, Pull Up Attribute, Pull Up Attribute]",1
+"[Change Return Type, Rename Parameter, Move Method]",1
+"[Extract Method, Extract Method, Rename Method, Rename Method, Inline Variable, Extract Method]",1
+"[Push Down Method, Push Down Method, Change Variable Type, Push Down Method, Change Variable Type, Inline Method, Change Return Type, Push Down Method, Push Down Method, Push Down Method, Push Down Attribute, Inline Method, Push Down Method, Push Down Attribute, Change Attribute Type, Rename Attribute, Change Return Type, Push Down Attribute, Change Variable Type, Inline Method, Inline Method, Push Down Method, Extract Method, Extract Subclass, Push Down Method, Push Down Method, Change Return Type, Rename Variable, Push Down Method, Extract Method, Push Down Method, Push Down Method, Push Down Method, Rename Method, Rename Method, Extract Method, Rename Attribute, Rename Method, Push Down Attribute, Push Down Method, Push Down Method]",1
+"[Extract Method, Extract Class]",1
+"[Change Parameter Type, Extract Variable, Change Parameter Type, Rename Method, Extract Method]",1
+"[Rename Method, Replace Variable With Attribute, Extract Method]",1
+"[Rename Parameter, Extract Method]",3
+"[Extract Method, Extract Method, Extract Variable, Rename Variable]",1
+"[Change Variable Type, Rename Variable, Change Variable Type, Extract Method, Extract Method, Rename Variable, Rename Variable, Extract Method, Change Parameter Type, Rename Parameter, Rename Parameter]",1
+"[Extract Method, Rename Variable, Extract Method, Rename Variable, Rename Variable, Extract Method, Extract Method]",1
+"[Change Variable Type, Extract Method, Extract Method, Extract Method, Rename Variable, Rename Method, Rename Variable, Rename Variable]",1
+"[Extract Method, Extract Variable, Extract Variable]",2
+"[Rename Method, Extract Method, Extract Method, Change Return Type, Extract Variable, Parameterize Variable, Extract Method, Inline Variable]",1
+"[Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Extract Superclass]",1
+"[Merge Parameter, Move Method, Rename Method, Rename Method, Rename Parameter, Change Attribute Type, Move Method, Extract Method, Rename Attribute, Replace Variable With Attribute, Extract Variable, Inline Method, Inline Method, Extract Method, Rename Method, Inline Method, Move Method, Rename Parameter, Change Parameter Type, Extract Method, Rename Parameter, Extract Method, Rename Method]",1
+"[Extract Method, Extract Method, Extract Method, Extract Method]",1
+"[Parameterize Variable, Rename Variable, Extract Method]",1
+"[Extract Method, Move Method, Change Attribute Type, Rename Variable]",1
+"[Pull Up Method, Pull Up Method, Pull Up Method]",1
+"[Extract Method, Extract Method, Rename Attribute, Rename Parameter, Extract Method, Rename Attribute, Rename Parameter, Extract Method, Extract Method]",1
+"[Move Method, Move Attribute, Move Method, Change Variable Type, Move Attribute, Move Attribute, Move Attribute, Extract Class, Extract Variable, Change Parameter Type, Move Method, Change Parameter Type, Move Attribute]",1
+"[Rename Method, Pull Up Method]",1
+"[Change Variable Type, Rename Variable, Extract Method, Rename Variable, Rename Variable, Change Variable Type, Change Variable Type, Change Variable Type, Rename Variable, Extract Method, Change Variable Type]",1
+"[Inline Variable, Move Method]",1
+"[Rename Parameter, Inline Method, Extract Method, Inline Method, Extract Method]",1
+"[Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Rename Method, Inline Variable, Rename Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method]",1
+"[Extract Method, Extract Method, Rename Variable, Extract Method, Change Return Type]",1
+"[Extract Method, Rename Variable, Extract Variable, Rename Variable]",1
+"[Move Method, Move Method, Move Method, Move Method]",1
+"[Move Attribute, Extract Class, Move Method, Move Method, Move Method, Move Attribute]",1
+"[Extract Method, Extract Variable]",5
+"[Rename Variable, Extract Method, Rename Variable, Extract Method, Extract Method]",1
+"[Pull Up Method, Pull Up Method]",1
+"[Move Attribute, Extract Method, Rename Attribute, Move Attribute, Rename Attribute]",1
+"[Rename Variable, Inline Variable, Change Variable Type, Rename Variable, Inline Variable, Extract Variable, Extract Variable, Change Return Type, Extract Variable, Extract Variable, Rename Variable, Inline Method, Change Parameter Type, Change Attribute Type, Extract Variable, Extract Variable, Extract Method, Extract Method, Extract Variable, Extract Method, Change Attribute Type, Change Attribute Type, Change Variable Type, Rename Variable, Extract Variable, Extract Variable, Extract Variable]",1
+"[Extract Method, Rename Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method]",1
+"[Change Attribute Type, Change Variable Type, Replace Variable With Attribute, Extract Method, Rename Attribute, Extract Variable]",1
+"[Extract Variable, Extract Variable, Rename Variable, Extract Method, Parameterize Variable, Extract Method]",1
+"[Extract Method, Change Parameter Type, Change Parameter Type, Rename Parameter, Rename Parameter]",1
+"[Rename Variable, Extract Method, Rename Variable, Extract Method, Rename Variable, Rename Variable, Extract Method, Extract Method]",1
+"[Change Variable Type, Extract Variable, Parameterize Variable, Change Variable Type, Change Variable Type, Extract Method, Change Parameter Type]",1
+"[Extract Class, Move Method, Rename Variable, Move Method]",1
+"[Rename Parameter, Extract Method, Change Attribute Type, Change Parameter Type, Change Attribute Type, Change Parameter Type, Rename Attribute]",1
+"[Extract Method, Rename Variable]",3
+"[Change Attribute Type, Change Attribute Type, Inline Method, Rename Variable, Change Attribute Type, Extract Method, Replace Variable With Attribute, Change Return Type, Extract Variable, Inline Variable, Rename Variable, Rename Attribute]",1
+"[Change Attribute Type, Change Variable Type, Change Return Type, Rename Variable, Extract Method]",1
+"[Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Method]",1
+"[Extract Method, Extract Method, Rename Variable, Extract Method, Rename Variable, Rename Variable, Rename Variable, Rename Variable, Rename Variable, Rename Variable, Extract Method, Extract Method, Extract Method, Extract Method]",1
+"[Extract Method, Extract Variable, Inline Method, Extract Variable, Extract Method, Extract Variable]",1
+"[Rename Variable, Extract Method, Rename Variable, Extract Method, Rename Variable]",1
+"[Change Parameter Type, Move Method, Change Parameter Type, Rename Parameter]",1
+"[Inline Variable, Change Attribute Type, Change Variable Type, Change Attribute Type, Change Parameter Type, Extract Method]",1
+"[Inline Variable, Inline Method, Extract Method, Rename Variable, Extract Variable, Change Parameter Type, Change Variable Type, Extract Method]",1
+"[Extract Method, Rename Parameter, Extract Method, Extract Method, Extract Method]",1
+"[Extract Variable, Pull Up Method]",1
+"[Extract Method, Change Variable Type]",1
+"[Extract Method, Change Attribute Type, Change Attribute Type]",1
+"[Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method]",2
+"[Extract Method, Rename Variable, Parameterize Variable, Extract Method, Rename Variable, Extract Method, Rename Variable, Extract Method, Parameterize Variable, Rename Variable, Parameterize Variable, Parameterize Variable]",1
+"[Extract Method, Extract Method, Rename Variable, Change Variable Type]",1
+"[Move Attribute, Change Attribute Type, Extract Class, Move Attribute, Move Attribute, Rename Attribute, Move Attribute, Move Method]",1
+"[Extract Method, Extract Method, Rename Method, Extract Attribute, Rename Method, Rename Method]",1
+"[Move Method, Rename Attribute, Rename Attribute]",1
+"[Extract Method, Extract Class, Move Method, Move Method, Move Method]",2
+"[Extract Variable, Extract Method, Extract Variable, Rename Method, Extract Method]",1
+"[Extract Method, Replace Variable With Attribute]",1
+"[Extract Method, Extract Method, Change Attribute Type, Rename Attribute]",1
+"[Extract Method, Change Attribute Type]",2
+"[Extract Method, Rename Variable, Merge Parameter, Change Return Type, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Change Return Type, Extract Variable]",1
+"[Rename Parameter, Rename Parameter, Parameterize Variable, Extract Method]",1
+"[Move Method, Move Method, Rename Method, Move Method, Move Method, Extract Class, Move Method, Extract Method]",1
+"[Extract Method, Extract Method, Extract Method, Change Variable Type, Extract Method]",1
+"[Rename Method, Change Attribute Type, Extract Method, Extract Variable]",1
+"[Rename Parameter, Rename Attribute, Extract Method, Move Attribute]",1
+"[Extract Method, Parameterize Variable, Extract Method]",2
+"[Move Attribute, Change Return Type, Move Method]",1
+"[Push Down Attribute, Extract Method]",1
+"[Extract Class, Extract Variable, Move Method, Push Down Method, Extract Variable, Push Down Method]",1
+"[Rename Variable, Extract Method, Rename Variable, Change Variable Type, Rename Variable, Change Variable Type, Rename Variable, Change Variable Type, Rename Variable, Change Variable Type, Rename Parameter, Rename Variable]",1
+"[Rename Attribute, Rename Attribute, Extract Method]",1
+"[Extract Superclass, Move Method, Rename Method, Rename Parameter, Change Parameter Type, Extract Method]",1
+"[Extract Method, Change Return Type]",1
+"[Change Variable Type, Move Method, Extract Method]",1
+"[Move Method, Pull Up Method, Move Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Pull Up Method, Pull Up Method, Pull Up Attribute, Pull Up Method, Move Method, Pull Up Method, Pull Up Method, Move Method, Move Method, Pull Up Method, Pull Up Method, Move Method, Pull Up Method, Pull Up Method, Pull Up Method, Move Method, Pull Up Method, Move Method, Move Method, Pull Up Method, Pull Up Method, Pull Up Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Move Method, Pull Up Method, Pull Up Method, Pull Up Method, Move Method, Pull Up Method, Pull Up Method, Move Method, Pull Up Method, Move Method, Move Method, Pull Up Method, Pull Up Method, Inline Method, Move Method, Pull Up Method, Pull Up Method, Move Method, Pull Up Method, Pull Up Method, Pull Up Method, Move Method, Pull Up Method]",1
+"[Rename Variable, Change Variable Type, Extract Method]",1
+"[Change Variable Type, Extract Method, Change Attribute Type, Change Return Type, Change Variable Type, Change Attribute Type]",1
+"[Extract Variable, Parameterize Variable, Extract Method]",1
+"[Change Parameter Type, Extract Method, Extract Method, Extract Method, Parameterize Variable, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Rename Parameter, Inline Method, Extract Method]",1
+"[Extract Method, Extract Method, Rename Method, Extract Variable, Extract Variable, Parameterize Variable, Extract Method, Parameterize Variable, Rename Variable, Extract Variable]",1
+"[Extract Method, Extract Method, Change Attribute Type, Rename Attribute, Extract Method, Extract Method, Extract Method, Extract Variable, Extract Method, Parameterize Variable, Extract Method, Extract Method, Extract Method, Parameterize Variable, Extract Method, Extract Method, Extract Variable, Change Return Type, Parameterize Variable, Extract Method]",1
+"[Pull Up Attribute, Pull Up Method, Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Pull Up Attribute, Pull Up Attribute]",1
+"[Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method]",1
+"[Extract Class, Move Method, Extract Method]",1
+"[Extract Method, Extract Method, Extract Variable, Rename Parameter]",1
+"[Parameterize Variable, Extract Method, Parameterize Variable]",1
+"[Extract Method, Rename Variable, Rename Variable, Extract Method, Extract Method, Extract Method, Extract Method, Extract Method, Rename Variable, Extract Method, Extract Method, Rename Variable]",1
