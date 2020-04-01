@@ -65,10 +65,12 @@ public class IncompleteCompositeAnalysisMain {
 
 		
 			IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
-					"incomplete-composites-dto/incomplete-composite-jgit-range-based-saida.json"),
+					"complete-composites-dto/complete-composite-couchbase-java-client.json"),
 					IncompleteCompositeDTO[].class);
 			
 			List<IncompleteCompositeDTO> incompleteCompositeDTOList = Arrays.asList(incompleteComposites);
+			
+			System.out.println(incompleteCompositeDTOList.get(0).getId());
 			
 			Map<List<String>, Long> mostCommonIncompleteComposites = new HashMap<List<String>, Long>();
 			
@@ -78,6 +80,7 @@ public class IncompleteCompositeAnalysisMain {
 			Map<List<String>, List<Integer>> incompleteCompositesIDs = new HashMap<List<String>, List<Integer>>();
 			
 			int[] refListIndex = {0};
+			
 			for (List<String> refList : incompleteCompositeTextList) {
 				
 				boolean[] wasFound = {false};
@@ -93,7 +96,8 @@ public class IncompleteCompositeAnalysisMain {
 						refTextList.setValue(quantityRefList);
 						wasFound[0] = true;
 						
-						incompleteCompositesIDs.get(refTextList.getKey()).add(refListIndex[0]);
+						String incompleteCompositeId = incompleteCompositeDTOList.get(refListIndex[0]).getId();
+						incompleteCompositesIDs.get(refTextList.getKey()).add(Integer.valueOf(incompleteCompositeId));
 					}
 				});
 
@@ -102,7 +106,8 @@ public class IncompleteCompositeAnalysisMain {
 					mostCommonIncompleteComposites.put(refList, Long.valueOf(1));
 					
 					List<Integer> refListIndexList = new ArrayList<Integer>();
-				    refListIndexList.add(refListIndex[0]);
+					String incompleteCompositeId = incompleteCompositeDTOList.get(refListIndex[0]).getId();
+				    refListIndexList.add(Integer.valueOf(incompleteCompositeId));
 					incompleteCompositesIDs.put(refList, refListIndexList);
 					//System.out.println("Add list: " + refList.toString());
 				}
@@ -117,7 +122,7 @@ public class IncompleteCompositeAnalysisMain {
 			});
 			
 			writeMostCommonIncompleteCompositesIndex(mostCommonIncompleteComposites, incompleteCompositesIDs,
-					"most-common-incomplete-composite-jgit-range-based-index.csv");
+					"most-common-complete-composite-couchbase-java-client-range-based.csv");
 			
 			System.out.println(mostCommonIncompleteComposites.size());
 

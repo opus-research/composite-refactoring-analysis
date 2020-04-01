@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+"id",	
 "refactorings",
 "type"
 })
@@ -21,6 +22,9 @@ public class IncompleteCompositeDTO {
 	
 	@JsonProperty("refactorings")
 	private List<Refactoring> refactorings = null;
+	
+	@JsonProperty("id")
+	private String id;
 	
 	@JsonProperty("type")
 	private String type;
@@ -47,6 +51,17 @@ public class IncompleteCompositeDTO {
 	@JsonProperty("type")
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	
+	@JsonProperty("id")
+	public String getId() {
+		return id;
+	}
+
+	@JsonProperty("id")
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@JsonAnyGetter
