@@ -47,7 +47,7 @@ public class RefactoringAnalyzer {
 	private void writeRefactoredClassesRanking(Map<String, Long> rankingOfRefactoredClasses,
 			 								  Map<String, Set<SingleRefactoringDTO>> refsByRefactoredClasses) {
 		// TODO Auto-generated method stub
-		CsvWriter csv = new CsvWriter("rankingOfRefactoredClasses-elasticsearch.csv", ',', Charset.forName("ISO-8859-1"));
+		CsvWriter csv = new CsvWriter("rankingOfRefactoredClasses-elasticsearch-main-types.csv", ',', Charset.forName("ISO-8859-1"));
 		try {
 			csv.write("Class");
 			csv.write("Number of Occurrence");
@@ -63,31 +63,37 @@ public class RefactoringAnalyzer {
 		rankingOfRefactoredClasses.entrySet().forEach(refClass -> {
 
 			try {
+				
+				
 			
-				//Refactorings 
 				for (SingleRefactoringDTO ref : refsByRefactoredClasses.get(refClass.getKey())) {
+					
+					System.out.println(ref.getRefactoringType());
+					
+					
+								//Refactored Class
+								csv.write(refClass.getKey());
+								
+								//Number of Occurrence
+								csv.write(String.valueOf(refClass.getValue()));
+								
+								//Number of Refactorings 
+								int numberOfRefs = refsByRefactoredClasses.get(refClass.getKey()).size();
+								csv.write(String.valueOf(numberOfRefs));
+								
+								//Refactoring ID 
+								csv.write(ref.getRefactoringId());
+								
+								//Refactoring Type
+								csv.write(ref.getRefactoringType());
+								
+								//Commit
+								csv.write(ref.getCurrentCommit());
+								csv.endRecord();
+					
+					
 				
-					//Refactored Class
-					csv.write(refClass.getKey());
-					
-					//Number of Occurrence
-					csv.write(String.valueOf(refClass.getValue()));
-					
-					//Number of Refactorings 
-					int numberOfRefs = refsByRefactoredClasses.get(refClass.getKey()).size();
-					csv.write(String.valueOf(numberOfRefs));
-
-					//Refactoring ID 
-					csv.write(ref.getRefactoringId());
-					
-					//Refactoring Type
-					csv.write(ref.getRefactoringType());
-					
-					//Commit
-					csv.write(ref.getCurrentCommit());
-					csv.endRecord();
 				}
-				
 				
 				
 			} catch (Exception e1) {
@@ -115,7 +121,7 @@ public class RefactoringAnalyzer {
 
 				if (ref.getElements() != null) {
 					for (CodeElementDTO elem : ref.getElements()) {
-
+						
 						if (elem.getClassName() != null) {
 
 							if (elem.getClassName().equals(refactoreClass.getKey())) {
