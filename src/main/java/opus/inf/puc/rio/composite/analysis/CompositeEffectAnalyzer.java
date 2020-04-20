@@ -3,9 +3,14 @@ package opus.inf.puc.rio.composite.analysis;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -152,5 +157,48 @@ public class CompositeEffectAnalyzer {
 		
 		return completeComposites;
 	}
+	
+	private Map<String, List<CompositeEffectDTO>> createCompositeGroups(List<CompositeEffectDTO> composites){
+		
+		Map<String, List<CompositeEffectDTO>> groups = new HashMap<String, List<CompositeEffectDTO>>();
+		
+		for(CompositeEffectDTO composite : composites) {
+			
+			List<String> refs = convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
+			
+			Collections.sort(refs);
+			
+			String groupId = refs.toString();
+			
+			if(groups.containsKey(groupId)) {
+				 
+				groups.get(groupId).add(composite);
+			}
+			
+			else {
+				
+				groups.put(groupId, new ArrayList<CompositeEffectDTO>());
+				groups.get(groupId).add(composite);
+			}
+			
+		}
+		
+		return groups;
+	}
+	
+	private List<String> convertRefactoringsTextToRefactoringsList(String refactoringsText){
+		
+		List<String> refactorings = new ArrayList<String>();
+		
+		refactoringsText = refactoringsText.replace("[", "");
+		refactoringsText = refactoringsText.replace("]", "");
+		
+		refactorings = Arrays.asList(refactoringsText.split("\\s*,\\s*"));
+		
+		return refactorings;
+		
+	}
+	
+	
 
 }
