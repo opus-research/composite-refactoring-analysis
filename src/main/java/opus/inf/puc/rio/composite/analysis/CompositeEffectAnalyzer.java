@@ -29,7 +29,10 @@ public class CompositeEffectAnalyzer {
 		
 		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO();
 		
-		System.out.println(composites);
+		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
+		
+		
+		System.out.println(completeComposites);
 		
 	}
 	
