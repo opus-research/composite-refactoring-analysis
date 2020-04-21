@@ -23,6 +23,16 @@ public class CompositeEffectAnalyzer {
 	
 	
 	
+	public static void main(String[] args) {
+		
+		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
+		
+		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO();
+		
+		System.out.println(composites);
+		
+	}
+	
 	
 	private List<CompositeEffectDTO> getCompositeEffectDTO(){
 		
@@ -39,7 +49,7 @@ public class CompositeEffectAnalyzer {
 		FileReader fileReader;
 	
 		try {
-			fileReader = new FileReader("positive-composites.csv");
+			fileReader = new FileReader("positive-composites-couchbase-java-client.csv");
 
 			CSVParser csvFileParser;
 			csvFileParser = new CSVParser(fileReader, csvFileFormat);
@@ -53,12 +63,10 @@ public class CompositeEffectAnalyzer {
 			
 				String compositeId = record.get("CompositeId");
 				
+				
 				if(!compositeIds.contains(compositeId)) {
 					
-					if(compositeDTO != null) {
-						
-						composites.add(compositeDTO);
-					}
+					compositeIds.add(compositeId);
 					
 					compositeDTO = new CompositeEffectDTO();
 					
@@ -77,42 +85,52 @@ public class CompositeEffectAnalyzer {
 					compositeDTO.setCurrentCommit(currentCommit);
 					
 					
-					String smell = record.get("Smell Type");
-					String smellBefore = record.get("Smell_Before");
-					String smellAfter = record.get("Smell After");
-					
-					CodeSmellDTO smellDTO = new CodeSmellDTO();
-					
-				    smellDTO.setType(smell);
-				    
-				    
-				    smellDTO.setSmellBefore(Integer.valueOf(smellBefore));
-				    smellDTO.setSmellAfter(Integer.valueOf(smellAfter));
-				    
-				    compositeDTO.addSmells(smellDTO);
-					
 					
 				}
 				
-				else {
+			
 					
-					String smell = record.get("Smell Type");
-					String smellBefore = record.get("Smell_Before");
-					String smellAfter = record.get("Smell After");
+				String smell = record.get("Smell Type");
+				String smellBefore = record.get("Smell_Before");
+				String smellAfter = record.get("Smell After");
+				
+				CodeSmellDTO smellDTO = new CodeSmellDTO();
+				
+			    smellDTO.setType(smell);
+			    
+			    
+			    smellDTO.setSmellBefore(Integer.valueOf(smellBefore));
+			    smellDTO.setSmellAfter(Integer.valueOf(smellAfter));
+			    
+			    compositeDTO.addSmells(smellDTO);
+			    
+			    
+			    //Adicionar o composite quando todos os smells forem adicionados na lista 
+			    if(compositeDTO != null) {
 					
-					CodeSmellDTO smellDTO = new CodeSmellDTO();
-					
-				    smellDTO.setType(smell);
-				    
-				    
-				    smellDTO.setSmellBefore(Integer.valueOf(smellBefore));
-				    smellDTO.setSmellAfter(Integer.valueOf(smellAfter));
-				    
-				    compositeDTO.addSmells(smellDTO);
-					
-					
-					
+			    	//Adicionar o corrente composite quando o próximo composite for diferente  
+			    	if(i+1 < csvRecords.size()) {
+			    		
+			    		CSVRecord recordNext = (CSVRecord) csvRecords.get(i+1);
+						
+						String compositeNextId = recordNext.get("CompositeId");
+						
+						if(!compositeIds.contains(compositeNextId)) {
+							composites.add(compositeDTO);
+							
+							compositeDTO = new CompositeEffectDTO();
+						}	
+			    	}
+			    	//Adicionar o corrente composite quando é o último composite
+			    	if(i+1 == csvRecords.size()) {
+			    		composites.add(compositeDTO);
+			    	}
+			    	
 				}
+					
+					
+					
+				
 				
 				
 				
