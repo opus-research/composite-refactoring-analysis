@@ -31,8 +31,10 @@ public class CompositeEffectAnalyzer {
 		
 		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
 		
+		List<CompositeEffectDTO> effectComposites = analyzer.getEffectComposite(completeComposites);
 		
-		System.out.println(completeComposites);
+		
+		System.out.println(effectComposites);
 		
 	}
 	
@@ -218,6 +220,46 @@ public class CompositeEffectAnalyzer {
 		
 		return refactorings;
 		
+	}
+	
+	
+	private List<CompositeEffectDTO> getEffectComposite(List<CompositeEffectDTO> composites){
+	
+		
+		for(CompositeEffectDTO composite : composites) {
+			
+			
+			for(CodeSmellDTO smell : composite.getCodeSmells()) {
+				
+				
+				if(smell.getBeforeComposite() > smell.getAfterComposite()) {	
+					int smellRemoved = smell.getBeforeComposite() - smell.getAfterComposite();
+					smell.setRemovedSmells(smellRemoved);
+				}
+				
+				if(smell.getAfterComposite() > smell.getBeforeComposite()) {
+					int smellAdded = smell.getAfterComposite() - smell.getBeforeComposite();
+					smell.setAddedSmells(smellAdded);
+				}
+				
+				if(smell.getAfterComposite() >= smell.getBeforeComposite()) {
+					int smellNotAffected = smell.getBeforeComposite();
+					smell.setNotAffectSmells(smellNotAffected);
+				}
+				
+				if(smell.getAfterComposite() < smell.getBeforeComposite()) {
+					int smellNotAffected = smell.getAfterComposite();
+					smell.setNotAffectSmells(smellNotAffected);
+				}
+				
+				
+			}
+			
+		}
+		
+		
+		
+		return composites; 
 	}
 	
 	

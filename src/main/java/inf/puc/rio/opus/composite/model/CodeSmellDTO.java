@@ -5,6 +5,9 @@ public class CodeSmellDTO {
 	private String type; 
 	private int beforeComposite;
 	private int afterComposite;
+	private int addedSmells;
+	private int removedSmells;
+	private int notAffectSmells;
 	
 	
 	public String getType() {
@@ -33,6 +36,33 @@ public class CodeSmellDTO {
 	public void setSmellAfter(int afterComposite) {
 		this.afterComposite = afterComposite;
 	}
+
+	public int getAddedSmells() {
+		return addedSmells;
+	}
+
+	public void setAddedSmells(int addedSmells) {
+		this.addedSmells = addedSmells;
+	}
+
+	public int getRemovedSmells() {
+		return removedSmells;
+	}
+
+	public void setRemovedSmells(int removedSmells) {
+		this.removedSmells = removedSmells;
+	}
+
+	public int getNotAffectSmells() {
+		return notAffectSmells;
+	}
+
+	public void setNotAffectSmells(int notAffectSmells) {
+		this.notAffectSmells = notAffectSmells;
+	}
+	
+	
+	
 	
 	
 	
