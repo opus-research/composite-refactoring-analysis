@@ -70,6 +70,21 @@ public class CompositeEffectDTO {
 			codeSmells.add(smellDTO);
 		}
 	}
+
+	public String getProject() {
+		// TODO Auto-generated method stub
+		return project;
+	}
+
+	public String getPreviousCommit() {
+		// TODO Auto-generated method stub
+		return previousCommit;
+	}
+
+	public String getCurrentCommit() {
+		// TODO Auto-generated method stub
+		return currentCommit;
+	}
 	
 
 	

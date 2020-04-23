@@ -2,6 +2,7 @@ package opus.inf.puc.rio.composite.analysis;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,8 +40,59 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	
-	private List<CompositeEffectDTO> getCompositeEffectDTO(){
+	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
 		
+		CsvWriter csv = new CsvWriter("complete-composites-couchbase-java-client.csv", ',',
+				Charset.forName("ISO-8859-1"));
+		try {
+			
+			csv.write("CompositeId");
+			csv.write("Refactorings");
+			csv.write("Project");
+			csv.write("Previous Commit");
+			csv.write("Current Commit");
+			csv.write("Smell Type");
+			csv.write("Smell Before");
+			csv.write("Smell After");
+			csv.write("Smells Added");
+			csv.write("Smells Removed");
+			csv.write("Smells Not Affected");
+			csv.endRecord();
+			
+			
+			for(CompositeEffectDTO composite : composites) {
+				
+				for(CodeSmellDTO smell : composite.getCodeSmells()) {
+					
+					csv.write(composite.getId());
+					csv.write(composite.getRefactorings());
+					csv.write(composite.getProject());
+					csv.write(composite.getPreviousCommit());
+					csv.write(composite.getCurrentCommit());
+					
+					csv.write(smell.getType());
+					csv.write(String.valueOf(smell.getBeforeComposite()));
+					csv.write(String.valueOf(smell.getAfterComposite()));
+					csv.write(String.valueOf(smell.getAddedSmells()));
+					csv.write(String.valueOf(smell.getRemovedSmells()));
+					csv.write(String.valueOf(smell.getNotAffectSmells()));
+					
+					csv.endRecord();
+					
+				}
+				
+			
+			}
+			
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	
+	private List<CompositeEffectDTO> getCompositeEffectDTO(){
 		
 		
 		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
@@ -90,7 +142,6 @@ public class CompositeEffectAnalyzer {
 					compositeDTO.setCurrentCommit(currentCommit);
 					
 					
-					
 				}
 				
 			
@@ -132,13 +183,6 @@ public class CompositeEffectAnalyzer {
 			    	}
 			    	
 				}
-					
-					
-					
-				
-				
-				
-				
 
 			}
 
@@ -207,6 +251,76 @@ public class CompositeEffectAnalyzer {
 		}
 		
 		return groups;
+	}
+	
+	
+	private void writeGroups(Map<String, List<CompositeEffectDTO>> groups) {
+		
+		
+		CsvWriter csv = new CsvWriter("complete-composites-couchbase-java-client.csv", ',',
+				Charset.forName("ISO-8859-1"));
+		try {
+			
+			csv.write("Group");
+			csv.write("Group Size");
+			csv.write("CompositeId");
+			csv.write("Refactorings");
+			csv.write("Project");
+			csv.write("Previous Commit");
+			csv.write("Current Commit");
+			csv.write("Smell Type");
+			csv.write("Smell Before");
+			csv.write("Smell After");
+			csv.write("Smells Added");
+			csv.write("Smells Removed");
+			csv.write("Smells Not Affected");
+			csv.endRecord();
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		groups.entrySet().forEach(group -> {
+			
+			
+			try {
+				
+				List<CompositeEffectDTO> composites = group.getValue();
+				
+				for(CompositeEffectDTO composite : composites) {
+					
+					for(CodeSmellDTO smell : composite.getCodeSmells()) {
+						
+						csv.write(group.getKey());
+						csv.write(String.valueOf(composites.size()));
+						csv.write(composite.getId());
+						csv.write(composite.getRefactorings());
+						csv.write(composite.getProject());
+						csv.write(composite.getPreviousCommit());
+						csv.write(composite.getCurrentCommit());
+						
+						csv.write(smell.getType());
+						csv.write(String.valueOf(smell.getBeforeComposite()));
+						csv.write(String.valueOf(smell.getAfterComposite()));
+						csv.write(String.valueOf(smell.getAddedSmells()));
+						csv.write(String.valueOf(smell.getRemovedSmells()));
+						csv.write(String.valueOf(smell.getNotAffectSmells()));
+						
+						csv.endRecord();
+						
+					}
+					
+				
+				}
+				
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		
 	}
 	
 	private List<String> convertRefactoringsTextToRefactoringsList(String refactoringsText){
