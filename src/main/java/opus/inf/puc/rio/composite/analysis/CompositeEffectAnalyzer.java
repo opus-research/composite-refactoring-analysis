@@ -28,21 +28,26 @@ public class CompositeEffectAnalyzer {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO();
+		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("positive-composites-couchbase-java-client.csv");
 		
 		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
 		
 		List<CompositeEffectDTO> effectComposites = analyzer.getEffectComposite(completeComposites);
 		
+		Map<String, List<CompositeEffectDTO>> groups = analyzer.createCompositeGroups(effectComposites);
 		
-		System.out.println(effectComposites);
+		analyzer.writeGroups(groups, "groups-complete-composites-couchbase-java-client.csv");
+		// analyzer.writeCompleteComposite(effectComposites);
+		
+		// System.out.println(effectComposites);
 		
 	}
 	
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
 		
-		CsvWriter csv = new CsvWriter("complete-composites-couchbase-java-client.csv", ',',
+		System.out.println(composites.size());
+		CsvWriter csv = new CsvWriter("complete-composites-okhttp.csv", ',',
 				Charset.forName("ISO-8859-1"));
 		try {
 			
@@ -65,6 +70,9 @@ public class CompositeEffectAnalyzer {
 				for(CodeSmellDTO smell : composite.getCodeSmells()) {
 					
 					csv.write(composite.getId());
+					
+					System.out.println(composite.getId());
+					
 					csv.write(composite.getRefactorings());
 					csv.write(composite.getProject());
 					csv.write(composite.getPreviousCommit());
@@ -84,6 +92,8 @@ public class CompositeEffectAnalyzer {
 			
 			}
 			
+			csv.close();
+			
 			
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -92,7 +102,7 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	
-	private List<CompositeEffectDTO> getCompositeEffectDTO(){
+	private List<CompositeEffectDTO> getCompositeEffectDTO(String path){
 		
 		
 		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
@@ -106,7 +116,7 @@ public class CompositeEffectAnalyzer {
 		FileReader fileReader;
 	
 		try {
-			fileReader = new FileReader("positive-composites-couchbase-java-client.csv");
+			fileReader = new FileReader(path);
 
 			CSVParser csvFileParser;
 			csvFileParser = new CSVParser(fileReader, csvFileFormat);
@@ -200,25 +210,32 @@ public class CompositeEffectAnalyzer {
 		
 		List<CompositeEffectDTO> completeComposites = new ArrayList<CompositeEffectDTO>();
 		
+		Set<String> ids = new HashSet<String>(); 
 		
 		for(CompositeEffectDTO composite : composites) {
 			
 			for(CodeSmellDTO smell : composite.getCodeSmells()) {
 				
-				if(smell.getType().equals("LongMethod") || 
-				   smell.getType().equals("GodClass")   || 
-				   smell.getType().equals("FeatureEnvy") ||
-				   smell.getType().equals("ComplexClass")) {
+				if(smell.getType().equals("LongMethod") || smell.getType().equals("FeatureEnvy")
+						|| smell.getType().equals("GodClass") || smell.getType().equals("ComplexClass")) {
 					
 					if(smell.getAfterComposite() < smell.getBeforeComposite()) {
 						
-						
 						completeComposites.add(composite);
+						
+						ids.add(composite.getId());
 						
 					}
 				}
 				
 			}
+		}
+		
+		
+		for(String id: ids) {
+			
+			System.out.println(id);
+			
 		}
 		
 		
@@ -228,6 +245,8 @@ public class CompositeEffectAnalyzer {
 	private Map<String, List<CompositeEffectDTO>> createCompositeGroups(List<CompositeEffectDTO> composites){
 		
 		Map<String, List<CompositeEffectDTO>> groups = new HashMap<String, List<CompositeEffectDTO>>();
+		
+		System.out.println(composites.size());
 		
 		for(CompositeEffectDTO composite : composites) {
 			
@@ -248,16 +267,21 @@ public class CompositeEffectAnalyzer {
 				groups.get(groupId).add(composite);
 			}
 			
+			
+			
+			
 		}
+		
+		
 		
 		return groups;
 	}
 	
 	
-	private void writeGroups(Map<String, List<CompositeEffectDTO>> groups) {
+	private void writeGroups(Map<String, List<CompositeEffectDTO>> groups, String path) {
 		
 		
-		CsvWriter csv = new CsvWriter("complete-composites-couchbase-java-client.csv", ',',
+		CsvWriter csv = new CsvWriter(path, ',',
 				Charset.forName("ISO-8859-1"));
 		try {
 			
@@ -294,8 +318,9 @@ public class CompositeEffectAnalyzer {
 						
 						csv.write(group.getKey());
 						csv.write(String.valueOf(composites.size()));
-						csv.write(composite.getId());
-						csv.write(composite.getRefactorings());
+					    csv.write(composite.getId());
+						String refactorings = composite.getRefactorings();
+						csv.write(refactorings);
 						csv.write(composite.getProject());
 						csv.write(composite.getPreviousCommit());
 						csv.write(composite.getCurrentCommit());
@@ -307,7 +332,14 @@ public class CompositeEffectAnalyzer {
 						csv.write(String.valueOf(smell.getRemovedSmells()));
 						csv.write(String.valueOf(smell.getNotAffectSmells()));
 						
-						csv.endRecord();
+						 csv.endRecord();
+						
+						if(composite.getId().contains("19")) {
+							
+							System.out.println(composite.getRefactorings());
+						}
+						
+						
 						
 					}
 					
@@ -320,6 +352,8 @@ public class CompositeEffectAnalyzer {
 				e1.printStackTrace();
 			}
 		});
+		
+		csv.close();
 		
 	}
 	
@@ -370,7 +404,6 @@ public class CompositeEffectAnalyzer {
 			}
 			
 		}
-		
 		
 		
 		return composites; 
