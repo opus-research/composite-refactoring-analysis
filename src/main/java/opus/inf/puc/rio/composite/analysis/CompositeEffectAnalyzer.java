@@ -19,6 +19,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
+import inf.puc.rio.opus.composite.model.CompositeGroup;
 
 public class CompositeEffectAnalyzer {
 	
@@ -30,18 +31,27 @@ public class CompositeEffectAnalyzer {
 		
 		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("positive-composites-couchbase-java-client.csv");
 		
+		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
+		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-dubbo.csv"));
+		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-fresco.csv"));
+		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-okhttp.csv"));
+		
+		
 		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
 		
 		List<CompositeEffectDTO> effectComposites = analyzer.getEffectComposite(completeComposites);
 		
 		Map<String, List<CompositeEffectDTO>> groups = analyzer.createCompositeGroups(effectComposites);
 		
-		analyzer.writeGroups(groups, "groups-complete-composites-couchbase-java-client.csv");
+		analyzer.writeCompositeGroups(groups, "groups-complete-composites-summarized.csv");
 		// analyzer.writeCompleteComposite(effectComposites);
 		
 		// System.out.println(effectComposites);
 		
 	}
+	
+	
+	
 	
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
@@ -101,6 +111,7 @@ public class CompositeEffectAnalyzer {
 		}
 	}
 	
+
 	
 	private List<CompositeEffectDTO> getCompositeEffectDTO(String path){
 		
@@ -278,6 +289,37 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	
+	private List<CompositeGroup> summarizeGroups(Map<String, List<CompositeEffectDTO>> groups){
+		
+		List<CompositeGroup> summarizedGroups = new ArrayList<CompositeGroup>();
+		
+		
+		groups.entrySet().forEach(group -> {
+			
+			
+			CompositeGroup summarizedGroup = new CompositeGroup();
+			
+			String refactorings = group.getKey();
+			
+			List<String> refList = Arrays.asList(refactorings);
+			
+			  
+				for(String refType : refList) {
+					
+					
+				}
+			
+			
+			
+		});
+		
+		
+		
+		
+		return summarizedGroups;
+	}
+	
+	
 	private void writeGroups(Map<String, List<CompositeEffectDTO>> groups, String path) {
 		
 		
@@ -334,19 +376,58 @@ public class CompositeEffectAnalyzer {
 						
 						 csv.endRecord();
 						
-						if(composite.getId().contains("19")) {
-							
-							System.out.println(composite.getRefactorings());
-						}
-						
-						
-						
 					}
 					
 				
 				}
 				
 				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		
+		csv.close();
+		
+	}
+	
+	private void writeCompositeGroups(Map<String, List<CompositeEffectDTO>> groups, String path) {
+		
+		
+		CsvWriter csv = new CsvWriter(path, ',',
+				Charset.forName("ISO-8859-1"));
+		try {
+			
+			csv.write("Group");
+			csv.write("Group Size");
+			csv.write("CompositeId");
+			
+			csv.endRecord();
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		groups.entrySet().forEach(group -> {
+			
+			try {
+				
+				List<CompositeEffectDTO> composites = group.getValue();
+				
+				List<String> ids = new ArrayList<String>();
+				
+				for(CompositeEffectDTO composite : composites) {
+					
+					ids.add(composite.getId());
+				}
+				
+				csv.write(group.getKey());
+				csv.write(String.valueOf(composites.size()));
+			    csv.write(ids.toString());
+			    csv.endRecord();
+					
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

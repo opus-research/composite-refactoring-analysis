@@ -1,0 +1,33 @@
+Group,Group Size,CompositeId
+"['Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Push Down Method']",1,[3005]
+"['Change Attribute Type', 'Change Attribute Type', 'Change Return Type', 'Change Variable Type', 'Change Variable Type', 'Extract Method', 'Inline Method', 'Rename Method', 'Rename Method', 'Rename Variable', 'Rename Variable', 'Rename Variable']",2,"[319, 319]"
+"['Move Class', 'Pull Up Attribute', 'Pull Up Method']",2,"[83, 83]"
+"['Change Attribute Type', 'Change Variable Type', 'Extract Method', 'Rename Variable', 'Rename Variable']",2,"[704, 704]"
+"['Change Parameter Type', 'Change Variable Type', 'Extract Variable', 'Extract Variable', 'Extract Variable', 'Move Method', 'Move Method', 'Rename Parameter', 'Rename Variable']",2,"[2718, 2718]"
+"['Change Variable Type', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Rename Method', 'Rename Method']",1,[787]
+"['Move Attribute', 'Move Method', 'Rename Parameter']",1,[143]
+"['Extract Class', 'Move Method', 'Move Method', 'Move Method']",1,[888]
+"['Change Attribute Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Return Type', 'Change Return Type', 'Extract Class', 'Extract Class', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Move Attribute', 'Move Attribute', 'Move Attribute', 'Move Attribute', 'Move Attribute', 'Move Attribute', 'Move Method', 'Move Method', 'Move Method', 'Move Method', 'Rename Attribute', 'Rename Attribute', 'Rename Attribute', 'Rename Attribute', 'Rename Attribute', 'Rename Parameter', 'Rename Parameter', 'Rename Parameter', 'Rename Parameter']",1,[857]
+"['Extract Method', 'Move Class']",1,[2940]
+"['Change Variable Type', 'Extract Method', 'Move Attribute', 'Rename Variable', 'Rename Variable']",2,"[708, 708]"
+"['Extract Method', 'Extract Method']",1,[806]
+"['Change Parameter Type', 'Extract Method', 'Extract Variable', 'Inline Variable', 'Move Attribute', 'Move Attribute', 'Move Method', 'Pull Up Attribute', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Rename Method', 'Rename Parameter', 'Rename Variable', 'Rename Variable', 'Rename Variable', 'Rename Variable']",1,[3057]
+"['Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Rename Method', 'Rename Method', 'Rename Method', 'Rename Variable', 'Rename Variable', 'Rename Variable', 'Rename Variable']",1,[2406]
+"['Change Return Type', 'Change Return Type', 'Pull Up Attribute', 'Pull Up Method', 'Pull Up Method', 'Rename Attribute', 'Rename Method', 'Rename Method', 'Rename Parameter']",2,"[73, 73]"
+"['Extract Method', 'Extract Method', 'Extract Variable', 'Extract Variable', 'Rename Attribute', 'Rename Method', 'Rename Parameter', 'Rename Parameter', 'Rename Variable', 'Rename Variable', 'Rename Variable', 'Replace Variable With Attribute']",1,[2968]
+"['Change Return Type', 'Change Variable Type', 'Change Variable Type', 'Change Variable Type', 'Extract Method', 'Extract Variable', 'Inline Variable', 'Rename Method']",1,[481]
+"['Change Attribute Type', 'Change Parameter Type', 'Change Parameter Type', 'Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Variable Type', 'Change Variable Type', 'Extract Method', 'Rename Method', 'Rename Method', 'Rename Method', 'Rename Method', 'Rename Parameter', 'Rename Parameter', 'Rename Parameter', 'Rename Parameter', 'Rename Parameter']",1,[236]
+"['Extract Method', 'Extract Variable']",1,[153]
+"['Extract Method', 'Rename Variable']",2,"[77, 773]"
+"['Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Variable Type', 'Change Variable Type', 'Change Variable Type', 'Change Variable Type', 'Inline Variable', 'Inline Variable', 'Pull Up Method', 'Rename Method', 'Rename Method', 'Rename Parameter', 'Rename Variable', 'Rename Variable']",2,"[26, 26]"
+"['Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method']",1,[2764]
+"['Extract Method', 'Extract Method', 'Extract Method']",3,"[726, 775, 801]"
+"['Change Attribute Type', 'Change Attribute Type', 'Change Attribute Type', 'Change Attribute Type', 'Change Attribute Type', 'Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Variable Type', 'Extract Method', 'Extract Method', 'Rename Variable']",2,"[855, 855]"
+"['Extract Variable', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Method', 'Pull Up Method', 'Pull Up Method']",2,"[2899, 2899]"
+"['Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Return Type', 'Change Variable Type', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Variable', 'Extract Variable', 'Extract Variable', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Method', 'Inline Variable', 'Parameterize Variable', 'Rename Variable']",1,[25]
+"['Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Inline Variable', 'Parameterize Variable']",1,[701]
+"['Change Variable Type', 'Extract Method', 'Move Method', 'Move Method', 'Pull Up Attribute', 'Pull Up Attribute', 'Rename Variable']",2,"[293, 293]"
+"['Change Variable Type', 'Extract Method', 'Rename Method', 'Rename Variable']",1,[709]
+"['Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method']",1,[930]
+"['Move Attribute', 'Move Attribute', 'Move Method', 'Move Method']",1,[475]
+"['Extract Superclass', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Attribute', 'Pull Up Method']",1,[268]
