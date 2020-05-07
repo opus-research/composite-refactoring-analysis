@@ -27,30 +27,26 @@ public class RefactoringAnalyzer {
 
 		RefactoringAnalyzer analyzer = new RefactoringAnalyzer();
 
-		List<SingleRefactoringDTO> refs = analyzer.getRefactoringsFromJson("elasticsearch.json");
+		List<SingleRefactoringDTO> refs = analyzer.getRefactoringsFromJson("presto.json");
 
-		Map<String, Long> rankingOfRefactoredClasses = analyzer.getRankingOfRefactoredClasses(refs);
+		Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses = analyzer.getGroupsOfRefactoredClasses(refs);
 
-		rankingOfRefactoredClasses.entrySet().forEach(refactoredClass -> {
+		groupsOfRefactoredClasses.entrySet().forEach(refactoredClass -> {
 
-			System.out.println(refactoredClass.getKey());
-			System.out.println(refactoredClass.getValue());
+			//System.out.println(refactoredClass.getKey());
+			// System.out.println(refactoredClass.getValue());
 		});
 
 		// analyzer.writeRefactoredClassesRanking(rankingOfRefactoredClasses);
-
-		Map<String, Set<SingleRefactoringDTO>> refsByRefactoredClasses = analyzer.getRefsByRefactoredClasses(rankingOfRefactoredClasses, refs);
 		
-		analyzer.writeRefactoredClassesRanking(rankingOfRefactoredClasses, refsByRefactoredClasses);
+		analyzer.writeGroupsOfRefactoredClassesByCommits(groupsOfRefactoredClasses);
 	}
 
-	private void writeRefactoredClassesRanking(Map<String, Long> rankingOfRefactoredClasses,
-			 								  Map<String, Set<SingleRefactoringDTO>> refsByRefactoredClasses) {
+	private void writeGroupsOfRefactoredClasses(Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses) {
 		// TODO Auto-generated method stub
-		CsvWriter csv = new CsvWriter("rankingOfRefactoredClasses-elasticsearch-main-types.csv", ',', Charset.forName("ISO-8859-1"));
+		CsvWriter csv = new CsvWriter("groupsOfRefactoredClasses-presto.csv", ',', Charset.forName("ISO-8859-1"));
 		try {
 			csv.write("Class");
-			csv.write("Number of Occurrence");
 			csv.write("Number of Refactorings");
 			csv.write("Refactoring ID");
 			csv.write("Refactoring Type");
@@ -60,25 +56,22 @@ public class RefactoringAnalyzer {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		rankingOfRefactoredClasses.entrySet().forEach(refClass -> {
+		groupsOfRefactoredClasses.entrySet().forEach(refClass -> {
 
 			try {
 				
 				
-			
-				for (SingleRefactoringDTO ref : refsByRefactoredClasses.get(refClass.getKey())) {
+				Set<SingleRefactoringDTO> refsSet = groupsOfRefactoredClasses.get(refClass.getKey());
+				for (SingleRefactoringDTO ref : refsSet) {
 					
-					System.out.println(ref.getRefactoringType());
-					
+					// System.out.println(ref.getRefactoringType());
 					
 								//Refactored Class
 								csv.write(refClass.getKey());
 								
-								//Number of Occurrence
-								csv.write(String.valueOf(refClass.getValue()));
 								
 								//Number of Refactorings 
-								int numberOfRefs = refsByRefactoredClasses.get(refClass.getKey()).size();
+								int numberOfRefs = refsSet.size();
 								csv.write(String.valueOf(numberOfRefs));
 								
 								//Refactoring ID 
@@ -90,9 +83,7 @@ public class RefactoringAnalyzer {
 								//Commit
 								csv.write(ref.getCurrentCommit());
 								csv.endRecord();
-					
-					
-				
+									
 				}
 				
 				
@@ -106,8 +97,82 @@ public class RefactoringAnalyzer {
 		csv.close();
 		
 	}
+	
+	
+	public void writeGroupsOfRefactoredClassesByCommits(Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses) {
+		// TODO Auto-generated method stub
+		   String commits = "27c35db739b0146b2a5e96314d1165517a10a256, 5149d92be7295862532a7e4dc2db38641294e94e, "
+		   		+ "dd7f571d2d27c049384c14d72fdf3cbdef346c0d, 3379b4f4979bb482bd185774207ed31fcde2da3d, "
+		   		+ "2376361ed289157843fd8c20a24832a29be15013, 4705a17147b325f4933066652403009bf80e0e70, "
+		   		+ "d8b8a0d733be4c64e3afa73c17ee05d1ccb7dd42, 57b570494bd8348d76af6c8a4d5384435b3ad18f,"
+		   		+ " 997e8aa4cd2fbf9821285b60d03b10e971b90398";
 
-	private Map<String, Set<SingleRefactoringDTO>> getRefsByRefactoredClasses(Map<String, Long> rankingOfRefactoredClasses, List<SingleRefactoringDTO> refs) {
+		   List<String> commitList = new ArrayList<String>(Arrays.asList(commits.split(",")));
+		   CsvWriter csv = new CsvWriter("groupsOfRefactoredClasses-presto-by-commits.csv", ',', Charset.forName("ISO-8859-1"));
+		   
+		   try {
+				csv.write("Class");
+				csv.write("Number of Refactorings");
+				csv.write("Refactoring ID");
+				csv.write("Refactoring Type");
+				csv.write("Commit");
+				csv.endRecord();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			for(String commit : commitList) {
+				
+				System.out.println(commit);
+				groupsOfRefactoredClasses.entrySet().forEach(refClass -> {
+	
+					try {
+						
+						
+						Set<SingleRefactoringDTO> refsSet = groupsOfRefactoredClasses.get(refClass.getKey());
+						
+						for (SingleRefactoringDTO ref : refsSet) {
+						
+							if(ref.getCurrentCommit().equals(commit.trim())) {
+								
+								// System.out.println(ref.getRefactoringType());
+								
+								//Refactored Class
+								csv.write(refClass.getKey());
+								
+								//Number of Refactorings 
+								int numberOfRefs = refsSet.size();
+								csv.write(String.valueOf(numberOfRefs));
+								
+								//Refactoring ID 
+								csv.write(ref.getRefactoringId());
+								
+								//Refactoring Type
+								csv.write(ref.getRefactoringType());
+								
+								//Commit
+								csv.write(ref.getCurrentCommit());
+								csv.endRecord();
+										
+							}			
+											
+						}
+						
+						
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	
+				});
+			}
+
+			csv.close();
+	}
+
+	private Map<String, Set<SingleRefactoringDTO>> getRefsByRefactoredClasses(Map<String, Long> rankingOfRefactoredClasses,
+			List<SingleRefactoringDTO> refs) {
 		// TODO Auto-generated method stub, 
 		
 		
@@ -163,35 +228,32 @@ public class RefactoringAnalyzer {
 
 	}
 
-	private Map<String, Long> getRankingOfRefactoredClasses(List<SingleRefactoringDTO> refs) {
 
-		Map<String, Long> rankingOfRefactoredClasses = new HashMap<String, Long>();
 
-		List<String> classesList = new ArrayList<String>();
+	private Map<String, Set<SingleRefactoringDTO>> getGroupsOfRefactoredClasses(List<SingleRefactoringDTO> refs) {
 
-		classesList = getRefactoredClasses(refs);
-
-		rankingOfRefactoredClasses = classesList.stream()
-				.collect(Collectors.groupingBy(classPath -> classPath, Collectors.counting()));
-
-		return rankingOfRefactoredClasses;
-
-	}
-
-	private List<String> getRefactoredClasses(List<SingleRefactoringDTO> refs) {
-
-		List<String> classes = new ArrayList<String>();
-
+		Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses = new HashMap<String, Set<SingleRefactoringDTO>>();
+		
+		
 		for (SingleRefactoringDTO ref : refs) {
 
 			if (ref.getElements() != null) {
+				
 				for (CodeElementDTO elem : ref.getElements()) {
 
 					if (elem.getClassName() != null) {
 
 						if (!elem.getClassName().isEmpty()) {
-
-							classes.add(elem.getClassName());
+							
+							if(groupsOfRefactoredClasses.containsKey(elem.getClassName())) {
+								
+								groupsOfRefactoredClasses.get(elem.getClassName()).add(ref);
+								
+							}else {
+								groupsOfRefactoredClasses.put(elem.getClassName(), new HashSet<SingleRefactoringDTO>());
+								groupsOfRefactoredClasses.get(elem.getClassName()).add(ref);
+							}
+							
 						}
 					}
 				}
@@ -199,35 +261,10 @@ public class RefactoringAnalyzer {
 
 		}
 
-		return classes;
+		return groupsOfRefactoredClasses;
 
 	}
 
-	private void writeRefactoredClassesRanking(Map<String, Long> rankingOfRefactoredClasses) {
-		CsvWriter csv = new CsvWriter("rankingOfRefactoredClasses.csv", ',', Charset.forName("ISO-8859-1"));
-		try {
-			csv.write("Class");
-			csv.write("Number of occurrence");
-			csv.endRecord();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		rankingOfRefactoredClasses.entrySet().forEach(refClass -> {
-
-			try {
-				csv.write(refClass.getKey().toString());
-				csv.write(String.valueOf(refClass.getValue()));
-
-				csv.endRecord();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-		});
-
-		csv.close();
-	}
+	
 
 }
