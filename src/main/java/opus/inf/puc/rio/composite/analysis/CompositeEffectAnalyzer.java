@@ -20,6 +20,7 @@ import org.apache.commons.csv.CSVRecord;
 import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
 import inf.puc.rio.opus.composite.model.CompositeGroup;
+import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 
 public class CompositeEffectAnalyzer {
 	
@@ -271,7 +272,6 @@ public class CompositeEffectAnalyzer {
 				 
 				groups.get(groupId).add(composite);
 			}
-			
 			else {
 				
 				groups.put(groupId, new ArrayList<CompositeEffectDTO>());
@@ -289,35 +289,6 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	
-	private List<CompositeGroup> summarizeGroups(Map<String, List<CompositeEffectDTO>> groups){
-		
-		List<CompositeGroup> summarizedGroups = new ArrayList<CompositeGroup>();
-		
-		
-		groups.entrySet().forEach(group -> {
-			
-			
-			CompositeGroup summarizedGroup = new CompositeGroup();
-			
-			String refactorings = group.getKey();
-			
-			List<String> refList = Arrays.asList(refactorings);
-			
-			  
-				for(String refType : refList) {
-					
-					
-				}
-			
-			
-			
-		});
-		
-		
-		
-		
-		return summarizedGroups;
-	}
 	
 	
 	private void writeGroups(Map<String, List<CompositeEffectDTO>> groups, String path) {

@@ -171,12 +171,14 @@ public class RefactoringAnalyzer {
 			csv.close();
 	}
 
-	private Map<String, Set<SingleRefactoringDTO>> getRefsByRefactoredClasses(Map<String, Long> rankingOfRefactoredClasses,
+	private Map<String, Set<SingleRefactoringDTO>> getRefsByRefactoredClasses(
+			Map<String, Long> rankingOfRefactoredClasses,
 			List<SingleRefactoringDTO> refs) {
 		// TODO Auto-generated method stub, 
 		
 		
-		Map<String, Set<SingleRefactoringDTO>> refsByRefactoredClasses = new HashMap<String, Set<SingleRefactoringDTO>>();
+		Map<String, Set<SingleRefactoringDTO>> refsByRefactoredClasses = new HashMap<String, 
+				Set<SingleRefactoringDTO>>();
 		
 		for (Entry<String, Long> refactoreClass : rankingOfRefactoredClasses.entrySet()) {
 
@@ -232,7 +234,8 @@ public class RefactoringAnalyzer {
 
 	private Map<String, Set<SingleRefactoringDTO>> getGroupsOfRefactoredClasses(List<SingleRefactoringDTO> refs) {
 
-		Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses = new HashMap<String, Set<SingleRefactoringDTO>>();
+		Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses = 
+				new HashMap<String, Set<SingleRefactoringDTO>>();
 		
 		
 		for (SingleRefactoringDTO ref : refs) {

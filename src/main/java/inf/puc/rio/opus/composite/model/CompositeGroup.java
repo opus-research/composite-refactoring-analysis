@@ -6,13 +6,12 @@ import java.util.Set;
 public class CompositeGroup {
 
 	
-	private Set<RefactoringTypesEnum> group;
-	private int numberOfComposites;
+	private Set<String> group;
 	private List<CompositeEffectDTO> composites;
 	
 
 	
-	public void addGroup(Set<RefactoringTypesEnum> group) {
+	public CompositeGroup(Set<String> group) {
 		
 		if(this.group == null) {
 			
@@ -20,10 +19,21 @@ public class CompositeGroup {
 		}
 	}
 
-	public void addNumberOfComposites(int composites) {
+	public void addComposites(List<CompositeEffectDTO> composites) {
 		
-		this.numberOfComposites = this.numberOfComposites + composites;
+		this.composites.addAll(composites);
 	}
+
+	public Set<String> getGroupSet() {
+		return group;
+	}
+
+	public List<CompositeEffectDTO> getComposites() {
+		return composites;
+	}
+	
+	
+	
 	
 	
 	

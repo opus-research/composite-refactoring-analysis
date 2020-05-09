@@ -6,6 +6,9 @@ import java.util.List;
 
 public enum RefactoringTypesEnum {
 
+	
+	
+	
 	EXTRACT_METHOD{
 		 public String toString() {
 	          return "Extract Method";
@@ -60,4 +63,7 @@ public enum RefactoringTypesEnum {
 	          		+ "Split Attribute, Change Variable Type, Change Parameter Type, Change Return Type, Change Attribute Type, Extract Attribute]";
 	      }
 	},
+	
+	
+
 }
