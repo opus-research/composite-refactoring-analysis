@@ -1,5 +1,6 @@
 package inf.puc.rio.opus.composite.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class CompositeGroup {
 			
 			this.group = group;
 		}
+		
+		composites = new ArrayList<CompositeEffectDTO>();
 	}
 
 	public void addComposites(List<CompositeEffectDTO> composites) {

@@ -41,26 +41,26 @@ public enum RefactoringTypesEnum {
 	},
 	PULL_UP{
 		 public String toString() {
-			  return "[Pull Up Attribute, Pull Up Method]";
+			  return "Pull Up Attribute, Pull Up Method";
 	     }
 	},
 	PUSH_DOWN{
 		 public String toString() {
-			 return "[Push Down Attribute, Push Down Method]";
+			 return "Push Down Attribute, Push Down Method";
 	     }
 	},
 	RENAME{
 		 public String toString() {	  
-	          return "[Rename Variable, Rename Attribute, Rename Method, Rename Class]";
+	          return "Rename Parameter, Rename Variable, Rename Attribute, Rename Method, Rename Class";
 	     }
 	},
 	REFACT_VARIABLE{
 		
 		 public String toString() {
-	          return "[Extract Variable, Inline Variable, Parameterize Variable,"
-	          		+ "Rename Variable, Rename Parameter, Rename Attribute, Replace Variable with Attribute,"
+	          return "Extract Variable, Inline Variable, Parameterize Variable,"
+	          		+ "Replace Variable with Attribute,"
 	          		+ "Replace Attribute, Merge Variable, Merge Parameter, Merge Attribute, Split Variable, Split Parameter,"
-	          		+ "Split Attribute, Change Variable Type, Change Parameter Type, Change Return Type, Change Attribute Type, Extract Attribute]";
+	          		+ "Split Attribute, Change Variable Type, Change Parameter Type, Change Return Type, Change Attribute Type, Extract Attribute";
 	      }
 	},
 	

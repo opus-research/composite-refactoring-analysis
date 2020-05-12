@@ -31,7 +31,8 @@ public class CompositeEffectAnalyzer {
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
 		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("positive-composites-couchbase-java-client.csv");
-		
+
+
 		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
 		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-dubbo.csv"));
 		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-fresco.csv"));
@@ -39,12 +40,20 @@ public class CompositeEffectAnalyzer {
 		
 		
 		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
-		
+
+
 		List<CompositeEffectDTO> effectComposites = analyzer.getEffectComposite(completeComposites);
+
+
+		CompositeGroupAnalyzer compositeGroupAnalyzer = new CompositeGroupAnalyzer();
+
+		System.out.println("Composites " + effectComposites.size());
+		Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(effectComposites);
 		
-		Map<String, List<CompositeEffectDTO>> groups = analyzer.createCompositeGroups(effectComposites);
-		
-		analyzer.writeCompositeGroups(groups, "groups-complete-composites-summarized.csv");
+		List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
+		compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups);
+
+		// analyzer.writeCompositeGroups(groups, "groups-complete-composites-summarized.csv");
 		// analyzer.writeCompleteComposite(effectComposites);
 		
 		// System.out.println(effectComposites);
@@ -220,7 +229,7 @@ public class CompositeEffectAnalyzer {
 	
 	private List<CompositeEffectDTO> getCompleteComposite(List<CompositeEffectDTO> composites){
 		
-		List<CompositeEffectDTO> completeComposites = new ArrayList<CompositeEffectDTO>();
+		Set<CompositeEffectDTO> completeComposites = new HashSet<CompositeEffectDTO>();
 		
 		Set<String> ids = new HashSet<String>(); 
 		
@@ -251,42 +260,9 @@ public class CompositeEffectAnalyzer {
 		}
 		
 		
-		return completeComposites;
+		return new ArrayList<CompositeEffectDTO>(completeComposites);
 	}
 	
-	private Map<String, List<CompositeEffectDTO>> createCompositeGroups(List<CompositeEffectDTO> composites){
-		
-		Map<String, List<CompositeEffectDTO>> groups = new HashMap<String, List<CompositeEffectDTO>>();
-		
-		System.out.println(composites.size());
-		
-		for(CompositeEffectDTO composite : composites) {
-			
-			List<String> refs = convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
-			
-			Collections.sort(refs);
-			
-			String groupId = refs.toString();
-			
-			if(groups.containsKey(groupId)) {
-				 
-				groups.get(groupId).add(composite);
-			}
-			else {
-				
-				groups.put(groupId, new ArrayList<CompositeEffectDTO>());
-				groups.get(groupId).add(composite);
-			}
-			
-			
-			
-			
-		}
-		
-		
-		
-		return groups;
-	}
 	
 	
 	
@@ -409,18 +385,7 @@ public class CompositeEffectAnalyzer {
 		
 	}
 	
-	private List<String> convertRefactoringsTextToRefactoringsList(String refactoringsText){
-		
-		List<String> refactorings = new ArrayList<String>();
-		
-		refactoringsText = refactoringsText.replace("[", "");
-		refactoringsText = refactoringsText.replace("]", "");
-		
-		refactorings = Arrays.asList(refactoringsText.split("\\s*,\\s*"));
-		
-		return refactorings;
-		
-	}
+	
 	
 	
 	private List<CompositeEffectDTO> getEffectComposite(List<CompositeEffectDTO> composites){
