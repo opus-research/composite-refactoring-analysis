@@ -12,9 +12,6 @@ public class CompositeEffectDTO {
 	private String currentCommit;
 	private List<CodeSmellDTO> codeSmells;
 	
-	
-	
-	
 	public String getId() {
 		return Id;
 	}

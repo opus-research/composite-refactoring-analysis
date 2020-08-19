@@ -99,6 +99,7 @@ public class RefactoringAnalyzer {
 	}
 	
 	
+	
 	public void writeGroupsOfRefactoredClassesByCommits(Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses) {
 		// TODO Auto-generated method stub
 		   String commits = "27c35db739b0146b2a5e96314d1165517a10a256, 5149d92be7295862532a7e4dc2db38641294e94e, "
@@ -169,6 +170,28 @@ public class RefactoringAnalyzer {
 			}
 
 			csv.close();
+	}
+	
+	public void executeRefMiner(String pathProject, String commit) {
+		
+		String REF_MINER_PATH = "C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0\\RefactoringMiner-2.0\\bin";
+		//"./RefactoringMiner -gc https://github.com/danilofes/refactoring-toy-example.git 36287f7c3b09eff78395267a3ac0d7da067863fd"
+	
+		 try
+	        { 
+	            // Just one line and you are done !  
+	            // We have given a command to start cmd 
+	            // /K : Carries out command specified by string
+			   Runtime.getRuntime().exec(new String[] {"cmd", "cd", REF_MINER_PATH});
+	           Runtime.getRuntime().exec(new String[] {"cmd", "./RefactoringMiner", "-gc", pathProject, commit}); 
+	  
+	        } 
+	        catch (Exception e) 
+	        { 
+	            System.out.println("HEY Buddy ! U r Doing Something Wrong "); 
+	            e.printStackTrace(); 
+	        }
+	
 	}
 
 	private Map<String, Set<SingleRefactoringDTO>> getRefsByRefactoredClasses(

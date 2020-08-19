@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
 import inf.puc.rio.opus.composite.model.CompositeGroup;
 import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
@@ -54,10 +55,9 @@ public class CompositeGroupAnalyzer {
 	
 	public List<CompositeGroup> summarizeGroups(Map<String, List<CompositeEffectDTO>> groups){
 
-
-
 		List<CompositeGroup> summarizedGroups = new ArrayList<CompositeGroup>();
         final int[] refactoringsQuantity = {0};
+
 		groups.entrySet().forEach(group -> {
 			refactoringsQuantity[0] += group.getValue().size();
 			String refactorings = group.getKey();
@@ -128,6 +128,84 @@ public class CompositeGroupAnalyzer {
 
 
 	}
+
+	public Map<String, Set<CodeSmellDTO>> getEffectByGroup(List<CompositeGroup> summarizedGroup){
+
+	    Map<String, Set<CodeSmellDTO>> effectByGroup = new HashMap<String, Set<CodeSmellDTO>>();
+        Map<String, CodeSmellDTO> effect = null;
+
+	    for(CompositeGroup group : summarizedGroup){
+
+            List<String> compositeGroupList = new ArrayList<String>(group.getGroupSet());
+            Collections.sort(compositeGroupList);
+
+	        if(compositeGroupList.toString().equals("[MOVE_METHOD]")) {
+
+                if (effect == null){
+                    effect = new HashMap<>();
+                }
+                for (CompositeEffectDTO compositeDTO : group.getComposites()) {
+
+                    for (CodeSmellDTO codeSmellDTO : compositeDTO.getCodeSmells()) {
+
+                        if (!effect.containsKey(codeSmellDTO.getType())) {
+                            CodeSmellDTO smell = new CodeSmellDTO();
+                            effect.put(codeSmellDTO.getType(), new CodeSmellDTO());
+                            effect.get(codeSmellDTO.getType()).setType(codeSmellDTO.getType());
+                        }
+
+
+                        int addedSmells = effect.get(codeSmellDTO.getType()).getAddedSmells() + codeSmellDTO.getAddedSmells();
+                        effect.get(codeSmellDTO.getType()).setAddedSmells(addedSmells);
+
+                        int removedSmells = effect.get(codeSmellDTO.getType()).getRemovedSmells() + codeSmellDTO.getRemovedSmells();
+                        effect.get(codeSmellDTO.getType()).setRemovedSmells(removedSmells);
+
+                        int notAffectedSmells = effect.get(codeSmellDTO.getType()).getNotAffectSmells() + codeSmellDTO.getNotAffectSmells();
+                        effect.get(codeSmellDTO.getType()).setNotAffectSmells(notAffectedSmells);
+                    }
+                }
+
+                Set<CodeSmellDTO> smellSet = new HashSet<>(effect.values());
+
+                effectByGroup.put("MM",smellSet);
+            }
+        }
+
+	    return effectByGroup;
+
+    }
+    
+    public void writeEffectByGroup(Map<String, Set<CodeSmellDTO>> effectByGroup){
+
+        CsvWriter csv = new CsvWriter("effect-by-group-mm-composites.csv", ',',
+                Charset.forName("ISO-8859-1"));
+
+        try {
+            csv.write("Code Smell Type");
+            csv.write("Added");
+            csv.write("Removed");
+            csv.write("Not Affected");
+            csv.endRecord();
+
+            for (CodeSmellDTO  codeSmellDTO: effectByGroup.get("MM")) {
+                csv.write(codeSmellDTO.getType());
+
+                csv.write(String.valueOf(codeSmellDTO.getAddedSmells()));
+                csv.write(String.valueOf(codeSmellDTO.getRemovedSmells()));
+                csv.write(String.valueOf(codeSmellDTO.getNotAffectSmells()));
+
+                csv.endRecord();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        csv.close();
+
+    }
 	
 	private void addSummarizedGroup(List<CompositeGroup> summarizedGroups,
 										   Set<String> groupSet, 
@@ -172,8 +250,6 @@ public class CompositeGroupAnalyzer {
 		}
 		
 		return false;
-		
-		
 	}
 	
 

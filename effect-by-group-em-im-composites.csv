@@ -1,0 +1,9 @@
+Code Smell Type,Added,Removed,Not Affected
+BrainMethod,0,1,0
+ShotgunSurgery,1,3,1
+MessageChain,1,1,1
+LongParameterList,6,0,3
+IntensiveCoupling,1,1,0
+DispersedCoupling,1,0,2
+FeatureEnvy,0,5,7
+LongMethod,5,4,3
