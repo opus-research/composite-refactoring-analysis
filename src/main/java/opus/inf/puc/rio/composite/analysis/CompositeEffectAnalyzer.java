@@ -30,49 +30,9 @@ public class CompositeEffectAnalyzer {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("positive-composites-couchbase-java-client.csv");
-
-
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-dubbo.csv"));
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-fresco.csv"));
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-okhttp.csv"));
-		
-		
-		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
-
-
-		List<CompositeEffectDTO> effectComposites = analyzer.getEffectComposite(completeComposites);
-
-
-		CompositeGroupAnalyzer compositeGroupAnalyzer = new CompositeGroupAnalyzer();
-
-		System.out.println("Composites " + effectComposites.size());
-		Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(effectComposites);
-		
-		List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
-
-		//compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups);
-
-		Map<String, Set<CodeSmellDTO>> effectByGroup = compositeGroupAnalyzer.getEffectByGroup(summarizedGroups);
-
-		compositeGroupAnalyzer.writeEffectByGroup(effectByGroup);
-
-		// analyzer.writeCompositeGroups(groups, "groups-complete-composites-summarized.csv");
-		// analyzer.writeCompleteComposite(effectComposites);
-		
-		// System.out.println(effectComposites);
+		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-feature-envy.csv");
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
 		
@@ -173,21 +133,31 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 					
 					String project = record.get("projectName");
 					compositeDTO.setProject(project);
-					
-					String previousCommit = record.get("Previous Commit");
+
+					//Ta pegando uma lista de commits
+					String previousCommits = record.get("Start Commit");
+					List<String> commits = new ArrayList<String>(Arrays.asList(previousCommits.split(",")));
+					String previousCommit = commits.get(0).replace("[", "");
 					compositeDTO.setPreviousCommit(previousCommit);
 					
-					String currentCommit = record.get("Current Commit");
+					String currentCommits = record.get("End Commit");
+					commits = new ArrayList<String>(Arrays.asList(currentCommits.split(",")));
+					String currentCommit = commits.get(commits.size()-1).replace("]", "");
 					compositeDTO.setCurrentCommit(currentCommit);
 						
 				}
 					
-				String smell = record.get("Smell Type");
 				String smellBefore = record.get("Smells Before");
 				String smellAfter = record.get("Smells After");
 				
-				List<String> smellBeforeList = null;
-				List<String> smellAfterList = null; 
+				smellBefore = smellBefore.replace("[", "");
+				smellBefore = smellBefore.replace("]", "");
+
+				smellAfter = smellAfter.replace("[", "");
+				smellAfter = smellAfter.replace("]", "");
+				
+				List<String> smellBeforeList = new ArrayList<String>(Arrays.asList(smellBefore.split(",")));;
+				List<String> smellAfterList = new ArrayList<String>(Arrays.asList(smellAfter.split(",")));; 
 				
 				List<CodeSmellDTO> smellsDTOBeforeList = new ArrayList<>();
 				for(String smellType : smellBeforeList) {
@@ -202,33 +172,16 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 					CodeSmellDTO smellDTO = new CodeSmellDTO();
 					
 				    smellDTO.setType(smellType);
-				    smellsDTOBeforeList.add(smellDTO);    
-				}
-				
-			  
-			    //Adicionar o composite quando todos os smells forem adicionados na lista 
-			    if(compositeDTO != null) {
-					
-			    	//Adicionar o corrente composite quando o próximo composite for diferente  
-			    	if(i+1 < csvRecords.size()) {
-			    		
-			    		CSVRecord recordNext = (CSVRecord) csvRecords.get(i+1);
-						
-						String compositeNextId = recordNext.get("Batch ID");
-						
-						if(!compositeIds.contains(compositeNextId)) {
-							composites.add(compositeDTO);
-							
-							compositeDTO = new CompositeEffectDTO();
-						}	
-			    	}
-			    	//Adicionar o corrente composite quando é o último composite
-			    	if(i+1 == csvRecords.size()) {
-			    		composites.add(compositeDTO);
-			    	}
-			    	
+				    smellsDTOAfterList.add(smellDTO);    
 				}
 
+				compositeDTO.setCodeSmellsBefore(smellsDTOBeforeList);
+				compositeDTO.setCodeSmellsAfter(smellsDTOAfterList);
+
+			    //Adicionar o composite quando todos os smells forem adicionados na lista 
+			    if(compositeDTO != null) {
+			    	composites.add(compositeDTO);
+			    }
 			}
 
 		} catch (IOException e) {

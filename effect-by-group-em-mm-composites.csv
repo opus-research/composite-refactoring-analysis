@@ -1,6 +1,0 @@
-Code Smell Type,Added,Removed,Not Affected
-IntensiveCoupling,0,0,1
-FeatureEnvy,2,1,6
-LongMethod,0,2,0
-LongParameterList,3,0,3
-MessageChain,0,0,6

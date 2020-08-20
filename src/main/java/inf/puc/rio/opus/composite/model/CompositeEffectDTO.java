@@ -11,6 +11,8 @@ public class CompositeEffectDTO {
 	private String previousCommit;
 	private String currentCommit;
 	private List<CodeSmellDTO> codeSmells;
+	private List<CodeSmellDTO> codeSmellsBefore;
+	private List<CodeSmellDTO> codeSmellsAfter;
 	
 	public String getId() {
 		return Id;
@@ -82,13 +84,24 @@ public class CompositeEffectDTO {
 		// TODO Auto-generated method stub
 		return currentCommit;
 	}
-	
 
-	
-	
-	
-	
-	
-	
-	
+	public List<CodeSmellDTO> getCodeSmellsBefore() {
+		return codeSmellsBefore;
+	}
+
+	public void setCodeSmellsBefore(List<CodeSmellDTO> codeSmellsBefore) {
+		if(codeSmellsBefore != null){
+			this.codeSmellsBefore = codeSmellsBefore;
+		}
+	}
+
+	public List<CodeSmellDTO> getCodeSmellsAfter() {
+		return codeSmellsAfter;
+	}
+
+	public void setCodeSmellsAfter(List<CodeSmellDTO> codeSmellsAfter) {
+		if(codeSmellsAfter != null){
+			this.codeSmellsAfter = codeSmellsAfter;
+		}
+	}
 }
