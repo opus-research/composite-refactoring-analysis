@@ -1,7 +1,10 @@
 package opus.inf.puc.rio.composite.analysis;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,23 +26,14 @@ import inf.puc.rio.opus.composite.model.dto.single.refactoring.SingleRefactoring
 
 public class RefactoringAnalyzer {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		RefactoringAnalyzer analyzer = new RefactoringAnalyzer();
 
-		List<SingleRefactoringDTO> refs = analyzer.getRefactoringsFromJson("presto.json");
-
-		Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses = analyzer.getGroupsOfRefactoredClasses(refs);
-
-		groupsOfRefactoredClasses.entrySet().forEach(refactoredClass -> {
-
-			//System.out.println(refactoredClass.getKey());
-			// System.out.println(refactoredClass.getValue());
-		});
-
-		// analyzer.writeRefactoredClassesRanking(rankingOfRefactoredClasses);
-		
-		analyzer.writeGroupsOfRefactoredClassesByCommits(groupsOfRefactoredClasses);
+		analyzer.executeRefMiner("C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\"
+				+ "RefactoringMiner-2.0.0\\build\\distributions\\RefactoringMiner-1.0\\"
+				+ "RefactoringMiner-1.0\\bin\\refactoring-toy-example",
+				"36287f7c3b09eff78395267a3ac0d7da067863fd");
 	}
 
 	private void writeGroupsOfRefactoredClasses(Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses) {
@@ -172,25 +166,23 @@ public class RefactoringAnalyzer {
 			csv.close();
 	}
 	
-	public void executeRefMiner(String pathProject, String commit) {
+	public void executeRefMiner(String pathProject, String commit) throws IOException {
 		
-		String REF_MINER_PATH = "C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0\\RefactoringMiner-2.0\\bin";
-		//"./RefactoringMiner -gc https://github.com/danilofes/refactoring-toy-example.git 36287f7c3b09eff78395267a3ac0d7da067863fd"
+		String REF_MINER_PATH = "C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\RefactoringMiner-2.0.0\\"
+				+ "build\\distributions\\RefactoringMiner-1.0\\RefactoringMiner-1.0\\bin";
+		//"" && ./RefactoringMiner -c " + pathProject + " " + commit"
 	
-		 try
-	        { 
-	            // Just one line and you are done !  
-	            // We have given a command to start cmd 
-	            // /K : Carries out command specified by string
-			   Runtime.getRuntime().exec(new String[] {"cmd", "cd", REF_MINER_PATH});
-	           Runtime.getRuntime().exec(new String[] {"cmd", "./RefactoringMiner", "-gc", pathProject, commit}); 
-	  
-	        } 
-	        catch (Exception e) 
-	        { 
-	            System.out.println("HEY Buddy ! U r Doing Something Wrong "); 
-	            e.printStackTrace(); 
-	        }
+		ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd " + REF_MINER_PATH + 
+				" && RefactoringMiner -c " + pathProject + " " + commit);
+		builder.redirectErrorStream(true);
+		Process process = builder.start();
+		InputStream is = process.getInputStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+		   System.out.println(line);
+		}
 	
 	}
 

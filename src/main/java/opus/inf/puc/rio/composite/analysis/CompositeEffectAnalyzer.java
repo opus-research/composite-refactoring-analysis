@@ -186,8 +186,8 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 				String smellBefore = record.get("Smells Before");
 				String smellAfter = record.get("Smells After");
 				
-				List<String> smellBeforeList = convertStringToList(smellBefore);
-				List<String> smellAfterList = convertStringToList(smellAfter); 
+				List<String> smellBeforeList = null;
+				List<String> smellAfterList = null; 
 				
 				List<CodeSmellDTO> smellsDTOBeforeList = new ArrayList<>();
 				for(String smellType : smellBeforeList) {
