@@ -251,6 +251,19 @@ public class CompositeGroupAnalyzer {
 		
 		return false;
 	}
-	
 
+
+	public List<CompositeEffectDTO> getRefactoringsNPS(List<CompositeEffectDTO> composites) {
+
+		RefactoringAnalyzer refAnalyzer = new RefactoringAnalyzer();
+
+		for (CompositeEffectDTO compositeDTO : composites){
+
+			List<String> refactorings = refAnalyzer
+					.getRefactoringsFromRefMiner(compositeDTO.getProject(), compositeDTO.getCurrentCommit());
+
+			compositeDTO.setRefactorings(refactorings.toString());
+		}
+		return composites;
+	}
 }

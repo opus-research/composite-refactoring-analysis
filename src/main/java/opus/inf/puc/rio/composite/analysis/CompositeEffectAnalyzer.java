@@ -31,7 +31,21 @@ public class CompositeEffectAnalyzer {
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
 		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-feature-envy.csv");
-		
+
+		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
+
+		//by project
+		composites = groupAnalyzer.getRefactoringsNPS(composites);
+
+
+		//get code smell effect by composite
+
+		// get removed, added, not affected code smells
+
+		//get groups
+
+		//get effect by groups 
+
 	}
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
@@ -455,7 +469,12 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 		
 	}
 	
-	
+	private List<CodeSmellDTO> getCodeSmellEffectByComposite(CompositeEffectDTO compositeEffectDTO){
+
+		List<CodeSmellDTO> codeSmellList = new ArrayList<>();
+
+		return codeSmellList;
+	}
 	
 	
 	private List<CompositeEffectDTO> getEffectComposite(List<CompositeEffectDTO> composites){

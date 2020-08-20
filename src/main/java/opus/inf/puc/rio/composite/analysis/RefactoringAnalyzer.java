@@ -165,8 +165,20 @@ public class RefactoringAnalyzer {
 
 			csv.close();
 	}
-	
-	public void executeRefMiner(String pathProject, String commit) throws IOException {
+
+	public List<String> getRefactoringsFromRefMiner(String pathProject, String commit){
+
+		String resultRefMiner = executeRefMiner(pathProject, commit);
+		//convert string to json
+		//get refactorings from json
+
+		List<String> refactorings = new ArrayList<>();
+        //populate list of strings
+
+		return refactorings;
+
+	}
+	public String executeRefMiner(String pathProject, String commit) {
 		
 		String REF_MINER_PATH = "C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\RefactoringMiner-2.0.0\\"
 				+ "build\\distributions\\RefactoringMiner-1.0\\RefactoringMiner-1.0\\bin";
@@ -175,14 +187,22 @@ public class RefactoringAnalyzer {
 		ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd " + REF_MINER_PATH + 
 				" && RefactoringMiner -c " + pathProject + " " + commit);
 		builder.redirectErrorStream(true);
-		Process process = builder.start();
-		InputStream is = process.getInputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
 		String line = null;
-		while ((line = reader.readLine()) != null) {
-		   System.out.println(line);
+		try {
+			Process process = builder.start();
+			InputStream is = process.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+
+			while ((line = reader.readLine()) != null) {
+				System.out.println(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		return line;
+
 	
 	}
 
