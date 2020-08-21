@@ -6,14 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -34,7 +28,7 @@ public class RefactoringAnalyzer {
 
 		RefactoringAnalyzer analyzer = new RefactoringAnalyzer();
 
-		analyzer.executeRefMiner("C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\"
+		analyzer.getRefactoringsFromRefMiner("C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\"
 				+ "RefactoringMiner-2.0.0\\build\\distributions\\RefactoringMiner-1.0\\"
 				+ "RefactoringMiner-1.0\\bin\\refactoring-toy-example",
 				"36287f7c3b09eff78395267a3ac0d7da067863fd");
@@ -182,10 +176,10 @@ public class RefactoringAnalyzer {
 		JsonParser parser = null;
 		try {
 			parser = factory.createParser(resultRefMiner);
-			JsonNode refactorings = mapper.readTree(parser);
-			for (JsonNode jsonNode : refactorings) {
-				String refType = jsonNode.get("type").asText();
-				refactoringsList.add(refType);
+			JsonNode commits = mapper.readTree(parser);
+			Map<String, Object> result = mapper.convertValue(commits, new TypeReference<Map<String, Object>>(){});
+			for (Entry<String, Object> + : result.entrySet()) {
+				
 			}
 
 		} catch (IOException e) {
@@ -205,6 +199,7 @@ public class RefactoringAnalyzer {
 				" && RefactoringMiner -c " + pathProject + " " + commit);
 		builder.redirectErrorStream(true);
 		String line = null;
+		String refactorings = "";
 		try {
 			Process process = builder.start();
 			InputStream is = process.getInputStream();
@@ -213,12 +208,14 @@ public class RefactoringAnalyzer {
 
 			while ((line = reader.readLine()) != null) {
 				System.out.println(line);
+				refactorings+=line;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		return line;
+		int jsonIndex = refactorings.indexOf("{");
+		refactorings = refactorings.substring(jsonIndex);
+		return refactorings;
 
 	
 	}
