@@ -16,6 +16,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.model.CodeElement;
@@ -171,6 +175,19 @@ public class RefactoringAnalyzer {
 		String resultRefMiner = executeRefMiner(pathProject, commit);
 		//convert string to json
 		//get refactorings from json
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		JsonParser parser = null;
+		try {
+			parser = factory.createParser(resultRefMiner);
+			JsonNode actualObj = mapper.readTree(parser);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
 
 		List<String> refactorings = new ArrayList<>();
         //populate list of strings

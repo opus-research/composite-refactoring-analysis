@@ -104,4 +104,10 @@ public class CompositeEffectDTO {
 			this.codeSmellsAfter = codeSmellsAfter;
 		}
 	}
+
+	public void setCodeSmells(ArrayList<CodeSmellDTO> codeSmells) {
+		if(codeSmells != null){
+			this.codeSmells = codeSmells;
+		}
+	}
 }

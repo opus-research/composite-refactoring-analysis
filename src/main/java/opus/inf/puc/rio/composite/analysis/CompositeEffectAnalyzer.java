@@ -40,8 +40,9 @@ public class CompositeEffectAnalyzer {
 
 		//get code smell effect by composite
 
+        analyzer.getCodeSmellEffect(composites);
 		// get removed, added, not affected code smells
-
+        analyzer.getEffectComposite(composites);
 		//get groups
 
 		//get effect by groups 
@@ -469,11 +470,42 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 		
 	}
 	
-	private List<CodeSmellDTO> getCodeSmellEffectByComposite(CompositeEffectDTO compositeEffectDTO){
+	private void getCodeSmellEffect(List<CompositeEffectDTO> compositeEffectDTOs){
 
-		List<CodeSmellDTO> codeSmellList = new ArrayList<>();
+		for(CompositeEffectDTO composite : compositeEffectDTOs) {
+            HashMap<String, CodeSmellDTO> codeSmells = new HashMap<>();
 
-		return codeSmellList;
+
+            for (CodeSmellDTO codeSmellDTOBefore : composite.getCodeSmellsBefore()) {
+
+                if (!codeSmells.containsKey(codeSmellDTOBefore.getType())) {
+
+                    codeSmells.put(codeSmellDTOBefore.getType(), codeSmellDTOBefore);
+                    codeSmells.get(codeSmellDTOBefore.getType()).setSmellBefore(1);
+
+                } else {
+                    int smellsCount = codeSmells.get(codeSmellDTOBefore.getType()).getBeforeComposite();
+                    codeSmells.get(codeSmellDTOBefore.getType()).setSmellBefore(smellsCount + 1);
+                }
+            }
+
+            for (CodeSmellDTO codeSmellDTOAfter : composite.getCodeSmellsAfter()) {
+
+                if (!codeSmells.containsKey(codeSmellDTOAfter.getType())) {
+
+                    codeSmells.put(codeSmellDTOAfter.getType(), codeSmellDTOAfter);
+                    codeSmells.get(codeSmellDTOAfter.getType()).setSmellAfter(1);
+
+                } else {
+                    int smellsCount = codeSmells.get(codeSmellDTOAfter.getType()).getAfterComposite();
+                    codeSmells.get(codeSmellDTOAfter.getType()).setSmellAfter(smellsCount + 1);
+                }
+            }
+
+
+            composite.setCodeSmells(new ArrayList<>(codeSmells.values()));
+
+        }
 	}
 	
 	
