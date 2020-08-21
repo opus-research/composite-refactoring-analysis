@@ -44,6 +44,13 @@ public class CompositeEffectAnalyzer {
 		// get removed, added, not affected code smells
         analyzer.getEffectComposite(composites);
 		//get groups
+		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
+		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
+
+		groupAnalyzer.getEffectByGroup(summarizedGroups);
+
+
+
 
 		//get effect by groups 
 

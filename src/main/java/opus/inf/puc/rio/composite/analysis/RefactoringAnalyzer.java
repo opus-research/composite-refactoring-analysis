@@ -173,6 +173,7 @@ public class RefactoringAnalyzer {
 	public List<String> getRefactoringsFromRefMiner(String pathProject, String commit){
 
 		String resultRefMiner = executeRefMiner(pathProject, commit);
+		List<String> refactoringsList = new ArrayList<>();
 		//convert string to json
 		//get refactorings from json
 
@@ -181,18 +182,17 @@ public class RefactoringAnalyzer {
 		JsonParser parser = null;
 		try {
 			parser = factory.createParser(resultRefMiner);
-			JsonNode actualObj = mapper.readTree(parser);
-			
+			JsonNode refactorings = mapper.readTree(parser);
+			for (JsonNode jsonNode : refactorings) {
+				String refType = jsonNode.get("type").asText();
+				refactoringsList.add(refType);
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-
-
-		List<String> refactorings = new ArrayList<>();
-        //populate list of strings
-
-		return refactorings;
+		return refactoringsList;
 
 	}
 	public String executeRefMiner(String pathProject, String commit) {
