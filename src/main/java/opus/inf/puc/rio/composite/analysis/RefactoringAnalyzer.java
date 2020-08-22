@@ -21,6 +21,9 @@ import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.Refactoring;
 import inf.puc.rio.opus.composite.model.dto.single.refactoring.CodeElementDTO;
 import inf.puc.rio.opus.composite.model.dto.single.refactoring.SingleRefactoringDTO;
+import inf.puc.rio.opus.composite.model.dto.single.refactoring.refMiner.output.CommitOutput;
+import inf.puc.rio.opus.composite.model.dto.single.refactoring.refMiner.output.RefInfo;
+import inf.puc.rio.opus.composite.model.dto.single.refactoring.refMiner.output.RefactoringOutput;
 
 public class RefactoringAnalyzer {
 
@@ -172,14 +175,17 @@ public class RefactoringAnalyzer {
 		//get refactorings from json
 
 		ObjectMapper mapper = new ObjectMapper();
-		JsonFactory factory = mapper.getFactory();
-		JsonParser parser = null;
+
 		try {
-			parser = factory.createParser(resultRefMiner);
-			JsonNode commits = mapper.readTree(parser);
-			Map<String, Object> result = mapper.convertValue(commits, new TypeReference<Map<String, Object>>(){});
-			for (Entry<String, Object> + : result.entrySet()) {
-				
+
+			RefInfo refInfo = mapper.readValue(resultRefMiner, new TypeReference<RefInfo>(){});
+			List<CommitOutput> commitOutputs = refInfo.getCommits();
+
+			for(CommitOutput commitOutput : commitOutputs){
+
+				for(RefactoringOutput refactoringOutput : commitOutput.getRefactorings()){
+					refactoringsList.add(refactoringOutput.getType());
+				}
 			}
 
 		} catch (IOException e) {

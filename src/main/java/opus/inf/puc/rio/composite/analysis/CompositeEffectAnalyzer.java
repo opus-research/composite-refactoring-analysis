@@ -35,19 +35,19 @@ public class CompositeEffectAnalyzer {
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
 
 		//by project
-		composites = groupAnalyzer.getRefactoringsNPS(composites);
+		//composites = groupAnalyzer.getRefactoringsNPS(composites);
 
 
 		//get code smell effect by composite
 
         analyzer.getCodeSmellEffect(composites);
 		// get removed, added, not affected code smells
-        analyzer.getEffectComposite(composites);
+       // analyzer.getEffectComposite(composites);
 		//get groups
-		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
-		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
+		//Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
+		//List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
 
-		groupAnalyzer.getEffectByGroup(summarizedGroups);
+		//groupAnalyzer.getEffectByGroup(summarizedGroups);
 
 
 
@@ -485,27 +485,27 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 
             for (CodeSmellDTO codeSmellDTOBefore : composite.getCodeSmellsBefore()) {
 
-                if (!codeSmells.containsKey(codeSmellDTOBefore.getType())) {
+                if (!codeSmells.containsKey(codeSmellDTOBefore.getType().trim())) {
 
-                    codeSmells.put(codeSmellDTOBefore.getType(), codeSmellDTOBefore);
-                    codeSmells.get(codeSmellDTOBefore.getType()).setSmellBefore(1);
+                    codeSmells.put(codeSmellDTOBefore.getType().trim(), codeSmellDTOBefore);
+                    codeSmells.get(codeSmellDTOBefore.getType().trim()).setSmellBefore(1);
 
                 } else {
-                    int smellsCount = codeSmells.get(codeSmellDTOBefore.getType()).getBeforeComposite();
-                    codeSmells.get(codeSmellDTOBefore.getType()).setSmellBefore(smellsCount + 1);
+                    int smellsCount = codeSmells.get(codeSmellDTOBefore.getType().trim()).getBeforeComposite();
+                    codeSmells.get(codeSmellDTOBefore.getType().trim()).setSmellBefore(smellsCount + 1);
                 }
             }
 
             for (CodeSmellDTO codeSmellDTOAfter : composite.getCodeSmellsAfter()) {
 
-                if (!codeSmells.containsKey(codeSmellDTOAfter.getType())) {
+                if (!codeSmells.containsKey(codeSmellDTOAfter.getType().trim())) {
 
-                    codeSmells.put(codeSmellDTOAfter.getType(), codeSmellDTOAfter);
-                    codeSmells.get(codeSmellDTOAfter.getType()).setSmellAfter(1);
+                    codeSmells.put(codeSmellDTOAfter.getType().trim(), codeSmellDTOAfter);
+                    codeSmells.get(codeSmellDTOAfter.getType().trim()).setSmellAfter(1);
 
                 } else {
-                    int smellsCount = codeSmells.get(codeSmellDTOAfter.getType()).getAfterComposite();
-                    codeSmells.get(codeSmellDTOAfter.getType()).setSmellAfter(smellsCount + 1);
+                    int smellsCount = codeSmells.get(codeSmellDTOAfter.getType().trim()).getAfterComposite();
+                    codeSmells.get(codeSmellDTOAfter.getType().trim()).setSmellAfter(smellsCount + 1);
                 }
             }
 
