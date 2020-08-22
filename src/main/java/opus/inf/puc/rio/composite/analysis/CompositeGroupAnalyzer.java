@@ -65,6 +65,7 @@ public class CompositeGroupAnalyzer {
             refactorings = refactorings.replace("[", "");
             refactorings  = refactorings.replace("'", "");
             refactorings =  refactorings.replace("]", "");
+			refactorings =  refactorings.replace("\"", "");
 			
 			List<String> refList = new ArrayList<String>(Arrays.asList(refactorings.split(",")));
 			

@@ -42,11 +42,11 @@ public class CompositeEffectAnalyzer {
 
         analyzer.getCodeSmellEffect(composites);
 		// get removed, added, not affected code smells
-       // analyzer.getEffectComposite(composites);
+        composites = analyzer.getEffectComposite(composites);
 		//get groups
-		//Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
-		//List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
-
+		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
+		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
+		System.out.println(summarizedGroups.size());
 		//groupAnalyzer.getEffectByGroup(summarizedGroups);
 
 
@@ -151,6 +151,7 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 					compositeDTO.setId(compositeId);
 					
 					String refactorings = record.get("Refactorings");
+					refactorings = refactorings.replace("\"", "");
 					compositeDTO.setRefactorings(refactorings);
 					
 					String project = record.get("projectName");
@@ -174,9 +175,11 @@ List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 				
 				smellBefore = smellBefore.replace("[", "");
 				smellBefore = smellBefore.replace("]", "");
+                smellBefore = smellBefore.replace("\"", "");
 
 				smellAfter = smellAfter.replace("[", "");
 				smellAfter = smellAfter.replace("]", "");
+                smellAfter = smellAfter.replace("\"", "");
 				
 				List<String> smellBeforeList = new ArrayList<String>(Arrays.asList(smellBefore.split(",")));;
 				List<String> smellAfterList = new ArrayList<String>(Arrays.asList(smellAfter.split(",")));; 
