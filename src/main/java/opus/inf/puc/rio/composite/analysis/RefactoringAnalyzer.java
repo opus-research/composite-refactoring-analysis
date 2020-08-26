@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import inf.puc.rio.opus.composite.model.CodeElement;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 import inf.puc.rio.opus.composite.model.dto.single.refactoring.CodeElementDTO;
 import inf.puc.rio.opus.composite.model.dto.single.refactoring.SingleRefactoringDTO;
 import inf.puc.rio.opus.composite.model.dto.single.refactoring.refMiner.output.CommitOutput;
@@ -183,8 +184,14 @@ public class RefactoringAnalyzer {
 
 			for(CommitOutput commitOutput : commitOutputs){
 
-				for(RefactoringOutput refactoringOutput : commitOutput.getRefactorings()){
-					refactoringsList.add(refactoringOutput.getType());
+				if(commitOutput.getRefactorings() != null && commitOutput.getRefactorings().size() > 1) {
+					for (RefactoringOutput refactoringOutput : commitOutput.getRefactorings()) {
+
+						if(Refactoring.equalsToRefactoringType(refactoringOutput.getType())){
+							refactoringsList.add(refactoringOutput.getType());
+						}
+
+					}
 				}
 			}
 
@@ -197,8 +204,8 @@ public class RefactoringAnalyzer {
 	}
 	public String executeRefMiner(String pathProject, String commit) {
 		
-		String REF_MINER_PATH = "C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\RefactoringMiner-2.0.0\\"
-				+ "build\\distributions\\RefactoringMiner-1.0\\RefactoringMiner-1.0\\bin";
+		String REF_MINER_PATH = "C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.1\\RefactoringMiner-2.0.1\\"
+				+ "build\\distributions\\RefactoringMiner-2.0.1\\RefactoringMiner-2.0.1\\bin";
 		//"" && ./RefactoringMiner -c " + pathProject + " " + commit"
 	
 		ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd " + REF_MINER_PATH + 

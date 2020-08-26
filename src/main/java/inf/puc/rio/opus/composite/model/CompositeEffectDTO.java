@@ -34,13 +34,11 @@ public class CompositeEffectDTO {
 	}
 	
 	public void setRefactorings(String refactorings) {
-		if(this.refactorings == null || this.refactorings.isEmpty()) {			
-			this.refactorings = refactorings;
-		}
+		this.refactorings = refactorings;
 	}
 	
 	public void setProject(String project) {
-		if(this.project == null || this.project.isEmpty()) {
+		if(this.project == null) {
 			this.project = project;
 		}
 	}

@@ -9,7 +9,8 @@ public class CompositeGroup {
 	
 	private Set<String> group;
 	private List<CompositeEffectDTO> composites;
-	
+	public String groupId;
+	public String groupName;
 
 	
 	public CompositeGroup(Set<String> group) {
@@ -21,6 +22,12 @@ public class CompositeGroup {
 		
 		composites = new ArrayList<CompositeEffectDTO>();
 	}
+
+	public CompositeGroup(String groupName, String groupId){
+		this.groupId = groupId;
+		this.groupName = groupName;
+	}
+
 
 	public void addComposites(List<CompositeEffectDTO> composites) {
 		

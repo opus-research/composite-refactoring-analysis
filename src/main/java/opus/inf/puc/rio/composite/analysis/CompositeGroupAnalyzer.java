@@ -29,7 +29,7 @@ public class CompositeGroupAnalyzer {
 		for(CompositeEffectDTO composite : composites) {
 			
 			List<String> refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
-			
+
 			Collections.sort(refs);
 			
 			String groupId = refs.toString();
@@ -76,7 +76,10 @@ public class CompositeGroupAnalyzer {
 				for(RefactoringTypesEnum refTypeEnum: RefactoringTypesEnum.values()) {
 					
 					if(equalsToRefactoringTypes(refType, refTypeEnum)) {
-							
+
+						if(refTypeEnum.name().equals("REFACT_VARIABLE")){
+							System.out.println("x");
+						}
 						groupSet.add(refTypeEnum.name().trim());
 						
 					}
@@ -103,7 +106,7 @@ public class CompositeGroupAnalyzer {
 	public void writeCompositeGroup(List<CompositeGroup> summarizedGroups) {
 
 
-		CsvWriter csv = new CsvWriter("summarized-complete-composites.csv", ',',
+		CsvWriter csv = new CsvWriter("summarized-new-complete-composites-feature-envy.csv", ',',
 				Charset.forName("ISO-8859-1"));
 
 
@@ -130,7 +133,7 @@ public class CompositeGroupAnalyzer {
 
 	}
 
-	public Map<String, Set<CodeSmellDTO>> getEffectByGroup(List<CompositeGroup> summarizedGroup){
+	public Map<String, Set<CodeSmellDTO>> getEffectByGroup(List<CompositeGroup> summarizedGroup, String groupName, String groupID){
 
 	    Map<String, Set<CodeSmellDTO>> effectByGroup = new HashMap<String, Set<CodeSmellDTO>>();
         Map<String, CodeSmellDTO> effect = null;
@@ -140,7 +143,7 @@ public class CompositeGroupAnalyzer {
             List<String> compositeGroupList = new ArrayList<String>(group.getGroupSet());
             Collections.sort(compositeGroupList);
 
-	        if(compositeGroupList.toString().equals("[MOVE_METHOD]")) {
+	        if(compositeGroupList.toString().equals("[" + groupName + "]")) {
 
                 if (effect == null){
                     effect = new HashMap<>();
@@ -169,7 +172,7 @@ public class CompositeGroupAnalyzer {
 
                 Set<CodeSmellDTO> smellSet = new HashSet<>(effect.values());
 
-                effectByGroup.put("MM",smellSet);
+                effectByGroup.put(groupID,smellSet);
             }
         }
 
@@ -177,9 +180,9 @@ public class CompositeGroupAnalyzer {
 
     }
     
-    public void writeEffectByGroup(Map<String, Set<CodeSmellDTO>> effectByGroup){
+    public void writeEffectByGroup(Map<String, Set<CodeSmellDTO>> effectByGroup, String groupId){
 
-        CsvWriter csv = new CsvWriter("effect-by-group-mm-composites.csv", ',',
+        CsvWriter csv = new CsvWriter("effect-by-group-" + groupId +"-composites.csv", ',',
                 Charset.forName("ISO-8859-1"));
 
         try {
@@ -189,15 +192,19 @@ public class CompositeGroupAnalyzer {
             csv.write("Not Affected");
             csv.endRecord();
 
-            for (CodeSmellDTO  codeSmellDTO: effectByGroup.get("MM")) {
-                csv.write(codeSmellDTO.getType());
+            if(effectByGroup.get(groupId) != null){
 
-                csv.write(String.valueOf(codeSmellDTO.getAddedSmells()));
-                csv.write(String.valueOf(codeSmellDTO.getRemovedSmells()));
-                csv.write(String.valueOf(codeSmellDTO.getNotAffectSmells()));
+				for (CodeSmellDTO  codeSmellDTO: effectByGroup.get(groupId)) {
+					csv.write(codeSmellDTO.getType());
 
-                csv.endRecord();
-            }
+					csv.write(String.valueOf(codeSmellDTO.getAddedSmells()));
+					csv.write(String.valueOf(codeSmellDTO.getRemovedSmells()));
+					csv.write(String.valueOf(codeSmellDTO.getNotAffectSmells()));
+
+					csv.endRecord();
+				}
+			}
+
 
 
         } catch (IOException e) {
@@ -258,12 +265,15 @@ public class CompositeGroupAnalyzer {
 
 		RefactoringAnalyzer refAnalyzer = new RefactoringAnalyzer();
 
-		for (CompositeEffectDTO compositeDTO : composites){
+		for (int i=0; i < composites.size(); i++){
 
 			List<String> refactorings = refAnalyzer
-					.getRefactoringsFromRefMiner(compositeDTO.getProject(), compositeDTO.getCurrentCommit());
+					.getRefactoringsFromRefMiner("C:\\Users\\anaca\\" + composites.get(i).getProject(), composites.get(i).getCurrentCommit());
 
-			compositeDTO.setRefactorings(refactorings.toString());
+			if(refactorings != null && refactorings.size() > 1){
+				composites.get(i).setRefactorings(refactorings.toString());
+			}
+
 		}
 		return composites;
 	}

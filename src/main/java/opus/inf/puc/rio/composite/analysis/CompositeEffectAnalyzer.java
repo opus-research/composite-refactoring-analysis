@@ -30,12 +30,12 @@ public class CompositeEffectAnalyzer {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-feature-envy.csv");
+		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-god-class-2.csv");
 
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
 
 		//by project
-		//composites = groupAnalyzer.getRefactoringsNPS(composites);
+		composites = groupAnalyzer.getRefactoringsNPS(composites);
 
 
 		//get code smell effect by composite
@@ -46,13 +46,54 @@ public class CompositeEffectAnalyzer {
 		//get groups
 		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
 		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
-		System.out.println(summarizedGroups.size());
-		//groupAnalyzer.getEffectByGroup(summarizedGroups);
+
+		groupAnalyzer.writeCompositeGroup(summarizedGroups);
+
+        //-------------------------------- MOVE METHOD ---------------------------------------------------------------
+        Map<String, Set<CodeSmellDTO>> groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
+        List<CompositeGroup> compositeGroups = new ArrayList<>();
+        compositeGroups.add(new CompositeGroup("MOVE_METHOD", "MM"));
+        compositeGroups.add(new CompositeGroup("MOVE_METHOD, RENAME", "MM"));
+
+        for(CompositeGroup compositeGroup : compositeGroups){
+            groupsEffect.putAll(groupAnalyzer.getEffectByGroup(summarizedGroups, compositeGroup.groupName, compositeGroup.groupId));
+        }
+        groupAnalyzer.writeEffectByGroup(groupsEffect, "MM");
+
+        //-------------------------------- MOVE METHOD NPS ---------------------------------------------------------------
+        groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
+        compositeGroups = new ArrayList<>();
+        compositeGroups.add(new CompositeGroup("MOVE_METHOD, REFACT_VARIABLE", "MM-NPS"));
+        compositeGroups.add(new CompositeGroup("MOVE_METHOD, REFACT_VARIABLE, RENAME", "MM-NPS"));
+        compositeGroups.add(new CompositeGroup("MOVE_METHOD, REFACT_VARIABLE", "MM-NPS"));
+        for(CompositeGroup compositeGroup : compositeGroups){
+            groupsEffect.putAll(groupAnalyzer.getEffectByGroup(summarizedGroups, compositeGroup.groupName, compositeGroup.groupId));
+        }
+        groupAnalyzer.writeEffectByGroup(groupsEffect, "MM-NPS");
 
 
+        //-------------------------------- EXTRACT METHOD ---------------------------------------------------------------
+        groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
+        compositeGroups = new ArrayList<>();
+        compositeGroups.add(new CompositeGroup("EXTRACT_METHOD", "EM"));
+        compositeGroups.add(new CompositeGroup("EXTRACT_METHOD, RENAME", "EM"));
 
+        for(CompositeGroup compositeGroup : compositeGroups){
+            groupsEffect.putAll(groupAnalyzer.getEffectByGroup(summarizedGroups, compositeGroup.groupName, compositeGroup.groupId));
+        }
+        groupAnalyzer.writeEffectByGroup(groupsEffect, "EM");
 
-		//get effect by groups 
+        //-------------------------------- EXTRACT METHOD NPS---------------------------------------------------------------
+        groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
+        compositeGroups = new ArrayList<>();
+        compositeGroups.add(new CompositeGroup("EXTRACT_METHOD, REFACT_VARIABLE", "EM-NPS"));
+        compositeGroups.add(new CompositeGroup("EXTRACT_METHOD, REFACT_VARIABLE, RENAME", "EM-NPS"));
+        compositeGroups.add(new CompositeGroup("EXTRACT_METHOD, REFACT_VARIABLE", "EM-NPS"));
+        for(CompositeGroup compositeGroup : compositeGroups){
+            groupsEffect.putAll(groupAnalyzer.getEffectByGroup(summarizedGroups, compositeGroup.groupName, compositeGroup.groupId));
+        }
+        groupAnalyzer.writeEffectByGroup(groupsEffect, "EM-NPS");
+
 
 	}
 	
