@@ -4,23 +4,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import inf.puc.rio.opus.composite.model.CompositeGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
-import inf.puc.rio.opus.composite.model.CompositeGroup;
-import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 
 public class CompositeEffectAnalyzer {
 	
@@ -30,25 +25,23 @@ public class CompositeEffectAnalyzer {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("positive-composites-couchbase-java-client.csv");
+		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("effect-compositejgit.csv");
 
 
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-dubbo.csv"));
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-fresco.csv"));
-		composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-okhttp.csv"));
-		
-		
-		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(composites);
+		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
+		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-dubbo.csv"));
+		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-fresco.csv"));
+		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-okhttp.csv"));
 
+		List<CompositeEffectDTO> compositesWithDetailedEffect = analyzer.getCompositeEffectDetails(composites);
 
-		List<CompositeEffectDTO> effectComposites = analyzer.getEffectComposite(completeComposites);
+		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(compositesWithDetailedEffect);
 
 
 		CompositeGroupAnalyzer compositeGroupAnalyzer = new CompositeGroupAnalyzer();
 
-		System.out.println("Composites " + effectComposites.size());
-		Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(effectComposites);
+		//System.out.println("Composites " + effectComposites.size());
+		Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(completeComposites);
 		
 		List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
 		compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups);
@@ -128,8 +121,8 @@ public class CompositeEffectAnalyzer {
 		
 		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 		
-		String[] FILE_HEADER_MAPPING = { "CompositeId","Refactorings","Project","Previous Commit","Current Commit","Smell Type",
-										 "Smell_Before","Smell After","Smells Added","Smells Removed","Smells Not Affected"};
+		String[] FILE_HEADER_MAPPING = { "CompositeId","Refactorings","Project","PreviousCommit","CurrentCommit","SmellType",
+										 "SmellBefore", "SmellAfter"};
 
 		List csvRecords;
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(
@@ -166,10 +159,10 @@ public class CompositeEffectAnalyzer {
 					String project = record.get("Project");
 					compositeDTO.setProject(project);
 					
-					String previousCommit = record.get("Previous Commit");
+					String previousCommit = record.get("PreviousCommit");
 					compositeDTO.setPreviousCommit(previousCommit);
 					
-					String currentCommit = record.get("Current Commit");
+					String currentCommit = record.get("CurrentCommit");
 					compositeDTO.setCurrentCommit(currentCommit);
 					
 					
@@ -177,9 +170,9 @@ public class CompositeEffectAnalyzer {
 				
 			
 					
-				String smell = record.get("Smell Type");
-				String smellBefore = record.get("Smell_Before");
-				String smellAfter = record.get("Smell After");
+				String smell = record.get("SmellType");
+				String smellBefore = record.get("SmellBefore");
+				String smellAfter = record.get("SmellAfter");
 				
 				CodeSmellDTO smellDTO = new CodeSmellDTO();
 				
@@ -226,7 +219,7 @@ public class CompositeEffectAnalyzer {
 		
 	}
 	
-	
+	//TODO - Implementar esse metodo em termos de valores de removed, added e not_affected
 	private List<CompositeEffectDTO> getCompleteComposite(List<CompositeEffectDTO> composites){
 		
 		Set<CompositeEffectDTO> completeComposites = new HashSet<CompositeEffectDTO>();
@@ -388,7 +381,7 @@ public class CompositeEffectAnalyzer {
 	
 	
 	
-	private List<CompositeEffectDTO> getEffectComposite(List<CompositeEffectDTO> composites){
+	private List<CompositeEffectDTO> getCompositeEffectDetails(List<CompositeEffectDTO> composites){
 	
 		
 		for(CompositeEffectDTO composite : composites) {
