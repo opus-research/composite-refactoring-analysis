@@ -1,5 +1,6 @@
 package opus.inf.puc.rio.composite.analysis;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import inf.puc.rio.opus.composite.model.CompositeGroup;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -25,7 +26,7 @@ public class CompositeEffectAnalyzer {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("effect-compositejgit.csv");
+		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("C:\\Users\\anaca\\OneDrive\\PUC-Rio\\OPUS\\CompositeRefactoring\\Dataset\\CompositeEffect\\effect-composite-sitewhere.csv");
 
 
 		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
@@ -36,15 +37,15 @@ public class CompositeEffectAnalyzer {
 		List<CompositeEffectDTO> compositesWithDetailedEffect = analyzer.getCompositeEffectDetails(composites);
 
 		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(compositesWithDetailedEffect);
-
+		analyzer.writeCompleteComposite(completeComposites, "complete-composites-sitewhere");
 
 		CompositeGroupAnalyzer compositeGroupAnalyzer = new CompositeGroupAnalyzer();
 
 		//System.out.println("Composites " + effectComposites.size());
-		Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(completeComposites);
+		//Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(completeComposites);
 		
-		List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
-		compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups);
+		//List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
+		//compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups);
 
 		// analyzer.writeCompositeGroups(groups, "groups-complete-composites-summarized.csv");
 		// analyzer.writeCompleteComposite(effectComposites);
@@ -57,13 +58,17 @@ public class CompositeEffectAnalyzer {
 	
 	
 	
-	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
-		
-		System.out.println(composites.size());
-		CsvWriter csv = new CsvWriter("complete-composites-okhttp.csv", ',',
+	private void writeCompleteComposite(List<CompositeEffectDTO> completeComposites, String pathCompleteComposites) {
+
+
+		ObjectMapper mapper = new ObjectMapper();
+
+
+		System.out.println(completeComposites.size());
+		CsvWriter csv = new CsvWriter(pathCompleteComposites + ".csv", ',',
 				Charset.forName("ISO-8859-1"));
 		try {
-			
+			mapper.writeValue(new File( pathCompleteComposites +".json"), completeComposites);
 			csv.write("CompositeId");
 			csv.write("Refactorings");
 			csv.write("Project");
@@ -78,7 +83,7 @@ public class CompositeEffectAnalyzer {
 			csv.endRecord();
 			
 			
-			for(CompositeEffectDTO composite : composites) {
+			for(CompositeEffectDTO composite : completeComposites) {
 				
 				for(CodeSmellDTO smell : composite.getCodeSmells()) {
 					
