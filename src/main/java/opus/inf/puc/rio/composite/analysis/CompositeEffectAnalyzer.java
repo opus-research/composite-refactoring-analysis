@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import inf.puc.rio.opus.composite.model.CompositeGroup;
+import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -19,14 +17,12 @@ import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
 
 public class CompositeEffectAnalyzer {
-	
-	
-	
+
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
-		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO("C:\\Users\\anaca\\OneDrive\\PUC-Rio\\OPUS\\CompositeRefactoring\\Dataset\\CompositeEffect\\effect-composite-sitewhere.csv");
+		String projectName = "thumbnailator";
+		List<CompositeEffectDTO> completeComposites = analyzer.getCompositeEffectDTOFromJson("complete-composites-"+ projectName +".json");
 
 
 		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-jgit.csv"));
@@ -34,20 +30,22 @@ public class CompositeEffectAnalyzer {
 		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-fresco.csv"));
 		//composites.addAll(analyzer.getCompositeEffectDTO("positive-composites-okhttp.csv"));
 
-		List<CompositeEffectDTO> compositesWithDetailedEffect = analyzer.getCompositeEffectDetails(composites);
+		//List<CompositeEffectDTO> compositesWithDetailedEffect = analyzer.getCompositeEffectDetails(composites);
 
-		List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(compositesWithDetailedEffect);
-		analyzer.writeCompleteComposite(completeComposites, "complete-composites-sitewhere");
+		//List<CompositeEffectDTO> completeComposites = analyzer.getCompleteComposite(compositesWithDetailedEffect);
+		//analyzer.writeCompleteComposite(completeComposites, "complete-composites-junit4");
 
 		CompositeGroupAnalyzer compositeGroupAnalyzer = new CompositeGroupAnalyzer();
 
 		//System.out.println("Composites " + effectComposites.size());
-		//Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(completeComposites);
-		
-		//List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
-		//compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups);
+		Map<String, List<CompositeEffectDTO>> groups = compositeGroupAnalyzer.createCompositeGroups(completeComposites);
 
-		// analyzer.writeCompositeGroups(groups, "groups-complete-composites-summarized.csv");
+		analyzer.writeCompositeGroups(groups, "groups-complete-composites-"+projectName+".csv");
+		List<CompositeGroup> summarizedGroups = compositeGroupAnalyzer.summarizeGroups(groups);
+
+		compositeGroupAnalyzer.writeCompositeGroup(summarizedGroups, "summarized-groups-complete-composites-"+projectName+".csv");
+
+
 		// analyzer.writeCompleteComposite(effectComposites);
 		
 		// System.out.println(effectComposites);
@@ -55,7 +53,22 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	
-	
+	private List<CompositeEffectDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
+        ObjectMapper mapper = new ObjectMapper();
+        List<CompositeEffectDTO> compositeList = new ArrayList<>();
+        try {
+
+            CompositeEffectDTO[] composites = mapper.readValue(new File(compositeEffectPath),
+                    CompositeEffectDTO[].class);
+
+            compositeList = Arrays.asList(composites);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return compositeList;
+    }
 	
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> completeComposites, String pathCompleteComposites) {

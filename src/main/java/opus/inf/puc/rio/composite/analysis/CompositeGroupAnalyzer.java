@@ -99,16 +99,16 @@ public class CompositeGroupAnalyzer {
 		return summarizedGroups;
 	}
 	
-	public void writeCompositeGroup(List<CompositeGroup> summarizedGroups) {
+	public void writeCompositeGroup(List<CompositeGroup> summarizedGroups, String path) {
 
 
-		CsvWriter csv = new CsvWriter("summarized-complete-composites.csv", ',',
+		CsvWriter csv = new CsvWriter(path, ',',
 				Charset.forName("ISO-8859-1"));
 
 
 		try {
 			csv.write("Group");
-			csv.write("# Refactorings");
+			csv.write("# Composites");
 			csv.endRecord();
 
 			for(CompositeGroup group : summarizedGroups) {
