@@ -1,5 +1,6 @@
 package opus.inf.puc.rio.composite.analysis;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -24,30 +26,30 @@ import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 
 public class CompositeEffectAnalyzer {
 	
-	
-	
+
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
 		
-		List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-god-class-2.csv");
-
+		//List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-god-class-2.csv");
+		List<CompositeEffectDTO> completeComposites = analyzer.getCompositeEffectDTOFromJson("complete-composites-thumbnailator.json");
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
 
-		//by project
-		composites = groupAnalyzer.getRefactoringsNPS(composites);
+		//by project - I get these refactorings for projects of Sousa et al. MSR`20
+		// that dont have NPS refactorings
+		//composites = groupAnalyzer.getRefactoringsNPS(composites);
 
 
 		//get code smell effect by composite
 
-        analyzer.getCodeSmellEffect(composites);
+        //analyzer.getCodeSmellEffect(composites);
 		// get removed, added, not affected code smells
-        composites = analyzer.getEffectComposite(composites);
+        //composites = analyzer.getEffectComposite(composites);
 		//get groups
-		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(composites);
+		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(completeComposites);
 		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
 
-		groupAnalyzer.writeCompositeGroup(summarizedGroups);
+		//groupAnalyzer.writeCompositeGroup(summarizedGroups);
 
         //-------------------------------- MOVE METHOD ---------------------------------------------------------------
         Map<String, Set<CodeSmellDTO>> groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
@@ -95,6 +97,23 @@ public class CompositeEffectAnalyzer {
         groupAnalyzer.writeEffectByGroup(groupsEffect, "EM-NPS");
 
 
+	}
+
+	private List<CompositeEffectDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
+		ObjectMapper mapper = new ObjectMapper();
+		List<CompositeEffectDTO> compositeList = new ArrayList<>();
+		try {
+
+			CompositeEffectDTO[] composites = mapper.readValue(new File(compositeEffectPath),
+					CompositeEffectDTO[].class);
+
+			compositeList = Arrays.asList(composites);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return compositeList;
 	}
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
@@ -155,7 +174,7 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	private List<CompositeEffectDTO> getCompositeEffectDTO1(String path){
-List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
+		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 		
 		String[] FILE_HEADER_MAPPING = { "Validator", "projectName", "Batch ID", "Refactorings", "Code Elements",
 				"Start Commit", "Smells Before", "Smell Before IDs", 
