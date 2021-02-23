@@ -1,0 +1,10 @@
+deltachat - ok
+egit - ok
+genie - ok
+jfreechart - ok
+junit4 - ok
+leakcanary - ok
+sitewhere - ok
+spymemcached - ok
+thumbnailator - ok
+tomcat - ok

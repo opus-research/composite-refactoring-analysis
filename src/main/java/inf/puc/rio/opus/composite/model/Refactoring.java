@@ -1,9 +1,6 @@
 package inf.puc.rio.opus.composite.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -100,6 +97,24 @@ public class Refactoring {
 	@Override
 	public String toString() {
 		return refactoringType ;
+	}
+
+
+	public static boolean equalsToRefactoringType(String refType){
+
+		for(RefactoringTypesEnum refTypeEnum : RefactoringTypesEnum.values()){
+			List<String> refTypesList = new ArrayList<String>(Arrays.asList(refTypeEnum.toString().split(",")));
+
+			for(String refTypeAsText : refTypesList) {
+
+				if(refType.trim().equals(refTypeAsText.trim())) {
+					return true;
+				}
+			}
+
+
+		}
+		return false;
 	}
 	
 	

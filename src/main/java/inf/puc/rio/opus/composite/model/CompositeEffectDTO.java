@@ -11,9 +11,8 @@ public class CompositeEffectDTO {
 	private String previousCommit;
 	private String currentCommit;
 	private List<CodeSmellDTO> codeSmells;
-	
-	
-	
+	private List<CodeSmellDTO> codeSmellsBefore;
+	private List<CodeSmellDTO> codeSmellsAfter;
 	
 	public String getId() {
 		return Id;
@@ -35,13 +34,11 @@ public class CompositeEffectDTO {
 	}
 	
 	public void setRefactorings(String refactorings) {
-		if(this.refactorings == null || this.refactorings.isEmpty()) {			
-			this.refactorings = refactorings;
-		}
+		this.refactorings = refactorings;
 	}
 	
 	public void setProject(String project) {
-		if(this.project == null || this.project.isEmpty()) {
+		if(this.project == null) {
 			this.project = project;
 		}
 	}
@@ -85,13 +82,30 @@ public class CompositeEffectDTO {
 		// TODO Auto-generated method stub
 		return currentCommit;
 	}
-	
 
-	
-	
-	
-	
-	
-	
-	
+	public List<CodeSmellDTO> getCodeSmellsBefore() {
+		return codeSmellsBefore;
+	}
+
+	public void setCodeSmellsBefore(List<CodeSmellDTO> codeSmellsBefore) {
+		if(codeSmellsBefore != null){
+			this.codeSmellsBefore = codeSmellsBefore;
+		}
+	}
+
+	public List<CodeSmellDTO> getCodeSmellsAfter() {
+		return codeSmellsAfter;
+	}
+
+	public void setCodeSmellsAfter(List<CodeSmellDTO> codeSmellsAfter) {
+		if(codeSmellsAfter != null){
+			this.codeSmellsAfter = codeSmellsAfter;
+		}
+	}
+
+	public void setCodeSmells(ArrayList<CodeSmellDTO> codeSmells) {
+		if(codeSmells != null){
+			this.codeSmells = codeSmells;
+		}
+	}
 }
