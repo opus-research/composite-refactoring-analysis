@@ -1,1 +1,9 @@
 /target/
+*.log
+.settings/
+.project/
+.idea/
+*.iml 
+
+
+
