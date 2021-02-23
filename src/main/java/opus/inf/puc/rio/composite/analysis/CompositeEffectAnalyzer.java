@@ -4,52 +4,50 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import inf.puc.rio.opus.composite.model.CompositeGroup;
+import inf.puc.rio.opus.composite.model.CompositeRefactoring;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
-import inf.puc.rio.opus.composite.model.CompositeGroup;
-import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 
 public class CompositeEffectAnalyzer {
-	
+
 
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
-		
+
 		//List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-god-class-2.csv");
-		List<CompositeEffectDTO> completeComposites = analyzer.getCompositeEffectDTOFromJson("complete-composites-thumbnailator.json");
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
 
 		//by project - I get these refactorings for projects of Sousa et al. MSR`20
 		// that dont have NPS refactorings
 		//composites = groupAnalyzer.getRefactoringsNPS(composites);
 
+		String projectName = "thumbnailator";
+		List<CompositeEffectDTO> completeComposites = analyzer.getCompositeEffectDTOFromJson("complete-composites-"+ projectName +".json");
 
-		//get code smell effect by composite
 
-        //analyzer.getCodeSmellEffect(composites);
-		// get removed, added, not affected code smells
         //composites = analyzer.getEffectComposite(composites);
 		//get groups
 		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(completeComposites);
 		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
 
-		//groupAnalyzer.writeCompositeGroup(summarizedGroups);
+		analyzer.writeCompositeGroups(groups, "groups-complete-composites-"+projectName+".csv");
+		groupAnalyzer.writeCompositeGroup(summarizedGroups, "summarized-groups-complete-composites-"+projectName+".csv");
+		
+		
+		//get code smell effect by composite
+        //analyzer.getCodeSmellEffect(composites);
+		// get removed, added, not affected code smells
 
         //-------------------------------- MOVE METHOD ---------------------------------------------------------------
         Map<String, Set<CodeSmellDTO>> groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
@@ -73,6 +71,7 @@ public class CompositeEffectAnalyzer {
         }
         groupAnalyzer.writeEffectByGroup(groupsEffect, "MM-NPS");
 
+		//List<CompositeEffectDTO> compositesWithDetailedEffect = analyzer.getCompositeEffectDetails(composites);
 
         //-------------------------------- EXTRACT METHOD ---------------------------------------------------------------
         groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
@@ -96,8 +95,8 @@ public class CompositeEffectAnalyzer {
         }
         groupAnalyzer.writeEffectByGroup(groupsEffect, "EM-NPS");
 
-
 	}
+
 
 	private List<CompositeEffectDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
 		ObjectMapper mapper = new ObjectMapper();
@@ -116,13 +115,17 @@ public class CompositeEffectAnalyzer {
 		return compositeList;
 	}
 	
-	private void writeCompleteComposite(List<CompositeEffectDTO> composites) {
-		
-		System.out.println(composites.size());
-		CsvWriter csv = new CsvWriter("complete-composites-okhttp.csv", ',',
+	
+	private void writeCompleteComposite(List<CompositeEffectDTO> completeComposites, String pathCompleteComposites) {
+
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		System.out.println(completeComposites.size());
+		CsvWriter csv = new CsvWriter(pathCompleteComposites + ".csv", ',',
 				Charset.forName("ISO-8859-1"));
 		try {
-			
+			mapper.writeValue(new File( pathCompleteComposites +".json"), completeComposites);
 			csv.write("CompositeId");
 			csv.write("Refactorings");
 			csv.write("Project");
@@ -137,7 +140,7 @@ public class CompositeEffectAnalyzer {
 			csv.endRecord();
 			
 			
-			for(CompositeEffectDTO composite : composites) {
+			for(CompositeEffectDTO composite : completeComposites) {
 				
 				for(CodeSmellDTO smell : composite.getCodeSmells()) {
 					
@@ -283,8 +286,8 @@ public class CompositeEffectAnalyzer {
 		
 		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
 		
-		String[] FILE_HEADER_MAPPING = { "CompositeId","Refactorings","Project","Previous Commit","Current Commit","Smell Type",
-										 "Smell_Before","Smell After","Smells Added","Smells Removed","Smells Not Affected"};
+		String[] FILE_HEADER_MAPPING = { "CompositeId","Refactorings","Project","PreviousCommit","CurrentCommit","SmellType",
+										 "SmellBefore", "SmellAfter"};
 
 		List csvRecords;
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(
@@ -321,10 +324,10 @@ public class CompositeEffectAnalyzer {
 					String project = record.get("Project");
 					compositeDTO.setProject(project);
 					
-					String previousCommit = record.get("Previous Commit");
+					String previousCommit = record.get("PreviousCommit");
 					compositeDTO.setPreviousCommit(previousCommit);
 					
-					String currentCommit = record.get("Current Commit");
+					String currentCommit = record.get("CurrentCommit");
 					compositeDTO.setCurrentCommit(currentCommit);
 					
 					
@@ -332,9 +335,9 @@ public class CompositeEffectAnalyzer {
 				
 			
 					
-				String smell = record.get("Smell Type");
-				String smellBefore = record.get("Smell_Before");
-				String smellAfter = record.get("Smell After");
+				String smell = record.get("SmellType");
+				String smellBefore = record.get("SmellBefore");
+				String smellAfter = record.get("SmellAfter");
 				
 				CodeSmellDTO smellDTO = new CodeSmellDTO();
 				
@@ -381,7 +384,7 @@ public class CompositeEffectAnalyzer {
 		
 	}
 	
-	
+	//TODO - Implementar esse metodo em termos de valores de removed, added e not_affected
 	private List<CompositeEffectDTO> getCompleteComposite(List<CompositeEffectDTO> composites){
 		
 		Set<CompositeEffectDTO> completeComposites = new HashSet<CompositeEffectDTO>();
@@ -579,7 +582,7 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	
-	private List<CompositeEffectDTO> getEffectComposite(List<CompositeEffectDTO> composites){
+	private List<CompositeEffectDTO> getCompositeEffectDetails(List<CompositeEffectDTO> composites){
 	
 		
 		for(CompositeEffectDTO composite : composites) {
