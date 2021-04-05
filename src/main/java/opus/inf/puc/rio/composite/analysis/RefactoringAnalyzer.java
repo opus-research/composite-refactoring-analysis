@@ -32,11 +32,13 @@ public class RefactoringAnalyzer {
 
 		RefactoringAnalyzer analyzer = new RefactoringAnalyzer();
 
-		analyzer.getRefactoringsFromRefMiner("C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\"
-				+ "RefactoringMiner-2.0.0\\build\\distributions\\RefactoringMiner-1.0\\"
-				+ "RefactoringMiner-1.0\\bin\\refactoring-toy-example",
-				"36287f7c3b09eff78395267a3ac0d7da067863fd");
+		//analyzer.getRefactoringsFromRefMiner("C:\\Users\\anaca\\Executaveis\\RefactoringMiner-2.0.0\\"
+		//		+ "RefactoringMiner-2.0.0\\build\\distributions\\RefactoringMiner-1.0\\"
+		//		+ "RefactoringMiner-1.0\\bin\\refactoring-toy-example",
+		//		"36287f7c3b09eff78395267a3ac0d7da067863fd");
 	}
+
+
 
 	private void writeGroupsOfRefactoredClasses(Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses) {
 		// TODO Auto-generated method stub
@@ -329,6 +331,8 @@ public class RefactoringAnalyzer {
 		return groupsOfRefactoredClasses;
 
 	}
+
+
 
 	
 

@@ -118,7 +118,6 @@ public class CompositeEffectAnalyzer {
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> completeComposites, String pathCompleteComposites) {
 
-
 		ObjectMapper mapper = new ObjectMapper();
 
 		System.out.println(completeComposites.size());
