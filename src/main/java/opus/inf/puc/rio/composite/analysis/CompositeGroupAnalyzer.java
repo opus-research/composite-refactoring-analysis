@@ -1,5 +1,6 @@
 package opus.inf.puc.rio.composite.analysis;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import inf.puc.rio.opus.composite.model.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.CompositeEffectDTO;
 import inf.puc.rio.opus.composite.model.CompositeGroup;
@@ -18,7 +20,18 @@ import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 import opus.inf.puc.rio.composite.utils.CompositeUtils;
 
 public class CompositeGroupAnalyzer {
-	
+
+	public static void main(String[] args) {
+
+		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
+
+		List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+
+		Set<String> projects = groupAnalyzer.getProjectsSetFromSummarizedGroups(summarizedGroups);
+
+		int countCompositesOfSummmarizedGroups = groupAnalyzer.countCompositesFromSummarizedGroups(summarizedGroups);
+
+	}
 	
 	public Map<String, List<CompositeEffectDTO>> createCompositeGroups(List<CompositeEffectDTO> composites){
 		
@@ -50,7 +63,23 @@ public class CompositeGroupAnalyzer {
 		
 		return groups;
 	}
-	
+
+	private List<CompositeGroup> getCompositeGroupFromJson(String compositeGroupPath){
+		ObjectMapper mapper = new ObjectMapper();
+		List<CompositeGroup> compositeList = new ArrayList<>();
+		try {
+
+			CompositeGroup[] composites = mapper.readValue(new File(compositeGroupPath),
+					CompositeGroup[].class);
+
+			compositeList = new ArrayList<CompositeGroup>(Arrays.asList(composites));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return compositeList;
+	}
 	
 	
 	public List<CompositeGroup> summarizeGroups(Map<String, List<CompositeEffectDTO>> groups){
@@ -275,4 +304,32 @@ public class CompositeGroupAnalyzer {
 		}
 		return composites;
 	}
+
+	private Set<String> getProjectsSetFromSummarizedGroups(List<CompositeGroup> summarizedGroups){
+
+		Set<String> projects = new HashSet<>();
+
+		for(CompositeGroup summarizedGroup : summarizedGroups){
+
+			for(CompositeEffectDTO compositeEffectDTO: summarizedGroup.getComposites()){
+
+				projects.add(compositeEffectDTO.getProject());
+			}
+
+		}
+
+		return projects;
+	}
+
+	private int countCompositesFromSummarizedGroups(List<CompositeGroup> summarizedGroups){
+
+		List<CompositeEffectDTO> allCompositeEffectDTOS = new ArrayList<>();
+		for(CompositeGroup summarizedGroup : summarizedGroups){
+			allCompositeEffectDTOS.addAll(summarizedGroup.getComposites());
+		}
+
+		return allCompositeEffectDTOS.size();
+	}
+
+
 }
