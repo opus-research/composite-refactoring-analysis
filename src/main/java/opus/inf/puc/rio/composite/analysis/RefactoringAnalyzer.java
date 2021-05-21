@@ -38,7 +38,12 @@ public class RefactoringAnalyzer {
 		//		"36287f7c3b09eff78395267a3ac0d7da067863fd");
 	}
 
-
+    public List<String> convertRefactoringListInText(List<Refactoring> refactorings){
+		List<String> refactoringsTextList = refactorings.stream()
+											.map(refactoring -> refactoring.getRefactoringType())
+											.collect(Collectors.toList());
+		return refactoringsTextList;
+	}
 
 	private void writeGroupsOfRefactoredClasses(Map<String, Set<SingleRefactoringDTO>> groupsOfRefactoredClasses) {
 		// TODO Auto-generated method stub

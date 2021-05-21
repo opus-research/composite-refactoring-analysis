@@ -23,32 +23,67 @@ public class CompositeEffectAnalyzer {
 
 	public static void main(String[] args) {
 		
-		CompositeEffectAnalyzer analyzer = new CompositeEffectAnalyzer();
-
-		//List<CompositeEffectDTO> composites = analyzer.getCompositeEffectDTO1("removal-patterns-god-class-2.csv");
+		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
+		CompositeAnalyzer compositeAnalyzer = new CompositeAnalyzer();
+
+		//List<CompositeEffectDTO> composites = effectAnalyzer.getCompositeEffectDTO1("removal-patterns-god-class-2.csv");
+
 
 		//by project - I get these refactorings for projects of Sousa et al. MSR`20
 		// that dont have NPS refactorings
 		//composites = groupAnalyzer.getRefactoringsNPS(composites);
 
-		String projectName = "thumbnailator";
-		List<CompositeEffectDTO> completeComposites = analyzer.getCompositeEffectDTOFromJson("complete-composites-"+ projectName +".json");
+		//String projectName = "ant";
+		//List<CompositeEffectDTO> completeComposites = effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ projectName +".json");
+
+        //completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "deltachat-android" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "genie" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "jfreechart" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "junit4" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "leakcanary" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "sitewhere" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "spymemcached" +".json"));
+		//completeComposites.addAll(effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ "thumbnailator" +".json"));
 
 
-        //composites = analyzer.getEffectComposite(composites);
+		//Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(completeComposites);
+		//List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
+
+		//List<String> ids = new ArrayList<>();
+
+		//List<CompositeRefactoring> allComposites = effectAnalyzer.getCompositeFromJson("C:\\Users\\anaca\\OneDrive\\PUC-Rio\\OPUS\\CompositeRefactoring\\Dataset\\Composites\\ant-composite-rangebased.json");
+
+		//List<CompositeRefactoring> filteredComposites = effectAnalyzer.filterCompositeByIds(ids, allComposites);
+
+		//ObjectMapper mapper = new ObjectMapper();
+
+		// Java object to JSON file
+		//try {
+		//	mapper.writeValue(new File("filtered-composites-ant.json"), filteredComposites);
+		//} catch (IOException e) {
+		//	e.printStackTrace();
+		//}
+
+        //composites = effectAnalyzer.getEffectComposite(composites);
 		//get groups
+		String projectName = "okhttp";
+		//List<CompositeEffectDTO> completeComposites = effectAnalyzer.getCompositeEffectDTOFromJson("complete-composites-"+ projectName +".json");
+		//List<CompositeEffectDTO> completeComposites = effectAnalyzer.getCompositeEffectDTO1("complete-composites-" + projectName + ".csv");
+		List<CompositeRefactoring> composites = compositeAnalyzer.getCompositeFromJson("complete-composites-" +projectName+ ".json");
+		List<CompositeEffectDTO> completeComposites = effectAnalyzer.convertCompositeToCompositeEffectDTO(composites);
 		Map<String, List<CompositeEffectDTO>> groups = groupAnalyzer.createCompositeGroups(completeComposites);
 		List<CompositeGroup> summarizedGroups = groupAnalyzer.summarizeGroups(groups);
 
-		analyzer.writeCompositeGroups(groups, "groups-complete-composites-"+projectName+".csv");
+		effectAnalyzer.writeCompositeGroups(groups, "groups-complete-composites-"+projectName+".csv");
 		groupAnalyzer.writeCompositeGroup(summarizedGroups, "summarized-groups-complete-composites-"+projectName+".csv");
 		
 		
 		//get code smell effect by composite
-        //analyzer.getCodeSmellEffect(composites);
+        //effectAnalyzer.getCodeSmellEffect(composites);
 		// get removed, added, not affected code smells
 
+/*
         //-------------------------------- MOVE METHOD ---------------------------------------------------------------
         Map<String, Set<CodeSmellDTO>> groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
         List<CompositeGroup> compositeGroups = new ArrayList<>();
@@ -71,7 +106,7 @@ public class CompositeEffectAnalyzer {
         }
         groupAnalyzer.writeEffectByGroup(groupsEffect, "MM-NPS");
 
-		//List<CompositeEffectDTO> compositesWithDetailedEffect = analyzer.getCompositeEffectDetails(composites);
+		//List<CompositeEffectDTO> compositesWithDetailedEffect = effectAnalyzer.getCompositeEffectDetails(composites);
 
         //-------------------------------- EXTRACT METHOD ---------------------------------------------------------------
         groupsEffect = new HashMap<String, Set<CodeSmellDTO>>();
@@ -95,6 +130,8 @@ public class CompositeEffectAnalyzer {
         }
         groupAnalyzer.writeEffectByGroup(groupsEffect, "EM-NPS");
 
+      */
+
 	}
 
 
@@ -106,7 +143,7 @@ public class CompositeEffectAnalyzer {
 			CompositeEffectDTO[] composites = mapper.readValue(new File(compositeEffectPath),
 					CompositeEffectDTO[].class);
 
-			compositeList = Arrays.asList(composites);
+			compositeList = new ArrayList<CompositeEffectDTO>(Arrays.asList(composites));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -114,7 +151,26 @@ public class CompositeEffectAnalyzer {
 		}
 		return compositeList;
 	}
-	
+
+
+
+
+
+	public List<CompositeRefactoring> filterCompositeByIds(List<String> ids, List<CompositeRefactoring> allComposites){
+
+		List<CompositeRefactoring> filteredComposites = new ArrayList<>();
+		for(String id: ids){
+
+			for(CompositeRefactoring composite : allComposites){
+
+				if(composite.getId().equals(id)){
+					filteredComposites.add(composite);
+				}
+			}
+		}
+
+		return filteredComposites;
+	}
 	
 	private void writeCompleteComposite(List<CompositeEffectDTO> completeComposites, String pathCompleteComposites) {
 
@@ -578,6 +634,24 @@ public class CompositeEffectAnalyzer {
             composite.setCodeSmells(new ArrayList<>(codeSmells.values()));
 
         }
+	}
+
+	private List<CompositeEffectDTO> convertCompositeToCompositeEffectDTO(List<CompositeRefactoring> composites){
+		List<CompositeEffectDTO> compositeEffectDTOList = new ArrayList<CompositeEffectDTO>();
+		RefactoringAnalyzer refAnalyzer = new RefactoringAnalyzer();
+
+		for (CompositeRefactoring composite : composites){
+			CompositeEffectDTO compositeEffectDTO = new CompositeEffectDTO();
+			compositeEffectDTO.setId(composite.getId());
+			compositeEffectDTO.setProject(composite.getRefactorings().get(0).getProject());
+			List<String> refs = refAnalyzer.convertRefactoringListInText(composite.getRefactorings());
+			System.out.println(refs.toString());
+			compositeEffectDTO.setRefactorings(refs.toString());
+
+			compositeEffectDTOList.add(compositeEffectDTO);
+		}
+		return compositeEffectDTOList;
+
 	}
 	
 	

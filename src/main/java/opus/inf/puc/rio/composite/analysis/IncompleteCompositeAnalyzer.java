@@ -65,7 +65,7 @@ public class IncompleteCompositeAnalyzer {
 
 		
 			IncompleteCompositeDTO[] incompleteComposites = mapper.readValue(new File(
-					"complete-composites-dto/complete-composite-couchbase-java-client.json"),
+					"complete-composites-dto/complete-composites-couchbase-java-client.json"),
 					IncompleteCompositeDTO[].class);
 			
 			List<IncompleteCompositeDTO> incompleteCompositeDTOList = Arrays.asList(incompleteComposites);
