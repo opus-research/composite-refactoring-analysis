@@ -64,7 +64,7 @@ public class CompositeGroupAnalyzer {
 		return groups;
 	}
 
-	private List<CompositeGroup> getCompositeGroupFromJson(String compositeGroupPath){
+	public List<CompositeGroup> getCompositeGroupFromJson(String compositeGroupPath){
 		ObjectMapper mapper = new ObjectMapper();
 		List<CompositeGroup> compositeList = new ArrayList<>();
 		try {
@@ -329,6 +329,49 @@ public class CompositeGroupAnalyzer {
 		}
 
 		return allCompositeEffectDTOS.size();
+	}
+
+	public List<CompositeEffectDTO> gettAllCompositesFromSpecificGroups(List<String> groupNames, List<CompositeGroup> summarizedGroups){
+
+		List<CompositeEffectDTO>  compositeEffectDTOS = new ArrayList<>();
+
+		for(String groupName: groupNames) {
+
+			int index = 0;
+			for (CompositeGroup summarizedGroup : summarizedGroups) {
+				index ++;
+
+				List<String> groupList = new ArrayList<>(summarizedGroup.getGroupSet());
+				Collections.sort(groupList);
+                String groupListText = groupList.toString();
+
+				if (groupListText.equals(groupName)) {
+					compositeEffectDTOS.addAll(summarizedGroup.getComposites());
+				}
+
+			}
+		}
+
+        return compositeEffectDTOS;
+	}
+
+	private List<CompositeGroup> getSpecificGroups(List<String> groupNames, List<CompositeGroup> summarizedGroups){
+
+		List<CompositeGroup> specificSummarizedGroups = new ArrayList<>();
+
+		for(String groupName : groupNames){
+			for(CompositeGroup summarizedGroup : summarizedGroups){
+				//List<String> compositeGroupList = new ArrayList<String>(group.getGroupSet());
+				//Collections.sort(compositeGroupList);
+
+				if(summarizedGroup.getGroupSet().toString().equals(groupName)){
+					specificSummarizedGroups.add(summarizedGroup);
+				}
+
+			}
+		}
+		return specificSummarizedGroups;
+
 	}
 
 
