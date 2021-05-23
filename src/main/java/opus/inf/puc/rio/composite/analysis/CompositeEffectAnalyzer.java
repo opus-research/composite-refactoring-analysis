@@ -681,7 +681,7 @@ public class CompositeEffectAnalyzer {
 			for (String smellType : smellTypes) {
 				for (CodeSmellDTO smell : compositeEffectDTO.getCodeSmells()) {
 					if(smell.getType().equals(smellType)) {
-						if(smell.getBeforeComposite() == smell.getRemovedSmells()){
+						if(smell.getAfterComposite() == 0){
 							existingSmells.add(smell.getType());
 						}
 					}
