@@ -11,23 +11,7 @@ import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 
 public class CompositeUtils {
 
-	public static void main(String[] args) {
 
-		//CompositeUtils.countElementsFromTextList(CompositeUtils.smellsValidacaoManualICSME21Before);
-		//CompositeUtils.countElementsFromTextList(CompositeUtils.smellsValidacaoManualICSME21After);
-
-		CompositeUtils compositeUtils = new CompositeUtils();
-		List<CompositeRefactoring> composites = compositeUtils.filterCompositesByIds("fresco-compositesRangeBased.json","128,158,159,369,393,435,505,510,557,687,724,768");
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		// Java object to JSON file
-		try {
-			mapper.writeValue(new File("composites-fresco-manual-validation.json"), composites);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	private static String refactoringsValidacaoManualICSME21 = "'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', 'Extract Method', " +

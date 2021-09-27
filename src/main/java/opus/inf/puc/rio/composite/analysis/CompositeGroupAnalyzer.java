@@ -294,8 +294,8 @@ public class CompositeGroupAnalyzer {
 
 		for (int i=0; i < composites.size(); i++){
 
-			List<String> refactorings = refAnalyzer
-					.getRefactoringsFromRefMiner("C:\\Users\\anaca\\" + composites.get(i).getProject(), composites.get(i).getCurrentCommit());
+			List<String> refactorings = new ArrayList<>();
+				//	refAnalyzer.getRefactoringsFromRefMiner("C:\\Users\\anaca\\" + composites.get(i).getProject(), composites.get(i).getCurrentCommit());
 
 			if(refactorings != null && refactorings.size() > 1){
 				composites.get(i).setRefactorings(refactorings.toString());

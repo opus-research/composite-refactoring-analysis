@@ -2,6 +2,7 @@ package opus.inf.puc.rio.composite.analysis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
+import opus.inf.puc.rio.composite.utils.CompositeUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,26 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CompositeAnalyzer {
+
+
+    public static void main(String[] args) {
+
+        //CompositeUtils.countElementsFromTextList(CompositeUtils.smellsValidacaoManualICSME21Before);
+        //CompositeUtils.countElementsFromTextList(CompositeUtils.smellsValidacaoManualICSME21After);
+
+        String pathComposites = "C:\\Users\\anaca\\OneDrive\\PUC-Rio\\OPUS\\CompositeRefactoring\\Dataset\\Composites\\";
+        CompositeUtils compositeUtils = new CompositeUtils();
+        List<CompositeRefactoring> composites = compositeUtils.filterCompositesByIds(pathComposites + "ant-composite-rangebased.json","1159,2991,644,560,1373,850,606,1417,732,593");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Java object to JSON file
+        try {
+            mapper.writeValue(new File("composites-ant-manual-validation-side-recommendation2.json"), composites);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<CompositeRefactoring> getCompositeFromJson(String compositePath)
     {
