@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
 "id",
-"refactorings",
+"refactoringIDs",
 "type"
 })
 public class CompositeRefactoring {
 
 	@JsonProperty("id")
 	private String id;
-	@JsonProperty("refactorings")
-	private List<Refactoring> refactorings = null;
+	@JsonProperty("refactoringIDs")
+	private List<String> refactoringIDs = null;
 	@JsonProperty("type")
 	private String type;
 	@JsonIgnore
@@ -37,14 +37,14 @@ public class CompositeRefactoring {
 		this.id = id;
 	}
 
-	@JsonProperty("refactorings")
-	public List<Refactoring> getRefactorings() {
-		return refactorings;
+	@JsonProperty("refactoringIDs")
+	public List<String> getRefactoringIDs() {
+		return refactoringIDs;
 	}
 
-	@JsonProperty("refactorings")
-	public void setRefactorings(List<Refactoring> refactorings) {
-		this.refactorings = refactorings;
+	@JsonProperty("refactoringIDs")
+	public void setRefactoringIDs(List<String> refactoringIDs) {
+		this.refactoringIDs = refactoringIDs;
 	}
 
 	@JsonProperty("type")
