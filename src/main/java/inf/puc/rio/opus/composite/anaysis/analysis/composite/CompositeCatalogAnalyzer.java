@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis;
+package inf.puc.rio.opus.composite.anaysis.analysis.composite;
 
 import inf.puc.rio.opus.composite.model.effect.CompositeEffectDTO;
 import inf.puc.rio.opus.composite.model.group.CompositeGroup;

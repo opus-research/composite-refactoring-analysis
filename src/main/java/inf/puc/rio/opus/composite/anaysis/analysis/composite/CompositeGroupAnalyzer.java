@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis;
+package inf.puc.rio.opus.composite.anaysis.analysis.composite;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import inf.puc.rio.opus.composite.anaysis.analysis.refactoring.RefactoringAnalyzer;
 import inf.puc.rio.opus.composite.anaysis.utils.CompositeUtils;
+import inf.puc.rio.opus.composite.anaysis.utils.CsvWriter;
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeEffectDTO;
 import inf.puc.rio.opus.composite.model.group.CompositeGroup;

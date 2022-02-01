@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis;
+package inf.puc.rio.opus.composite.anaysis.analysis.composite;
 
 import java.io.File;
 import java.io.FileReader;
@@ -8,6 +8,8 @@ import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import inf.puc.rio.opus.composite.anaysis.analysis.refactoring.RefactoringAnalyzer;
+import inf.puc.rio.opus.composite.anaysis.utils.CsvWriter;
 import inf.puc.rio.opus.composite.model.*;
 
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;

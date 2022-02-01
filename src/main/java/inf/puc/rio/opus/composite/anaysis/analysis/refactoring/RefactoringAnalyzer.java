@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis;
+package inf.puc.rio.opus.composite.anaysis.analysis.refactoring;
 
 import java.io.BufferedReader;
 import java.io.File;
