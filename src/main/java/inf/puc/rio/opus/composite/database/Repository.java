@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
+import inf.puc.rio.opus.composite.model.Refactoring;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
@@ -15,6 +16,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class Repository {
 
     private MongoCollection<CompositeRefactoring> composites;
+    private MongoCollection<Refactoring> refactorings;
     private MongoDatabase database;
 
     public void init(String[] args) {
@@ -45,6 +47,13 @@ public class Repository {
             composites = database.getCollection("composites", CompositeRefactoring.class);
         }
         return composites;
+    }
+
+    protected MongoCollection<Refactoring> refactorings(){
+        if(refactorings == null){
+            refactorings = database.getCollection("refactorings", Refactoring.class);
+        }
+        return refactorings;
     }
 
 }
