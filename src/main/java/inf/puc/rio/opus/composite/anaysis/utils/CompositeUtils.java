@@ -95,6 +95,12 @@ public class CompositeUtils {
 		return refactorings;
 		
 	}
+	
+	
+	public static List<String> convertTextToList(String textList){
+		List<String> myList = new ArrayList<String>(Arrays.asList(textList.split(",")));
+		return myList;
+	}
 
 	public static void countElementsFromTextList(String textList){
 		List<String> myList = new ArrayList<String>(Arrays.asList(textList.split(",")));
