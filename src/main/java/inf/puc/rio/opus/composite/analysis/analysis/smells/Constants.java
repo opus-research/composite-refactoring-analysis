@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis.smells;
+package inf.puc.rio.opus.composite.analysis.analysis.smells;
 
 public class Constants {
 	public final static String FOLDER_CLONE = "/Users/ana/Documents/AnaCarla/ant/";

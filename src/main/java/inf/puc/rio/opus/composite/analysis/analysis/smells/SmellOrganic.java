@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis.smells;
+package inf.puc.rio.opus.composite.analysis.analysis.smells;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,7 +1,7 @@
-package inf.puc.rio.opus.composite.anaysis.analysis.composite;
+package inf.puc.rio.opus.composite.analysis.analysis.composite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import inf.puc.rio.opus.composite.anaysis.utils.CompositeUtils;
+import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 
 import java.io.File;

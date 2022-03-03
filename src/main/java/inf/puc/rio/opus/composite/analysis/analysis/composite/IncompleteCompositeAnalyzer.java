@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis.composite;
+package inf.puc.rio.opus.composite.analysis.analysis.composite;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import inf.puc.rio.opus.composite.anaysis.analysis.refactoring.RefactoringPermutation;
-import inf.puc.rio.opus.composite.anaysis.utils.CsvWriter;
+import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringPermutation;
+import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.effect.IncompleteCompositeDTO;
 import inf.puc.rio.opus.composite.model.Refactoring;

@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.utils;
+package inf.puc.rio.opus.composite.analysis.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -1,7 +1,5 @@
-package inf.puc.rio.opus.composite.database.refactoring;
+package inf.puc.rio.opus.composite.database.refactorings;
 
-
-import java.util.List;
 
 public class RefactoringCollector {
 
@@ -13,9 +11,7 @@ public class RefactoringCollector {
 
     public static void main(String[] args) {
         RefactoringCollector collector = new RefactoringCollector(args);
-
     }
-
 
 }
 

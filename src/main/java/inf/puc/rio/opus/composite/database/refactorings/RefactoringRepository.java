@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.database.refactoring;
+package inf.puc.rio.opus.composite.database.refactorings;
 
 
 import com.mongodb.BasicDBObject;

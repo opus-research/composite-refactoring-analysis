@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.utils;
+package inf.puc.rio.opus.composite.analysis.utils;
 
 /*
  * Java CSV is a stream based library for reading and writing

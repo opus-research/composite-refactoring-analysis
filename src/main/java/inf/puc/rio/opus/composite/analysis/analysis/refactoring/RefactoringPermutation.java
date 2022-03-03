@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.anaysis.analysis.refactoring;
+package inf.puc.rio.opus.composite.analysis.analysis.refactoring;
 
 import java.util.ArrayList;
 import java.util.List;
