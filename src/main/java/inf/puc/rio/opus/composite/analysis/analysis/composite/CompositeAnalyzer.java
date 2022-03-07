@@ -5,13 +5,11 @@ import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.database.composites.CompositeCollector;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
+import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CompositeAnalyzer {
 
@@ -36,12 +34,15 @@ public class CompositeAnalyzer {
 
         Map<String, List<CompositeDTO>> groups = analyzer.groupAnalyzer.createCompositeGroupsFromRefactoringAsList(composites);
 
-        for (Map.Entry<String, List<CompositeDTO>> group : groups.entrySet()) {
+        List<CompositeGroup> groupsSet = analyzer.groupAnalyzer.summarizeGroupSet(groups);
 
-            System.out.print(group.getKey() + ",");
-            System.out.println(group.getValue().size());
+        for (CompositeGroup compositeGroup : groupsSet) {
+
+            System.out.println(compositeGroup.getGroupSet().toString().toLowerCase(Locale.ROOT));
 
         }
+
+
     }
 
     public List<CompositeRefactoring> getCompositeFromJson(String compositePath)

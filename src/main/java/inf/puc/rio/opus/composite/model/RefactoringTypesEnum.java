@@ -1,9 +1,5 @@
 package inf.puc.rio.opus.composite.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public enum RefactoringTypesEnum {
 
 	EXTRACT_METHOD{
@@ -51,15 +47,86 @@ public enum RefactoringTypesEnum {
 	          return "Rename Parameter, Rename Variable, Rename Attribute, Rename Method, Rename Class";
 	     }
 	},
-	REFACT_VARIABLE{
-		
-		 public String toString() {
-	          return "Extract Variable, Inline Variable, Parameterize Variable,"
-	          		+ "Replace Variable with Attribute,"
-	          		+ "Replace Attribute, Merge Variable, Merge Parameter, Merge Attribute, Split Variable, Split Parameter,"
-	          		+ "Split Attribute, Change Variable Type, Change Parameter Type, Change Return Type, Change Attribute Type, Extract Attribute";
-	      }
+	EXTRACT_VARIABLE{
+		public String toString() {
+			return "Extract Variable";
+		}
 	},
+	INLINE_VARIABLE{
+		public String toString() {
+			return "Inline Variable";
+		}
+	},
+	PARAMETERIZE_VARIABLE{
+		public String toString() {
+			return "Parameterize Variable";
+		}
+	},
+	REPLACE_VARIABLE_WITH_ATTRIBUTE{
+		public String toString() {
+			return "Replace Variable with Attribute";
+		}
+	},
+	REPLACE_ATTRIBUTE{
+		public String toString() {
+			return "Replace Attribute";
+		}
+	},
+	MERGE_VARIABLE{
+		public String toString() {
+			return "Merge Variable";
+		}
+	},
+	MERGE_PARAMETER{
+		public String toString() {
+			return "Merge Parameter";
+		}
+	},
+	MERGE_ATTRIBUTE{
+		public String toString() {
+			return "Merge Attribute";
+		}
+	},
+	SPLIT_VARIABLE{
+		public String toString() {
+			return "Split Variable";
+		}
+	},
+	SPLIT_PARAMETER{
+		public String toString() {
+			return "Split Parameter";
+		}
+	},
+	SPLIT_ATTRIBUTE{
+		public String toString() {
+			return "Split Attribute";
+		}
+	},
+	CHANGE_VARIABLE_TYPE{
+		public String toString() {
+			return "Change Variable Type";
+		}
+	},
+	CHANGE_PARAMETER_TYPE{
+		public String toString() {
+			return "Change Parameter Type";
+		}
+	},
+	CHANGE_RETURN_TYPE{
+		public String toString() {
+			return "Change Return Type";
+		}
+	},
+	CHANGE_ATTRIBUTE_TYPE{
+		public String toString() {
+			return "Change Attribute Type";
+		}
+	},
+	EXTRACT_ATTRIBUTE{
+		public String toString() {
+			return "Extract Attribute";
+		}
+	}
 	
 
 

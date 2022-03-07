@@ -102,7 +102,7 @@ public class Refactoring {
 
 	public static boolean equalsToRefactoringType(String refType){
 
-		for(RefactoringTypesEnum refTypeEnum : RefactoringTypesEnum.values()){
+		for(SummarizedRefactoringTypesEnum refTypeEnum : SummarizedRefactoringTypesEnum.values()){
 			List<String> refTypesList = new ArrayList<String>(Arrays.asList(refTypeEnum.toString().split(",")));
 
 			for(String refTypeAsText : refTypesList) {

@@ -38,8 +38,6 @@ public class CompositeCollector {
         for (String compositeID : compositeIDList) {
             CompositeRefactoring composite = compositeRepository.getCompositeById(compositeID);
 
-
-            System.out.println("CompositeId:" + compositeID);
             List<String> refactorings = new ArrayList<>();
             for (String refactoringID : composite.getRefactoringIDs()) {
                 Refactoring refactoring = refactoringRepository.getRefactoringById(refactoringID);
