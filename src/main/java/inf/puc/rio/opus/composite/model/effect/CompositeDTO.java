@@ -1,14 +1,16 @@
 package inf.puc.rio.opus.composite.model.effect;
 
-import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
+import inf.puc.rio.opus.composite.model.Refactoring;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeEffectDTO {
+public class CompositeDTO {
 
 	private String Id;
-	private String refactorings;
+	private String refactoringsAsText;
+	private List<Refactoring> refactorings;
+	private List<String> refactoringNamesAsList;
 	private String project;
 	private String previousCommit;
 	private String currentCommit;
@@ -20,8 +22,8 @@ public class CompositeEffectDTO {
 		return Id;
 	}
 	
-	public String getRefactorings() {
-		return refactorings;
+	public String getRefactoringsAsText() {
+		return refactoringsAsText;
 	}
 	
 	public List<CodeSmellDTO> getCodeSmells() {
@@ -34,9 +36,9 @@ public class CompositeEffectDTO {
 			Id = compositeId;
 		}		
 	}
-	
-	public void setRefactorings(String refactorings) {
-		this.refactorings = refactorings;
+
+	public void setRefactoringsAsText(String refactoringsAsText) {
+		this.refactoringsAsText = refactoringsAsText;
 	}
 	
 	public void setProject(String project) {
@@ -109,5 +111,25 @@ public class CompositeEffectDTO {
 		if(codeSmells != null){
 			this.codeSmells = codeSmells;
 		}
+	}
+
+	public List<Refactoring> getRefactorings() {
+		return refactorings;
+	}
+
+	public void setRefactorings(List<Refactoring> refactorings) {
+		this.refactorings = refactorings;
+	}
+
+	public List<String> getRefactoringNamesAsList() {
+		return refactoringNamesAsList;
+	}
+
+	public void setRefactoringNamesAsList(List<String> refactoringNamesAsList) {
+		this.refactoringNamesAsList = refactoringNamesAsList;
+	}
+
+	public void setCodeSmells(List<CodeSmellDTO> codeSmells) {
+		this.codeSmells = codeSmells;
 	}
 }

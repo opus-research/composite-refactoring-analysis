@@ -17,7 +17,7 @@ import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringAnaly
 import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
-import inf.puc.rio.opus.composite.model.effect.CompositeEffectDTO;
+import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
 
@@ -35,15 +35,15 @@ public class CompositeGroupAnalyzer {
 
 	}
 	
-	public Map<String, List<CompositeEffectDTO>> createCompositeGroups(List<CompositeEffectDTO> composites){
+	public Map<String, List<CompositeDTO>> createCompositeGroups(List<CompositeDTO> composites){
 		
-		Map<String, List<CompositeEffectDTO>> groups = new HashMap<String, List<CompositeEffectDTO>>();
+		Map<String, List<CompositeDTO>> groups = new HashMap<String, List<CompositeDTO>>();
 		
 		System.out.println(composites.size());
 		
-		for(CompositeEffectDTO composite : composites) {
+		for(CompositeDTO composite : composites) {
 			
-			List<String> refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
+			List<String> refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactoringsAsText());
 
 			Collections.sort(refs);
 			
@@ -55,7 +55,7 @@ public class CompositeGroupAnalyzer {
 			}
 			else {
 				
-				groups.put(groupId, new ArrayList<CompositeEffectDTO>());
+				groups.put(groupId, new ArrayList<CompositeDTO>());
 				groups.get(groupId).add(composite);
 			}
 					
@@ -65,6 +65,34 @@ public class CompositeGroupAnalyzer {
 		
 		return groups;
 	}
+
+	public Map<String, List<CompositeDTO>> createCompositeGroupsFromRefactoringAsList(List<CompositeDTO> composites){
+
+		Map<String, List<CompositeDTO>> groups = new HashMap<String, List<CompositeDTO>>();
+
+		System.out.println(composites.size());
+
+		for(CompositeDTO composite : composites) {
+
+			List<String> refs = composite.getRefactoringNamesAsList();
+
+			String groupId = refs.toString();
+
+			if(groups.containsKey(groupId)) {
+
+				groups.get(groupId).add(composite);
+			}
+			else {
+
+				groups.put(groupId, new ArrayList<CompositeDTO>());
+				groups.get(groupId).add(composite);
+			}
+
+		}
+
+		return groups;
+	}
+
 
 	public List<CompositeGroup> getCompositeGroupFromJson(String compositeGroupPath){
 		ObjectMapper mapper = new ObjectMapper();
@@ -84,7 +112,7 @@ public class CompositeGroupAnalyzer {
 	}
 	
 	
-	public List<CompositeGroup> summarizeGroups(Map<String, List<CompositeEffectDTO>> groups){
+	public List<CompositeGroup> summarizeGroups(Map<String, List<CompositeDTO>> groups){
 
 		List<CompositeGroup> summarizedGroups = new ArrayList<CompositeGroup>();
         final int[] refactoringsQuantity = {0};
@@ -177,7 +205,7 @@ public class CompositeGroupAnalyzer {
                 if (effect == null){
                     effect = new HashMap<>();
                 }
-                for (CompositeEffectDTO compositeDTO : group.getComposites()) {
+                for (CompositeDTO compositeDTO : group.getComposites()) {
 
                     for (CodeSmellDTO codeSmellDTO : compositeDTO.getCodeSmells()) {
 
@@ -246,7 +274,7 @@ public class CompositeGroupAnalyzer {
 	
 	private void addSummarizedGroup(List<CompositeGroup> summarizedGroups,
 										   Set<String> groupSet, 
-										   List<CompositeEffectDTO> groupComposite) {
+										   List<CompositeDTO> groupComposite) {
 		
 		List<String> groupList = new ArrayList<String>(groupSet);
 		Collections.sort(groupList);
@@ -290,7 +318,7 @@ public class CompositeGroupAnalyzer {
 	}
 
 
-	public List<CompositeEffectDTO> getRefactoringsNPS(List<CompositeEffectDTO> composites) {
+	public List<CompositeDTO> getRefactoringsNPS(List<CompositeDTO> composites) {
 
 		RefactoringAnalyzer refAnalyzer = new RefactoringAnalyzer();
 
@@ -300,7 +328,7 @@ public class CompositeGroupAnalyzer {
 				//	refAnalyzer.getRefactoringsFromRefMiner("C:\\Users\\anaca\\" + composites.get(i).getProject(), composites.get(i).getCurrentCommit());
 
 			if(refactorings != null && refactorings.size() > 1){
-				composites.get(i).setRefactorings(refactorings.toString());
+				composites.get(i).setRefactoringsAsText(refactorings.toString());
 			}
 
 		}
@@ -313,7 +341,7 @@ public class CompositeGroupAnalyzer {
 
 		for(CompositeGroup summarizedGroup : summarizedGroups){
 
-			for(CompositeEffectDTO compositeEffectDTO: summarizedGroup.getComposites()){
+			for(CompositeDTO compositeEffectDTO: summarizedGroup.getComposites()){
 
 				projects.add(compositeEffectDTO.getProject());
 			}
@@ -325,7 +353,7 @@ public class CompositeGroupAnalyzer {
 
 	private int countCompositesFromSummarizedGroups(List<CompositeGroup> summarizedGroups){
 
-		List<CompositeEffectDTO> allCompositeEffectDTOS = new ArrayList<>();
+		List<CompositeDTO> allCompositeEffectDTOS = new ArrayList<>();
 		for(CompositeGroup summarizedGroup : summarizedGroups){
 			allCompositeEffectDTOS.addAll(summarizedGroup.getComposites());
 		}
@@ -333,9 +361,9 @@ public class CompositeGroupAnalyzer {
 		return allCompositeEffectDTOS.size();
 	}
 
-	public List<CompositeEffectDTO> gettAllCompositesFromSpecificGroups(List<String> groupNames, List<CompositeGroup> summarizedGroups){
+	public List<CompositeDTO> gettAllCompositesFromSpecificGroups(List<String> groupNames, List<CompositeGroup> summarizedGroups){
 
-		List<CompositeEffectDTO>  compositeEffectDTOS = new ArrayList<>();
+		List<CompositeDTO>  compositeEffectDTOS = new ArrayList<>();
 
 		for(String groupName: groupNames) {
 

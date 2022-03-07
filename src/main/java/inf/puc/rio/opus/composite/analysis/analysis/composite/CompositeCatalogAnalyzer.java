@@ -1,6 +1,6 @@
 package inf.puc.rio.opus.composite.analysis.analysis.composite;
 
-import inf.puc.rio.opus.composite.model.effect.CompositeEffectDTO;
+import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class CompositeCatalogAnalyzer {
         groupNames.add("[EXTRACT_METHOD, MOVE_METHOD, RENAME]");
         groupNames.add("[EXTRACT_METHOD, MOVE_METHOD, REFACT_VARIABLE]");
         groupNames.add("[EXTRACT_METHOD, MOVE_METHOD, REFACT_VARIABLE, RENAME]");
-        List<CompositeEffectDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
+        List<CompositeDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
         System.out.println("Number of Composites: " + composites.size() + " composites");
         composites.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
@@ -41,7 +41,7 @@ public class CompositeCatalogAnalyzer {
         List<String> existingSmells = new ArrayList<>();
         existingSmells.add("FeatureEnvy");
         existingSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
+        List<CompositeDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
         System.out.println("Composites with Existing Smells: ");
         compositesWithExistingSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
@@ -49,17 +49,17 @@ public class CompositeCatalogAnalyzer {
 
         List<String> removedSmells = new ArrayList<>();
         removedSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithRemovedSmells = effectAnalyzer.getCompositesWithSmellTypesRemoval(removedSmells, compositesWithExistingSmells);
+        List<CompositeDTO> compositesWithRemovedSmells = effectAnalyzer.getCompositesWithSmellTypesRemoval(removedSmells, compositesWithExistingSmells);
         System.out.println("Composites with Removed Smells: ");
         compositesWithRemovedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
-        List<CompositeEffectDTO> specificComposites = compositesWithRemovedSmells;
+        List<CompositeDTO> specificComposites = compositesWithRemovedSmells;
         System.out.println("Total: " + specificComposites.size() + " composites");
 
         //Composites with side effects
         List<String> addedSmells = new ArrayList<>();
         addedSmells.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
+        List<CompositeDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
         System.out.println("Composites with Side Effects (Added Smells): ");
         compositesWithAddedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
@@ -68,7 +68,7 @@ public class CompositeCatalogAnalyzer {
         //Composites without side effects - composites that follow the recommendation
         List<String> smellsTotallyRemoved = new ArrayList<>();
         smellsTotallyRemoved.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
+        List<CompositeDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
         System.out.println("Composites without Side Effects (Recommended Composites): ");
         compositesWithTotalRemovalOfSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() +", "));
         System.out.println();
@@ -86,7 +86,7 @@ public class CompositeCatalogAnalyzer {
         groupNames.add("[EXTRACT_METHOD, RENAME]");
         groupNames.add("[EXTRACT_METHOD, REFACT_VARIABLE]");
         groupNames.add("[EXTRACT_METHOD, REFACT_VARIABLE, RENAME]");
-        List<CompositeEffectDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
+        List<CompositeDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
         System.out.println("Number of Composites: " + composites.size() + " composites");
         composites.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
@@ -94,7 +94,7 @@ public class CompositeCatalogAnalyzer {
         List<String> existingSmells = new ArrayList<>();
         existingSmells.add("FeatureEnvy");
         existingSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
+        List<CompositeDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
         System.out.println("Composites with Existing Smells: ");
         compositesWithExistingSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -102,17 +102,17 @@ public class CompositeCatalogAnalyzer {
 
         List<String> removedSmells = new ArrayList<>();
         removedSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithRemovedSmells = effectAnalyzer.getCompositesWithSmellTypesRemoval(removedSmells, compositesWithExistingSmells);
+        List<CompositeDTO> compositesWithRemovedSmells = effectAnalyzer.getCompositesWithSmellTypesRemoval(removedSmells, compositesWithExistingSmells);
         System.out.println("Composites with Removed Smells: ");
         compositesWithRemovedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
-        List<CompositeEffectDTO> specificComposites = compositesWithRemovedSmells;
+        List<CompositeDTO> specificComposites = compositesWithRemovedSmells;
         System.out.println();
         System.out.println("Total: " + specificComposites.size() + " composites");
 
         //Composites with side effects
         List<String> addedSmells = new ArrayList<>();
         addedSmells.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
+        List<CompositeDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
         System.out.println("Composites with Side Effects (Added Smells): ");
         compositesWithAddedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -121,7 +121,7 @@ public class CompositeCatalogAnalyzer {
         //Composites without side effects - composites that follow the recommendation
         List<String> smellsTotallyRemoved = new ArrayList<>();
         smellsTotallyRemoved.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
+        List<CompositeDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
         System.out.println("Composites without Side Effects (Recommended Composites): ");
         compositesWithTotalRemovalOfSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -139,24 +139,24 @@ public class CompositeCatalogAnalyzer {
         groupNames.add("[EXTRACT_METHOD, RENAME]");
         groupNames.add("[EXTRACT_METHOD, REFACT_VARIABLE]");
         groupNames.add("[EXTRACT_METHOD, REFACT_VARIABLE, RENAME]");
-        List<CompositeEffectDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
+        List<CompositeDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
         System.out.println("Number of Composites: " + composites.size() + " composites");
         composites.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
 
         List<String> existingSmells = new ArrayList<>();
         existingSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
+        List<CompositeDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
         System.out.println("Composites with Existing Smells: ");
         compositesWithExistingSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
         System.out.println("Total: " + compositesWithExistingSmells.size() + " composites");
-        List<CompositeEffectDTO> specificComposites = compositesWithExistingSmells;
+        List<CompositeDTO> specificComposites = compositesWithExistingSmells;
 
         //Composites with side effects
         List<String> addedSmells = new ArrayList<>();
         addedSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
+        List<CompositeDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
         System.out.println("Composites with Side Effects (Added Smells): ");
         compositesWithAddedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -165,7 +165,7 @@ public class CompositeCatalogAnalyzer {
         //Composites without side effects - composites that follow the recommendation
         List<String> smellsTotallyRemoved = new ArrayList<>();
         smellsTotallyRemoved.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
+        List<CompositeDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
         System.out.println("Composites without Side Effects (Recommended Composites): ");
         compositesWithTotalRemovalOfSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -183,14 +183,14 @@ public class CompositeCatalogAnalyzer {
         groupNames.add("[EXTRACT_METHOD, RENAME]");
         groupNames.add("[EXTRACT_METHOD, REFACT_VARIABLE]");
         groupNames.add("[EXTRACT_METHOD, REFACT_VARIABLE, RENAME]");
-        List<CompositeEffectDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
+        List<CompositeDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
         System.out.println("Number of Composites: " + composites.size() + " composites");
         composites.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
 
         List<String> existingSmells = new ArrayList<>();
         existingSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
+        List<CompositeDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
         System.out.println("Composites with Existing Smells: ");
         compositesWithExistingSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -198,16 +198,16 @@ public class CompositeCatalogAnalyzer {
 
         List<String> removedSmells = new ArrayList<>();
         removedSmells.add("LongMethod");
-        List<CompositeEffectDTO> compositesWithRemovedSmells = effectAnalyzer.getCompositesWithSmellTypesRemoval(removedSmells, compositesWithExistingSmells);
+        List<CompositeDTO> compositesWithRemovedSmells = effectAnalyzer.getCompositesWithSmellTypesRemoval(removedSmells, compositesWithExistingSmells);
         System.out.println("Composites with Removed Smells: ");
         compositesWithRemovedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
-        List<CompositeEffectDTO> specificComposites = compositesWithRemovedSmells;
+        List<CompositeDTO> specificComposites = compositesWithRemovedSmells;
         System.out.println();
 
         //Composites with side effects
         List<String> addedSmells = new ArrayList<>();
         addedSmells.add("LongParameterList");
-        List<CompositeEffectDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
+        List<CompositeDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
         System.out.println("Composites with Side Effects (Added Smells): ");
         compositesWithAddedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -216,7 +216,7 @@ public class CompositeCatalogAnalyzer {
         //Composites without side effects - composites that follow the recommendation
         List<String> smellsTotallyRemoved = new ArrayList<>();
         smellsTotallyRemoved.add("LongParameterList");
-        List<CompositeEffectDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
+        List<CompositeDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
         System.out.println("Composites without Side Effects (Recommended Composites): ");
         compositesWithTotalRemovalOfSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -235,26 +235,26 @@ public class CompositeCatalogAnalyzer {
         groupNames.add("[MOVE_METHOD, RENAME]");
         groupNames.add("[MOVE_METHOD, REFACT_VARIABLE]");
         groupNames.add("[MOVE_METHOD, REFACT_VARIABLE, RENAME]");
-        List<CompositeEffectDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
+        List<CompositeDTO> composites = groupAnalyzer.gettAllCompositesFromSpecificGroups(groupNames, summarizedGroups);
         System.out.println("Number of Composites: " + composites.size() + " composites");
         composites.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId() + ", "));
         System.out.println();
 
         List<String> existingSmells = new ArrayList<>();
         existingSmells.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
+        List<CompositeDTO> compositesWithExistingSmells = effectAnalyzer.getCompositesThatHaveSpecificSmellTypes(existingSmells, composites);
         System.out.println("Composites with Existing Smells: ");
         compositesWithExistingSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
         System.out.println("Total: " + compositesWithExistingSmells.size() + " composites");
 
-        List<CompositeEffectDTO> specificComposites = compositesWithExistingSmells;
+        List<CompositeDTO> specificComposites = compositesWithExistingSmells;
         System.out.println("Total: " + specificComposites.size() + " composites");
 
         //Composites with side effects
         List<String> addedSmells = new ArrayList<>();
         addedSmells.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
+        List<CompositeDTO> compositesWithAddedSmells = effectAnalyzer.getCompositesWithSmellTypesAddition(addedSmells, specificComposites);
         System.out.println("Composites with Side Effects (Added Smells): ");
         compositesWithAddedSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();
@@ -263,7 +263,7 @@ public class CompositeCatalogAnalyzer {
         //Composites without side effects - composites that follow the recommendation
         List<String> smellsTotallyRemoved = new ArrayList<>();
         smellsTotallyRemoved.add("FeatureEnvy");
-        List<CompositeEffectDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
+        List<CompositeDTO> compositesWithTotalRemovalOfSmells = effectAnalyzer.getCompositesWithTotalSmellTypesRemoval(smellsTotallyRemoved, specificComposites);
         System.out.println("Composites without Side Effects (Recommended Composites): ");
         compositesWithTotalRemovalOfSmells.forEach(composite -> System.out.print(composite.getProject()+"-"+composite.getId()+ ", "));
         System.out.println();

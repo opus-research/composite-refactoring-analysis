@@ -2,7 +2,7 @@ package inf.puc.rio.opus.composite.model.group;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import inf.puc.rio.opus.composite.model.effect.CompositeEffectDTO;
+import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ public class CompositeGroup {
 
 	
 	private Set<String> group;
-	private List<CompositeEffectDTO> composites;
+	private List<CompositeDTO> composites;
 	public String groupId;
 	public String groupName;
 
 	@JsonCreator
 	public CompositeGroup(@JsonProperty("groupSet") Set<String> groupSet,
-						  @JsonProperty("composites") List<CompositeEffectDTO> composites,
+						  @JsonProperty("composites") List<CompositeDTO> composites,
 						  @JsonProperty("groupId") String groupId,
 						  @JsonProperty("groupName") String groupName){
 		this.group = groupSet;
@@ -34,7 +34,7 @@ public class CompositeGroup {
 			this.group = group;
 		}
 		
-		composites = new ArrayList<CompositeEffectDTO>();
+		composites = new ArrayList<CompositeDTO>();
 	}
 
 	public CompositeGroup(String groupName, String groupId){
@@ -43,7 +43,7 @@ public class CompositeGroup {
 	}
 
 
-	public void addComposites(List<CompositeEffectDTO> composites) {
+	public void addComposites(List<CompositeDTO> composites) {
 		
 		this.composites.addAll(composites);
 	}
@@ -52,7 +52,7 @@ public class CompositeGroup {
 		return group;
 	}
 
-	public List<CompositeEffectDTO> getComposites() {
+	public List<CompositeDTO> getComposites() {
 		return composites;
 	}
 	

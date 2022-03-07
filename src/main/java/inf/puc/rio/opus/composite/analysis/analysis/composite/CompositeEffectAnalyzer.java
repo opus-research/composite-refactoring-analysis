@@ -13,7 +13,7 @@ import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
 import inf.puc.rio.opus.composite.model.*;
 
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
-import inf.puc.rio.opus.composite.model.effect.CompositeEffectDTO;
+import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -34,15 +34,15 @@ public class CompositeEffectAnalyzer {
 
 
 
-	private List<CompositeEffectDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
+	private List<CompositeDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
 		ObjectMapper mapper = new ObjectMapper();
-		List<CompositeEffectDTO> compositeList = new ArrayList<>();
+		List<CompositeDTO> compositeList = new ArrayList<>();
 		try {
 
-			CompositeEffectDTO[] composites = mapper.readValue(new File(compositeEffectPath),
-					CompositeEffectDTO[].class);
+			CompositeDTO[] composites = mapper.readValue(new File(compositeEffectPath),
+					CompositeDTO[].class);
 
-			compositeList = new ArrayList<CompositeEffectDTO>(Arrays.asList(composites));
+			compositeList = new ArrayList<CompositeDTO>(Arrays.asList(composites));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -71,7 +71,7 @@ public class CompositeEffectAnalyzer {
 		return filteredComposites;
 	}
 	
-	private void writeCompleteComposite(List<CompositeEffectDTO> completeComposites, String pathCompleteComposites) {
+	private void writeCompleteComposite(List<CompositeDTO> completeComposites, String pathCompleteComposites) {
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -94,7 +94,7 @@ public class CompositeEffectAnalyzer {
 			csv.endRecord();
 			
 			
-			for(CompositeEffectDTO composite : completeComposites) {
+			for(CompositeDTO composite : completeComposites) {
 				
 				for(CodeSmellDTO smell : composite.getCodeSmells()) {
 					
@@ -102,7 +102,7 @@ public class CompositeEffectAnalyzer {
 					
 					System.out.println(composite.getId());
 					
-					csv.write(composite.getRefactorings());
+					csv.write(composite.getRefactoringsAsText());
 					csv.write(composite.getProject());
 					csv.write(composite.getPreviousCommit());
 					csv.write(composite.getCurrentCommit());
@@ -130,8 +130,8 @@ public class CompositeEffectAnalyzer {
 		}
 	}
 	
-	private List<CompositeEffectDTO> getCompositeEffectDTO1(String path){
-		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
+	private List<CompositeDTO> getCompositeEffectDTO1(String path){
+		List<CompositeDTO> composites = new ArrayList<CompositeDTO>();
 		
 		String[] FILE_HEADER_MAPPING = { "Validator", "projectName", "Batch ID", "Refactorings", "Code Elements",
 				"Start Commit", "Smells Before", "Smell Before IDs", 
@@ -152,7 +152,7 @@ public class CompositeEffectAnalyzer {
 
 			Set<String> compositeIds = new HashSet<String>();
 
-			CompositeEffectDTO compositeDTO = null;
+			CompositeDTO compositeDTO = null;
 			for (int i = 1; i < csvRecords.size(); i++) {
 				CSVRecord record = (CSVRecord) csvRecords.get(i);
 			
@@ -163,13 +163,13 @@ public class CompositeEffectAnalyzer {
 					
 					compositeIds.add(compositeId);
 					
-					compositeDTO = new CompositeEffectDTO();
+					compositeDTO = new CompositeDTO();
 					
 					compositeDTO.setId(compositeId);
 					
 					String refactorings = record.get("Refactorings");
 					refactorings = refactorings.replace("\"", "");
-					compositeDTO.setRefactorings(refactorings);
+					compositeDTO.setRefactoringsAsText(refactorings);
 					
 					String project = record.get("projectName");
 					compositeDTO.setProject(project);
@@ -235,10 +235,10 @@ public class CompositeEffectAnalyzer {
 	}
 
 	
-	private List<CompositeEffectDTO> getCompositeEffectDTO(String path){
+	private List<CompositeDTO> getCompositeEffectDTO(String path){
 		
 		
-		List<CompositeEffectDTO> composites = new ArrayList<CompositeEffectDTO>();
+		List<CompositeDTO> composites = new ArrayList<CompositeDTO>();
 		
 		String[] FILE_HEADER_MAPPING = { "CompositeId","Refactorings","Project","PreviousCommit","CurrentCommit","SmellType",
 										 "SmellBefore", "SmellAfter"};
@@ -257,7 +257,7 @@ public class CompositeEffectAnalyzer {
 
 			Set<String> compositeIds = new HashSet<String>();
 
-			CompositeEffectDTO compositeDTO = null;
+			CompositeDTO compositeDTO = null;
 			for (int i = 1; i < csvRecords.size(); i++) {
 				CSVRecord record = (CSVRecord) csvRecords.get(i);
 			
@@ -268,12 +268,12 @@ public class CompositeEffectAnalyzer {
 					
 					compositeIds.add(compositeId);
 					
-					compositeDTO = new CompositeEffectDTO();
+					compositeDTO = new CompositeDTO();
 					
 					compositeDTO.setId(compositeId);
 					
 					String refactorings = record.get("Refactorings");
-					compositeDTO.setRefactorings(refactorings);
+					compositeDTO.setRefactoringsAsText(refactorings);
 					
 					String project = record.get("Project");
 					compositeDTO.setProject(project);
@@ -317,7 +317,7 @@ public class CompositeEffectAnalyzer {
 						if(!compositeIds.contains(compositeNextId)) {
 							composites.add(compositeDTO);
 							
-							compositeDTO = new CompositeEffectDTO();
+							compositeDTO = new CompositeDTO();
 						}	
 			    	}
 			    	//Adicionar o corrente composite quando é o último composite
@@ -339,13 +339,13 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	//TODO - Implementar esse metodo em termos de valores de removed, added e not_affected
-	private List<CompositeEffectDTO> getCompleteComposite(List<CompositeEffectDTO> composites){
+	private List<CompositeDTO> getCompleteComposite(List<CompositeDTO> composites){
 		
-		Set<CompositeEffectDTO> completeComposites = new HashSet<CompositeEffectDTO>();
+		Set<CompositeDTO> completeComposites = new HashSet<CompositeDTO>();
 		
 		Set<String> ids = new HashSet<String>(); 
 		
-		for(CompositeEffectDTO composite : composites) {
+		for(CompositeDTO composite : composites) {
 			
 			for(CodeSmellDTO smell : composite.getCodeSmells()) {
 				
@@ -372,14 +372,14 @@ public class CompositeEffectAnalyzer {
 		}
 		
 		
-		return new ArrayList<CompositeEffectDTO>(completeComposites);
+		return new ArrayList<CompositeDTO>(completeComposites);
 	}
 	
 	
 	
 	
 	
-	private void writeGroups(Map<String, List<CompositeEffectDTO>> groups, String path) {
+	private void writeGroups(Map<String, List<CompositeDTO>> groups, String path) {
 		
 		
 		CsvWriter csv = new CsvWriter(path, ',',
@@ -411,16 +411,16 @@ public class CompositeEffectAnalyzer {
 			
 			try {
 				
-				List<CompositeEffectDTO> composites = group.getValue();
+				List<CompositeDTO> composites = group.getValue();
 				
-				for(CompositeEffectDTO composite : composites) {
+				for(CompositeDTO composite : composites) {
 					
 					for(CodeSmellDTO smell : composite.getCodeSmells()) {
 						
 						csv.write(group.getKey());
 						csv.write(String.valueOf(composites.size()));
 					    csv.write(composite.getId());
-						String refactorings = composite.getRefactorings();
+						String refactorings = composite.getRefactoringsAsText();
 						csv.write(refactorings);
 						csv.write(composite.getProject());
 						csv.write(composite.getPreviousCommit());
@@ -451,7 +451,7 @@ public class CompositeEffectAnalyzer {
 		
 	}
 	
-	private void writeCompositeGroups(Map<String, List<CompositeEffectDTO>> groups, String path) {
+	private void writeCompositeGroups(Map<String, List<CompositeDTO>> groups, String path) {
 		
 		
 		CsvWriter csv = new CsvWriter(path, ',',
@@ -473,11 +473,11 @@ public class CompositeEffectAnalyzer {
 			
 			try {
 				
-				List<CompositeEffectDTO> composites = group.getValue();
+				List<CompositeDTO> composites = group.getValue();
 				
 				List<String> ids = new ArrayList<String>();
 				
-				for(CompositeEffectDTO composite : composites) {
+				for(CompositeDTO composite : composites) {
 					
 					ids.add(composite.getId());
 				}
@@ -497,9 +497,9 @@ public class CompositeEffectAnalyzer {
 		
 	}
 	
-	private void getCodeSmellEffect(List<CompositeEffectDTO> compositeEffectDTOs){
+	private void getCodeSmellEffect(List<CompositeDTO> compositeEffectDTOs){
 
-		for(CompositeEffectDTO composite : compositeEffectDTOs) {
+		for(CompositeDTO composite : compositeEffectDTOs) {
             HashMap<String, CodeSmellDTO> codeSmells = new HashMap<>();
 
 
@@ -535,12 +535,12 @@ public class CompositeEffectAnalyzer {
         }
 	}
 
-	private List<CompositeEffectDTO> convertCompositeToCompositeEffectDTO(List<CompositeRefactoring> composites){
-		List<CompositeEffectDTO> compositeEffectDTOList = new ArrayList<CompositeEffectDTO>();
+	private List<CompositeDTO> convertCompositeToCompositeEffectDTO(List<CompositeRefactoring> composites){
+		List<CompositeDTO> compositeEffectDTOList = new ArrayList<CompositeDTO>();
 		RefactoringAnalyzer refAnalyzer = new RefactoringAnalyzer();
 
 		for (CompositeRefactoring composite : composites){
-			CompositeEffectDTO compositeEffectDTO = new CompositeEffectDTO();
+			CompositeDTO compositeEffectDTO = new CompositeDTO();
 			compositeEffectDTO.setId(composite.getId());
 			//compositeEffectDTO.setProject(composite.getRefactorings().get(0).getProject());
 			//List<String> refs = refAnalyzer.convertRefactoringListInText(composite.getRefactorings());
@@ -554,10 +554,10 @@ public class CompositeEffectAnalyzer {
 	}
 
 
-	private List<CompositeEffectDTO> getCompositeEffectDetails(List<CompositeEffectDTO> composites){
+	private List<CompositeDTO> getCompositeEffectDetails(List<CompositeDTO> composites){
 	
 		
-		for(CompositeEffectDTO composite : composites) {
+		for(CompositeDTO composite : composites) {
 			
 			
 			for(CodeSmellDTO smell : composite.getCodeSmells()) {
@@ -590,11 +590,11 @@ public class CompositeEffectAnalyzer {
 		return composites; 
 	}
 
-	public List<CompositeEffectDTO> getCompositesThatHaveSpecificSmellTypes(List<String> smellTypes, List<CompositeEffectDTO> composites){
+	public List<CompositeDTO> getCompositesThatHaveSpecificSmellTypes(List<String> smellTypes, List<CompositeDTO> composites){
 
-		List<CompositeEffectDTO> compositesThatHaveSpecificSmells = new ArrayList<>();
+		List<CompositeDTO> compositesThatHaveSpecificSmells = new ArrayList<>();
 
-		for(CompositeEffectDTO compositeEffectDTO : composites){
+		for(CompositeDTO compositeEffectDTO : composites){
 			List<String> existingSmells = new ArrayList<>();
 
 			for (String smellType : smellTypes) {
@@ -617,11 +617,11 @@ public class CompositeEffectAnalyzer {
 
 	}
 
-	public List<CompositeEffectDTO> getCompositesWithSmellTypesAddition(List<String> smellTypes,  List<CompositeEffectDTO> composites){
+	public List<CompositeDTO> getCompositesWithSmellTypesAddition(List<String> smellTypes, List<CompositeDTO> composites){
 
-		List<CompositeEffectDTO> compositesWithAdditionOfSpecificSmells = new ArrayList<>();
+		List<CompositeDTO> compositesWithAdditionOfSpecificSmells = new ArrayList<>();
 
-		for(CompositeEffectDTO compositeEffectDTO : composites){
+		for(CompositeDTO compositeEffectDTO : composites){
 			List<String> existingSmells = new ArrayList<>();
 
 			for (String smellType : smellTypes) {
@@ -647,11 +647,11 @@ public class CompositeEffectAnalyzer {
 
 	}
 
-	public List<CompositeEffectDTO> getCompositesWithSmellTypesRemoval(List<String> smellTypes,  List<CompositeEffectDTO> composites){
+	public List<CompositeDTO> getCompositesWithSmellTypesRemoval(List<String> smellTypes, List<CompositeDTO> composites){
 
-		List<CompositeEffectDTO> compositesWithRemovalOfSmellTypes = new ArrayList<>();
+		List<CompositeDTO> compositesWithRemovalOfSmellTypes = new ArrayList<>();
 
-		for(CompositeEffectDTO compositeEffectDTO : composites){
+		for(CompositeDTO compositeEffectDTO : composites){
 			List<String> existingSmells = new ArrayList<>();
 
 			for (String smellType : smellTypes) {
@@ -675,11 +675,11 @@ public class CompositeEffectAnalyzer {
 		return compositesWithRemovalOfSmellTypes;
 	}
 
-	public List<CompositeEffectDTO> getCompositesWithTotalSmellTypesRemoval(List<String> smellTypes,  List<CompositeEffectDTO> composites){
+	public List<CompositeDTO> getCompositesWithTotalSmellTypesRemoval(List<String> smellTypes, List<CompositeDTO> composites){
 
-		List<CompositeEffectDTO> compositesWithTotalRemovalOfSmellTypes = new ArrayList<>();
+		List<CompositeDTO> compositesWithTotalRemovalOfSmellTypes = new ArrayList<>();
 
-		for(CompositeEffectDTO compositeEffectDTO : composites){
+		for(CompositeDTO compositeEffectDTO : composites){
 			List<String> existingSmells = new ArrayList<>();
 
 			for (String smellType : smellTypes) {
