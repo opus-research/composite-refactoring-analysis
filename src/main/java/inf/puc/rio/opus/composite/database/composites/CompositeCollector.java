@@ -6,6 +6,7 @@ import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.Refactoring;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CompositeCollector {
@@ -15,6 +16,7 @@ public class CompositeCollector {
 
     private CompositeCollector(String[] args){
         compositeRepository= new CompositeRepository(args);
+        refactoringRepository= new RefactoringRepository(args);
     }
 
     public static void main(String[] args) {
@@ -39,6 +41,7 @@ public class CompositeCollector {
                 refactorings.add(refactoring.getRefactoringType());
             }
 
+            Collections.sort(refactorings);
             System.out.println("Refactorings: " + refactorings);
         }
     }

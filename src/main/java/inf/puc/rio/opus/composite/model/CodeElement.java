@@ -22,13 +22,13 @@ public class CodeElement {
 	@JsonProperty("methodName")
 	private String methodName;
 	@JsonProperty("attributeName")
-	private Object attributeName;
+	private String attributeName;
 	@JsonProperty("className")
 	private String className;
 	@JsonProperty("packageName")
-	private Object packageName;
+	private String packageName;
 	@JsonProperty("details")
-	private Object details;
+	private String details;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -43,12 +43,12 @@ public class CodeElement {
 	}
 
 	@JsonProperty("attributeName")
-	public Object getAttributeName() {
+	public String getAttributeName() {
 		return attributeName;
 	}
 
 	@JsonProperty("attributeName")
-	public void setAttributeName(Object attributeName) {
+	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
 	}
 
@@ -63,22 +63,22 @@ public class CodeElement {
 	}
 
 	@JsonProperty("packageName")
-	public Object getPackageName() {
+	public String getPackageName() {
 		return packageName;
 	}
 
 	@JsonProperty("packageName")
-	public void setPackageName(Object packageName) {
+	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
 
 	@JsonProperty("details")
-	public Object getDetails() {
+	public String getDetails() {
 		return details;
 	}
 
 	@JsonProperty("details")
-	public void setDetails(Object details) {
+	public void setDetails(String details) {
 		this.details = details;
 	}
 
