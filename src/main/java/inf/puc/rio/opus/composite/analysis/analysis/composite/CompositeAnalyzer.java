@@ -34,16 +34,13 @@ public class CompositeAnalyzer {
 
         Map<String, List<CompositeDTO>> groups = analyzer.groupAnalyzer.createCompositeGroupsFromRefactoringAsList(composites);
 
-        List<CompositeGroup> groupsSet = analyzer.groupAnalyzer.summarizeGroupSet(groups);
+        List<CompositeGroup> groupList = analyzer.groupAnalyzer.summarizeGroupSet(groups);
 
-        for (CompositeGroup compositeGroup : groupsSet) {
-
-            System.out.println(compositeGroup.getGroupSet().toString().toLowerCase(Locale.ROOT));
-
-        }
-
+        System.out.println(groupList.get(2).getGroupSet());
+        CompositeUtils.generateCombinations(groupList.get(2).getGroupSet(),2);
 
     }
+
 
     public List<CompositeRefactoring> getCompositeFromJson(String compositePath)
     {

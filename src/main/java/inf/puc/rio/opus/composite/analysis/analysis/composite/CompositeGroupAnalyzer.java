@@ -64,7 +64,6 @@ public class CompositeGroupAnalyzer {
 
 		Map<String, List<CompositeDTO>> groups = new HashMap<String, List<CompositeDTO>>();
 
-		System.out.println(composites.size());
 
 		for(CompositeDTO composite : composites) {
 
@@ -185,8 +184,6 @@ public class CompositeGroupAnalyzer {
 
 					}
 
-					System.out.println(refTypeEnum.name().toLowerCase(Locale.ROOT));
-
 				}
 			}
 
@@ -198,12 +195,57 @@ public class CompositeGroupAnalyzer {
 		for (CompositeGroup E : summarizedGroups) {
 			refsGroup += E.getComposites().size();
 		}
-		System.out.println("Size");
-		System.out.println(refactoringsQuantity[0]);
-		System.out.println(refsGroup);
 
 
 		return summarizedGroups;
+	}
+
+
+	public Map<String, Integer> rankGroupCombinations(List<CompositeGroup> groups){
+
+		Map<String, Integer> rankGroupCombinations = new HashMap<String, Integer>();
+
+		for (CompositeGroup group: groups) {
+
+			int size = group.getGroupSet().size();
+
+			for(int r = 2; r <= size; r++){
+				List<String> combinations = CompositeUtils.generateCombinations(group.getGroupSet(), r);
+
+				for (String combination : combinations) {
+
+
+                    if(!rankGroupCombinations.containsKey(combination)){
+
+						Integer quantityComposites = countCombination(combination, groups, r);
+						rankGroupCombinations.put(combination, quantityComposites);
+					}
+				}
+			}
+		}
+
+
+		return rankGroupCombinations;
+	}
+
+	private Integer countCombination(String combinationMaster, List<CompositeGroup> groups, int r) {
+
+		Integer compositeQuantity = 0;
+		for (CompositeGroup group : groups) {
+
+			Integer numberOfCompositesPerGroup = group.getComposites().size();
+
+			List<String> combinations = CompositeUtils.generateCombinations(group.getGroupSet(), r);
+
+			for (String combination : combinations) {
+				if(combinationMaster.equals(combination)){
+					compositeQuantity += numberOfCompositesPerGroup;
+				}
+
+			}
+		}
+
+		return compositeQuantity;
 	}
 
 	public void writeCompositeGroup(List<CompositeGroup> summarizedGroups, String path) {

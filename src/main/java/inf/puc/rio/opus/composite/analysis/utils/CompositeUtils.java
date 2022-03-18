@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
+import org.paukov.combinatorics3.Generator;
 
 public class CompositeUtils {
+
 
 	public static List<String> convertRefactoringsTextToRefactoringsList(String refactoringsText){
 		
@@ -78,6 +81,20 @@ public class CompositeUtils {
 		}
 
 		return filteredComposites;
+	}
+
+
+	public static List<String> generateCombinations(Collection<String> collection, int r){
+		List<Object> combinations =  Generator.combination(collection)
+				.simple(r)
+				.stream().collect(Collectors.toList());
+
+		List<String> combinationList = combinations.stream()
+				.map(object -> Objects.toString(object, null))
+				.collect(Collectors.toList());
+
+	   	System.out.println(combinationList);
+		return combinationList;
 	}
 
 }
