@@ -276,6 +276,30 @@ public class CompositeGroupAnalyzer {
 
 	}
 
+	public void writeRankOfCompositeGroup(Map<String, Integer> rank, String path) {
+
+		CsvWriter csv = new CsvWriter(path, ',', Charset.forName("ISO-8859-1"));
+
+		try {
+			csv.write("Combination");
+			csv.write("# Composites");
+			csv.endRecord();
+
+			for (Map.Entry<String, Integer> itemRank : rank.entrySet()) {
+				csv.write(itemRank.getKey());
+				csv.write(String.valueOf(itemRank.getValue()));
+				csv.endRecord();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		csv.close();
+
+
+	}
+
 	public Map<String, Set<CodeSmellDTO>> getEffectByGroup(List<CompositeGroup> summarizedGroup, String groupName, String groupID){
 
 	    Map<String, Set<CodeSmellDTO>> effectByGroup = new HashMap<String, Set<CodeSmellDTO>>();
