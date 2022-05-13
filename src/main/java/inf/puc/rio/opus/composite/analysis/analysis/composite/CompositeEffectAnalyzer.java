@@ -102,7 +102,7 @@ public class CompositeEffectAnalyzer {
 					
 					System.out.println(composite.getId());
 					
-					csv.write(composite.getRefactoringsAsText());
+					csv.write(composite.getRefactorings());
 					csv.write(composite.getProject());
 					csv.write(composite.getPreviousCommit());
 					csv.write(composite.getCurrentCommit());
@@ -169,7 +169,7 @@ public class CompositeEffectAnalyzer {
 					
 					String refactorings = record.get("Refactorings");
 					refactorings = refactorings.replace("\"", "");
-					compositeDTO.setRefactoringsAsText(refactorings);
+					compositeDTO.setRefactorings(refactorings);
 					
 					String project = record.get("projectName");
 					compositeDTO.setProject(project);
@@ -273,7 +273,7 @@ public class CompositeEffectAnalyzer {
 					compositeDTO.setId(compositeId);
 					
 					String refactorings = record.get("Refactorings");
-					compositeDTO.setRefactoringsAsText(refactorings);
+					compositeDTO.setRefactorings(refactorings);
 					
 					String project = record.get("Project");
 					compositeDTO.setProject(project);
@@ -420,7 +420,7 @@ public class CompositeEffectAnalyzer {
 						csv.write(group.getKey());
 						csv.write(String.valueOf(composites.size()));
 					    csv.write(composite.getId());
-						String refactorings = composite.getRefactoringsAsText();
+						String refactorings = composite.getRefactorings();
 						csv.write(refactorings);
 						csv.write(composite.getProject());
 						csv.write(composite.getPreviousCommit());

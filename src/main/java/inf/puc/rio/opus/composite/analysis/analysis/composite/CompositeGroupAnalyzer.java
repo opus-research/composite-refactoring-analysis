@@ -21,11 +21,11 @@ public class CompositeGroupAnalyzer {
 
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
 
-		List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+		Set<String> projects = groupAnalyzer.getProjectsOfSummarizedGroupFromPath("summarized-groups.json");
 
-		Set<String> projects = groupAnalyzer.getProjectsSetFromSummarizedGroups(summarizedGroups);
-
-		int countCompositesOfSummmarizedGroups = groupAnalyzer.countCompositesFromSummarizedGroups(summarizedGroups);
+		for (String project : projects) {
+			System.out.println(project);
+		}
 
 	}
 	
@@ -37,7 +37,7 @@ public class CompositeGroupAnalyzer {
 		
 		for(CompositeDTO composite : composites) {
 			
-			List<String> refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactoringsAsText());
+			List<String> refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
 
 			Collections.sort(refs);
 			
@@ -67,7 +67,7 @@ public class CompositeGroupAnalyzer {
 
 		for(CompositeDTO composite : composites) {
 
-			List<String> refs = composite.getRefactoringNamesAsList();
+			List<String> refs = composite.getRefactoringsAsTextList();
 
 			String groupId = refs.toString();
 
@@ -452,7 +452,7 @@ public class CompositeGroupAnalyzer {
 				//	refAnalyzer.getRefactoringsFromRefMiner("C:\\Users\\anaca\\" + composites.get(i).getProject(), composites.get(i).getCurrentCommit());
 
 			if(refactorings != null && refactorings.size() > 1){
-				composites.get(i).setRefactoringsAsText(refactorings.toString());
+				composites.get(i).setRefactorings(refactorings.toString());
 			}
 
 		}
@@ -465,9 +465,9 @@ public class CompositeGroupAnalyzer {
 
 		for(CompositeGroup summarizedGroup : summarizedGroups){
 
-			for(CompositeDTO compositeEffectDTO: summarizedGroup.getComposites()){
+			for(CompositeDTO compositeDTO: summarizedGroup.getComposites()){
 
-				projects.add(compositeEffectDTO.getProject());
+				projects.add(compositeDTO.getProject());
 			}
 
 		}
@@ -528,5 +528,23 @@ public class CompositeGroupAnalyzer {
 
 	}
 
+	private Set<String> getProjectsOfSummarizedGroupFromPath(String pathSummarizedGroups) {
+
+		List<CompositeGroup> summarizedGroups = getCompositeGroupFromJson(pathSummarizedGroups);
+        Set<String> projects = new HashSet<>();
+
+		for (CompositeGroup summarizedGroup : summarizedGroups) {
+
+			for (CompositeDTO composite : summarizedGroup.getComposites()) {
+				  projects.add(composite.getProject());
+			}
+
+		}
+
+		return projects;
+	}
+
 
 }
+
+

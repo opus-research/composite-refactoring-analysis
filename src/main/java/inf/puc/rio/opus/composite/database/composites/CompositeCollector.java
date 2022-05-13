@@ -46,7 +46,7 @@ public class CompositeCollector {
 
             CompositeDTO compositeDTO = CompositeUtils.setCompositeDTO(composite);
             Collections.sort(refactorings);
-            compositeDTO.setRefactoringNamesAsList(refactorings);
+            compositeDTO.setRefactoringsAsTextList(refactorings);
             composites.add(compositeDTO);
         }
 

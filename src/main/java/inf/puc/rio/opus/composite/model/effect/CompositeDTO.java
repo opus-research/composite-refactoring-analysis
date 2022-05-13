@@ -8,9 +8,9 @@ import java.util.List;
 public class CompositeDTO {
 
 	private String Id;
-	private String refactoringsAsText;
-	private List<Refactoring> refactorings;
-	private List<String> refactoringNamesAsList;
+	private String refactorings;
+	private List<Refactoring> refactoringsList;
+	private List<String> refactoringsAsTextList;
 	private String project;
 	private String previousCommit;
 	private String currentCommit;
@@ -22,8 +22,8 @@ public class CompositeDTO {
 		return Id;
 	}
 	
-	public String getRefactoringsAsText() {
-		return refactoringsAsText;
+	public String getRefactorings() {
+		return refactorings;
 	}
 	
 	public List<CodeSmellDTO> getCodeSmells() {
@@ -37,8 +37,8 @@ public class CompositeDTO {
 		}		
 	}
 
-	public void setRefactoringsAsText(String refactoringsAsText) {
-		this.refactoringsAsText = refactoringsAsText;
+	public void setRefactorings(String refactorings) {
+		this.refactorings = refactorings;
 	}
 	
 	public void setProject(String project) {
@@ -113,23 +113,21 @@ public class CompositeDTO {
 		}
 	}
 
-	public List<Refactoring> getRefactorings() {
-		return refactorings;
+	public List<Refactoring> getRefactoringsList() {
+		return refactoringsList;
 	}
 
-	public void setRefactorings(List<Refactoring> refactorings) {
-		this.refactorings = refactorings;
+	public void setRefactoringsList(List<Refactoring> refactoringsList) {
+		this.refactoringsList = refactoringsList;
 	}
 
-	public List<String> getRefactoringNamesAsList() {
-		return refactoringNamesAsList;
+	public List<String> getRefactoringsAsTextList() {
+		return refactoringsAsTextList;
 	}
 
-	public void setRefactoringNamesAsList(List<String> refactoringNamesAsList) {
-		this.refactoringNamesAsList = refactoringNamesAsList;
+	public void setRefactoringsAsTextList(List<String> refactoringsAsTextList) {
+		this.refactoringsAsTextList = refactoringsAsTextList;
 	}
 
-	public void setCodeSmells(List<CodeSmellDTO> codeSmells) {
-		this.codeSmells = codeSmells;
-	}
+
 }
