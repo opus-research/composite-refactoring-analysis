@@ -64,7 +64,6 @@ public class CompositeGroupAnalyzer {
 
 		Map<String, List<CompositeDTO>> groups = new HashMap<String, List<CompositeDTO>>();
 
-
 		for(CompositeDTO composite : composites) {
 
 			List<String> refs = composite.getRefactoringsAsTextList();

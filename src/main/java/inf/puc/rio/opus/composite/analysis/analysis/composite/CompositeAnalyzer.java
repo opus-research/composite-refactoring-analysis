@@ -20,25 +20,42 @@ public class CompositeAnalyzer {
         this.groupAnalyzer = new CompositeGroupAnalyzer();
     }
 
+   /*
+   * Ver quais complete composites dos projetos restantes se enquadram nos 5 cenarios do Catalogo
+   * Para isso precisa-se primeiro gerar um summarized-groups no formato antigo para esses projetos
+   * a partir dos CSV
+   * */
+
     public static void main(String[] args) {
 
         CompositeAnalyzer analyzer = new CompositeAnalyzer();
         analyzer.collector = new CompositeCollector(args);
 
-        String compositeIds = "ant-582, spymemcached-75, ant-1159, junit4-302, spymemcached-14, ant-2991, ant-644, ant-1153, ant-560, ant-1268, ant-1144, ant-1373, ant-850, ant-2554, spymemcached-132, ant-1865, ant-1145, ant-1019, ant-1099" +
-                ",ant-606, ant-1417, ant-3125, ant-1148, deltachat-android-101, leakcanary-36, ant-2098, ant-732, ant-1264, ant-586, genie-1115, ant-593, ant-1456, ant-728, ant-1607, spymemcached-8, ant-597, ant-1163, ant-1138, ant-285, genie-1489, genie-1240, spymemcached-150, genie-1518";
+        // Procedure 1 - Collect summarized groups of remaining projects
+        // Get Composite and Smells data from CSV
+        // List<CompositeDTO> compositeDTO = compositeEffectAnalyzer.getCompositeEffectDTO(csv);
 
-        List<CompositeDTO> composites = analyzer.collector.getCompositesByIds(compositeIds);
+        // Get Composite Effect from composite dto list
+        // List<CompositeDTO> compositeDTO  = getCompleteComposite(List<CompositeDTO> composites)
+        // Write composite effect in json
 
-        Map<String, List<CompositeDTO>> groups = analyzer.groupAnalyzer.createCompositeGroupsFromRefactoringAsList(composites);
+        // Get groups
+        // Map<String, List<CompositeDTO>> groups = createCompositeGroupsFromRefactoringAsList(List<CompositeDTO> composites)
+        // Write groups in json
 
-        List<CompositeGroup> groupList = analyzer.groupAnalyzer.summarizeGroupSet(groups);
+        // Get summarized groups
+        // List<CompositeGroup> summarized groups - summarizeGroups(Map<String, List<CompositeDTO>> groups)
+        // Write summarized group in json
 
-        Map<String, Integer> rank = analyzer.groupAnalyzer.rankGroupCombinations(groupList);
+        // Procedure 2 - Collect composite ids for each scenario of catalog from remaining projects
+        // catalogAnalyzer.getCatalogFirstRecommendationResult (summarized-remaining-projects.json)
+        // add composite ids in catalog table
 
-        analyzer.groupAnalyzer.writeRankOfCompositeGroup(rank, "S4.csv");
-
+        // Procedure 3
+        // Collect ranking for each scenario in catalog like other time
     }
+
+
 
 
     public List<CompositeRefactoring> getCompositeFromJson(String compositePath)
