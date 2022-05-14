@@ -55,10 +55,11 @@ public class CompositeGroup {
 	public List<CompositeDTO> getComposites() {
 		return composites;
 	}
-	
-	
-	
-	
-	
-	
+
+	public void setComposites(List<CompositeDTO> composites) {
+		if(composites != null || composites.size() >0){
+			this.composites = composites;
+		}
+
+	}
 }

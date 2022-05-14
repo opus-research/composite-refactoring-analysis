@@ -554,7 +554,7 @@ public class CompositeEffectAnalyzer {
 	}
 
 
-	private List<CompositeDTO> getCompositeEffectDetails(List<CompositeDTO> composites){
+	public List<CompositeDTO> getCompositeEffectDetails(List<CompositeDTO> composites){
 	
 		
 		for(CompositeDTO composite : composites) {
