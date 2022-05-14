@@ -68,6 +68,9 @@ public class CompositeGroupAnalyzer {
 
 			List<String> refs = composite.getRefactoringsAsTextList();
 
+			if(refs == null){
+				System.out.println("Sim");
+			}
 			String groupId = refs.toString();
 
 			if(groups.containsKey(groupId)) {
@@ -128,9 +131,6 @@ public class CompositeGroupAnalyzer {
 					
 					if(equalsToRefactoringTypes(refType, refTypeEnum)) {
 
-						if(refTypeEnum.name().equals("REFACT_VARIABLE")){
-							System.out.println("x");
-						}
 						groupSet.add(refTypeEnum.name().trim());
 						
 					}
@@ -245,6 +245,17 @@ public class CompositeGroupAnalyzer {
 		}
 
 		return compositeQuantity;
+	}
+
+	public void writeCompositeGroupAsJson(Map<String, List<CompositeDTO>>  compositeGroups, String fileName) {
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(new File(fileName),   compositeGroups);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void writeCompositeGroup(List<CompositeGroup> summarizedGroups, String path) {
@@ -544,6 +555,15 @@ public class CompositeGroupAnalyzer {
 	}
 
 
+	public void writeSummarizedGroupAsJson(List<CompositeGroup> summarizedGroups, String fileName) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(new File(fileName),   summarizedGroups);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 

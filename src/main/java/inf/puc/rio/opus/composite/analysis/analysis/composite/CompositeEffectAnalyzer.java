@@ -235,7 +235,7 @@ public class CompositeEffectAnalyzer {
 	}
 
 	
-	private List<CompositeDTO> getCompositeEffectDTO(String path){
+	public List<CompositeDTO> getCompositeEffectDTO(String path){
 		
 		
 		List<CompositeDTO> composites = new ArrayList<CompositeDTO>();
@@ -339,7 +339,7 @@ public class CompositeEffectAnalyzer {
 	}
 	
 	//TODO - Implementar esse metodo em termos de valores de removed, added e not_affected
-	private List<CompositeDTO> getCompleteComposite(List<CompositeDTO> composites){
+	public List<CompositeDTO> getCompleteComposite(List<CompositeDTO> composites){
 		
 		Set<CompositeDTO> completeComposites = new HashSet<CompositeDTO>();
 		
@@ -703,4 +703,14 @@ public class CompositeEffectAnalyzer {
 		return compositesWithTotalRemovalOfSmellTypes;
 	}
 
+	public void writeCompositeEffectAsJson(List<CompositeDTO> compositeDTOList, String fileName) {
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(new File(fileName),  compositeDTOList);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
