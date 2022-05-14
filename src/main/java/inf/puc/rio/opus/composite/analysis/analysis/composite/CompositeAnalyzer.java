@@ -16,10 +16,12 @@ public class CompositeAnalyzer {
     public CompositeCollector collector;
     public CompositeGroupAnalyzer groupAnalyzer;
     public CompositeEffectAnalyzer effectAnalyzer;
+    public CompositeCatalogAnalyzer catalogAnalyzer;
 
     public CompositeAnalyzer() {
         this.groupAnalyzer = new CompositeGroupAnalyzer();
         this.effectAnalyzer = new CompositeEffectAnalyzer();
+        this.catalogAnalyzer = new CompositeCatalogAnalyzer();
     }
 
    /*
@@ -27,35 +29,32 @@ public class CompositeAnalyzer {
    * Para isso precisa-se primeiro gerar um summarized-groups no formato antigo para esses projetos
    * a partir dos CSV
    * */
-
     public static void main(String[] args) {
 
         CompositeAnalyzer analyzer = new CompositeAnalyzer();
         analyzer.collector = new CompositeCollector(args);
 
         String projectName = "okhttp";
-        // Procedure 1 - Collect summarized groups of remaining projects
-        // Get Composite and Smells data from CSV
-        List<CompositeDTO> compositeDTOList = analyzer.effectAnalyzer.getCompositeEffectDTO("effect-composites-" + projectName +".csv");
-
-
-        // Get Composite Effect from composite dto list
-        compositeDTOList  = analyzer.effectAnalyzer.getCompleteComposite(compositeDTOList);
-        analyzer.effectAnalyzer.writeCompositeEffectAsJson( compositeDTOList, "composite-effect-"+ projectName + ".json");
-
-        // Get groups
-        Map<String, List<CompositeDTO>> groups = analyzer.groupAnalyzer.createCompositeGroups(compositeDTOList);
-        analyzer.groupAnalyzer.writeCompositeGroupAsJson(groups, "composite-group-"+ projectName +".json");
-
-        // Get summarized groups
-        List<CompositeGroup> summarizedGroups = analyzer.groupAnalyzer.summarizeGroups(groups);
-        analyzer.groupAnalyzer.writeSummarizedGroupAsJson(summarizedGroups, "summarized-group-"+ projectName +".json");
-
+        List<CompositeGroup> remainingSummarizedGroups = new ArrayList<>();
 
         // Procedure 2 - Collect composite ids for each scenario of catalog from remaining projects
         // catalogAnalyzer.getCatalogFirstRecommendationResult (summarized-remaining-projects.json)
         // add composite ids in catalog table
+        List<CompositeGroup> summarizedGroupDubbo = analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-group-dubbo.json");
+        List<CompositeGroup> summarizedGroupOkhttp = analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-group-okhttp.json");
+        List<CompositeGroup> summarizedGroupCouchbase = analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-group-couchbase-java-client.json");
+        List<CompositeGroup> summarizedGroupFresco = analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-group-fresco.json");
+        List<CompositeGroup> summarizedGroupJgit = analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-group-jgit.json");
 
+        remainingSummarizedGroups.addAll(summarizedGroupDubbo);
+        remainingSummarizedGroups.addAll(summarizedGroupOkhttp);
+        remainingSummarizedGroups.addAll(summarizedGroupCouchbase);
+        remainingSummarizedGroups.addAll(summarizedGroupFresco);
+        remainingSummarizedGroups.addAll(summarizedGroupJgit);
+
+        analyzer.groupAnalyzer.writeSummarizedGroupAsJson(remainingSummarizedGroups, "remaining-summarized-group.json");
+
+        // analyzer.catalogAnalyzer.getCatalogFirstRecommendationResult();
         // Procedure 3
         // Collect ranking for each scenario in catalog like other time
     }

@@ -8,24 +8,13 @@ import java.util.List;
 
 public class CompositeCatalogAnalyzer {
 
+    private CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
+    private CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
 
-    CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
-    CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
-    CompositeAnalyzer compositeAnalyzer = new CompositeAnalyzer();
 
-    public static void main(String[] args) {
+    public void getCatalogFirstRecommendationResult(String path){
 
-        CompositeCatalogAnalyzer catalogAnalyzer = new CompositeCatalogAnalyzer();
-        //  catalogAnalyzer.getCatalogFirstRecommendationResult();
-        catalogAnalyzer.getCatalogSecondRecommendationResult();
-        // catalogAnalyzer.getCatalogThirdRecommendationResult();
-        // catalogAnalyzer.getCatalogFourthRecommendationResult();
-       // catalogAnalyzer.getCatalogFifthRecommendationResult();
-    }
-
-    private void getCatalogFirstRecommendationResult(){
-
-        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson(path);
 
         System.out.println("RESULT OF FIRST RECOMMENDATION OF CATALOG");
         List<String> groupNames = new ArrayList<>();
@@ -76,9 +65,9 @@ public class CompositeCatalogAnalyzer {
 
     }
 
-    private void getCatalogSecondRecommendationResult(){
+    public void getCatalogSecondRecommendationResult(String path){
 
-        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson(path);
         System.out.println("RESULT OF SECOND RECOMMENDATION OF CATALOG");
 
         List<String> groupNames = new ArrayList<>();
@@ -129,9 +118,9 @@ public class CompositeCatalogAnalyzer {
 
     }
 
-    private void getCatalogThirdRecommendationResult(){
+    public void getCatalogThirdRecommendationResult(String path){
 
-        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson(path);
         System.out.println("RESULT OF THIRD RECOMMENDATION OF CATALOG");
 
         List<String> groupNames = new ArrayList<>();
@@ -173,9 +162,9 @@ public class CompositeCatalogAnalyzer {
 
     }
 
-    private void getCatalogFourthRecommendationResult(){
+    public void getCatalogFourthRecommendationResult(String path){
 
-        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson(path);
         System.out.println("RESULT OF Fourth RECOMMENDATION OF CATALOG");
 
         List<String> groupNames = new ArrayList<>();
@@ -225,9 +214,9 @@ public class CompositeCatalogAnalyzer {
     }
 
 
-    private void getCatalogFifthRecommendationResult(){
+    public void getCatalogFifthRecommendationResult(String path){
 
-        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson("summarized-groups.json");
+        List<CompositeGroup> summarizedGroups = groupAnalyzer.getCompositeGroupFromJson(path);
         System.out.println("RESULT OF FIFTH RECOMMENDATION OF CATALOG");
 
         List<String> groupNames = new ArrayList<>();
