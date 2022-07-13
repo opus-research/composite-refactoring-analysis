@@ -14,25 +14,62 @@ import inf.puc.rio.opus.composite.model.*;
 
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
+import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class CompositeEffectAnalyzer {
 
-
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
-		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
-		CompositeAnalyzer compositeAnalyzer = new CompositeAnalyzer();
-
-
 
 	}
 
 
+	public void writeCompositeEffectAsCSV(List<CompositeDTO> composites) {
 
+		List<CompositeDTO> compositeDTOS = new ArrayList<>();
+		CsvWriter csv = new CsvWriter("composite-effect.csv", ',', Charset.forName("ISO-8859-1"));
+
+		try {
+			csv.write("CompositeID");
+			csv.write("Project");
+			csv.write("Refactorings");
+			//TODO - tem que pegar o details, ele n tem no DTO do summarized
+			//TODO - tem que fazer um tratamento para pegar so ate 7 refactorings
+			csv.write("Refactoring Details");
+			csv.write("Previous Commit");
+			csv.write("Current Commit");
+			csv.write("Code Smells Before");
+			csv.write("Code Smells After");
+
+			String refactoringDetails = "";
+			String codeSmellBeforeAsText = "";
+			String codeSmellAfterAsText = "";
+
+			csv.endRecord();
+
+			for (CompositeDTO compositeDTO : compositeDTOS) {
+				csv.write(compositeDTO.getId());
+
+				csv.write(compositeDTO.getProject());
+				csv.write(compositeDTO.getRefactorings());
+				csv.write(refactoringDetails);
+				csv.write(compositeDTO.getPreviousCommit());
+				csv.write(compositeDTO.getCurrentCommit());
+				csv.write(codeSmellBeforeAsText);
+				csv.write(codeSmellAfterAsText);
+
+				csv.endRecord();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	private List<CompositeDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
 		ObjectMapper mapper = new ObjectMapper();
@@ -286,9 +323,7 @@ public class CompositeEffectAnalyzer {
 					
 					
 				}
-				
-			
-					
+
 				String smell = record.get("SmellType");
 				String smellBefore = record.get("SmellBefore");
 				String smellAfter = record.get("SmellAfter");

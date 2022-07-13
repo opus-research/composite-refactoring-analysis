@@ -4,17 +4,50 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
+import inf.puc.rio.opus.composite.model.Refactoring;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
+import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 import org.paukov.combinatorics3.Generator;
 
 public class CompositeUtils {
 
 
+
+	public static void countComposites(List<String> projects){
+
+		ObjectMapper mapper = new ObjectMapper();
+		CsvWriter csv = new CsvWriter("general-data-new-projects.csv", ',', Charset.forName("ISO-8859-1"));
+		try {
+			csv.write("Project");
+			csv.write("Refactorings");
+			csv.write("Composites");
+
+			csv.endRecord();
+			for (String project : projects) {
+				Refactoring[] refactorings = mapper.readValue(new File("data/refactorings/" + project + "-refactorings.json"), Refactoring[].class);
+
+				CompositeRefactoring[] composites = mapper.readValue(new File("data/composites/" + project + "-composite-rangebased.json"), CompositeRefactoring[].class);
+
+				csv.write(project);
+				csv.write(String.valueOf(refactorings.length));
+				csv.write(String.valueOf(composites.length));
+
+				csv.endRecord();
+
+			}
+
+			csv.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	public static List<String> convertRefactoringsTextToRefactoringsList(String refactoringsText){
 		
 		List<String> refactorings = new ArrayList<String>();

@@ -28,6 +28,15 @@ public class CompositeGroupAnalyzer {
 		}
 
 	}
+
+
+	public List<CompositeGroup> getSummarizedGroup(List<CompositeDTO> compositeDTOS){
+		Map<String, List<CompositeDTO>> groups = createCompositeGroupsFromRefactoringAsList(compositeDTOS);
+
+		List<CompositeGroup> groupList = summarizeGroupSet(groups);
+
+		return  groupList;
+	}
 	
 	public Map<String, List<CompositeDTO>> createCompositeGroups(List<CompositeDTO> composites){
 		
@@ -54,9 +63,7 @@ public class CompositeGroupAnalyzer {
 			}
 					
 		}
-		
-		
-		
+
 		return groups;
 	}
 
@@ -88,7 +95,6 @@ public class CompositeGroupAnalyzer {
 		return groups;
 	}
 
-
 	public List<CompositeGroup> getCompositeGroupFromJson(String compositeGroupPath){
 		ObjectMapper mapper = new ObjectMapper();
 		List<CompositeGroup> compositeList = new ArrayList<>();
@@ -105,8 +111,7 @@ public class CompositeGroupAnalyzer {
 		}
 		return compositeList;
 	}
-	
-	
+
 	public List<CompositeGroup> summarizeGroups(Map<String, List<CompositeDTO>> groups){
 
 		List<CompositeGroup> summarizedGroups = new ArrayList<CompositeGroup>();

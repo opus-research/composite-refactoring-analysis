@@ -1,7 +1,6 @@
 package inf.puc.rio.opus.composite.analysis.analysis.composite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.database.composites.CompositeCollector;
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
@@ -34,21 +33,19 @@ public class CompositeAnalyzer {
         CompositeAnalyzer analyzer = new CompositeAnalyzer();
         analyzer.collector = new CompositeCollector(args);
 
-
         String compositeIds = "ant-1882, ant-1862, jfreechart-346, dubbo-475, fresco-698, fresco-724, dubbo-143, couchbase-java-client-260, jgit-1617, jgit-1155, dubbo-2718, okhttp-695, fresco-128, jgit-1322, jgit-168, jgit-1094";
-        List<CompositeDTO> composites = analyzer.collector.getCompositesByIds(compositeIds);
+        List<CompositeGroup> summarizedGroups =  analyzer.groupAnalyzer.getCompositeGroupFromJson("");
 
-        Map<String, List<CompositeDTO>> groups = analyzer.groupAnalyzer.createCompositeGroupsFromRefactoringAsList(composites);
+        List<String> compositeIDs = new ArrayList<>();
+        List<CompositeDTO> compositeDTOS = analyzer.getCompositesByIdsFromGroup(compositeIds, summarizedGroups);
+        analyzer.effectAnalyzer.writeCompositeEffectAsCSV(compositeDTOS);
 
-        List<CompositeGroup> groupList = analyzer.groupAnalyzer.summarizeGroupSet(groups);
-
-        Map<String, Integer> rank = analyzer.groupAnalyzer.rankGroupCombinations(groupList);
-
-        analyzer.groupAnalyzer.writeRankOfCompositeGroup(rank, "S5.csv");
 
     }
 
-
+    private List<CompositeDTO> getCompositesByIdsFromGroup(String compositeIds, List<CompositeGroup> summarizedGroups) {
+        return null;
+    }
 
 
     public List<CompositeRefactoring> getCompositeFromJson(String compositePath)
