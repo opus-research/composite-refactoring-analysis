@@ -7,12 +7,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import inf.puc.rio.opus.composite.model.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
-import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 import org.paukov.combinatorics3.Generator;
 
 public class CompositeUtils {
@@ -70,6 +69,34 @@ public class CompositeUtils {
 	public static void countElementsFromTextList(String textList){
 		List<String> myList = new ArrayList<String>(Arrays.asList(textList.split(",")));
 		System.out.println(myList.size());
+	}
+
+	public static String getSmellBeforeDetails(List<CodeSmellDTO> codeSmells) {
+
+		String smellDetails = "";
+
+		for (CodeSmellDTO codeSmell : codeSmells) {
+			smellDetails += codeSmell.getType() + ":" + codeSmell.getBeforeComposite() + "\n";
+		}
+		return smellDetails;
+	}
+
+	public static String getRefactoringDetails(List<Refactoring> refactorings) {
+
+		String details = "";
+		for (Refactoring refactoring : refactorings) {
+			details += refactoring.getRefactoringDetail() + "\n";
+		}
+		return details;
+	}
+
+	public static String getSmellAfterDetails(List<CodeSmellDTO> codeSmells) {
+		String smellDetails = "";
+
+		for (CodeSmellDTO codeSmell : codeSmells) {
+			smellDetails += codeSmell.getType() + ":" + codeSmell.getAfterComposite() + "\n";
+		}
+		return smellDetails;
 	}
 
 	public List<CompositeRefactoring> getComposites(String pathComposites){

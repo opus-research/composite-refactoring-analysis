@@ -9,17 +9,18 @@ import java.util.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringAnalyzer;
+import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
 import inf.puc.rio.opus.composite.model.*;
 
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
-import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class CompositeEffectAnalyzer {
+
 
 	public static void main(String[] args) {
 		
@@ -38,21 +39,22 @@ public class CompositeEffectAnalyzer {
 			csv.write("Project");
 			csv.write("Refactorings");
 			//TODO - tem que pegar o details, ele n tem no DTO do summarized
-			//TODO - tem que fazer um tratamento para pegar so ate 7 refactorings
 			csv.write("Refactoring Details");
 			csv.write("Previous Commit");
 			csv.write("Current Commit");
 			csv.write("Code Smells Before");
 			csv.write("Code Smells After");
 
-			String refactoringDetails = "";
-			String codeSmellBeforeAsText = "";
-			String codeSmellAfterAsText = "";
+
 
 			csv.endRecord();
 
 			for (CompositeDTO compositeDTO : compositeDTOS) {
 				csv.write(compositeDTO.getId());
+
+				String refactoringDetails = CompositeUtils.getRefactoringDetails(compositeDTO.getRefactoringsList());
+				String codeSmellBeforeAsText = CompositeUtils.getSmellBeforeDetails(compositeDTO.getCodeSmells());
+				String codeSmellAfterAsText = CompositeUtils.getSmellAfterDetails(compositeDTO.getCodeSmells());
 
 				csv.write(compositeDTO.getProject());
 				csv.write(compositeDTO.getRefactorings());
