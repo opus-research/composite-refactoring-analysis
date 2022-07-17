@@ -29,9 +29,8 @@ public class CompositeEffectAnalyzer {
 	}
 
 
-	public void writeCompositeEffectAsCSV(List<CompositeDTO> composites) {
+	public void writeCompositeEffectAsCSV(List<CompositeDTO> compositeDTOS) {
 
-		List<CompositeDTO> compositeDTOS = new ArrayList<>();
 		CsvWriter csv = new CsvWriter("composite-effect.csv", ',', Charset.forName("ISO-8859-1"));
 
 		try {
@@ -70,6 +69,8 @@ public class CompositeEffectAnalyzer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		csv.close();
 
 	}
 

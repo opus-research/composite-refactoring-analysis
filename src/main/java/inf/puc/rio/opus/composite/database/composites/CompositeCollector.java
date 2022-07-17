@@ -54,6 +54,31 @@ public class CompositeCollector {
 
     }
 
+
+    public List<CompositeDTO> getCompositesByIdsWithRefsObj(String compositeIDs){
+
+        List<String> compositeIDList = CompositeUtils.convertTextToList(compositeIDs);
+        List<CompositeDTO> composites = new ArrayList<>();
+
+        for (String compositeID : compositeIDList) {
+            CompositeRefactoring composite = compositeRepository.getCompositeById(compositeID);
+
+            List<Refactoring> refactorings = new ArrayList<>();
+
+            for (String refactoringID : composite.getRefactoringIDs()) {
+                Refactoring refactoring = refactoringRepository.getRefactoringById(refactoringID);
+                refactorings.add(refactoring);
+            }
+
+            CompositeDTO compositeDTO = CompositeUtils.setCompositeDTO(composite);
+            compositeDTO.setRefactoringsList(refactorings);
+            composites.add(compositeDTO);
+        }
+
+        return composites;
+
+    }
+
     private List<CompositeRefactoring> getAllComposites(){
         List<CompositeRefactoring> compositeList = compositeRepository.getAllComposites();
 
