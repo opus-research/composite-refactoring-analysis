@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
 "commit",
-"previousCommit",
-"orderCommit"
+"previous_commit",
+"order_commit"
 })
 public class Commit {
 
 	@JsonProperty("commit")
 	private String commit;
-	@JsonProperty("previousCommit")
-	private String previousCommit;
-	@JsonProperty("orderCommit")
-	private Integer orderCommit;
+	@JsonProperty("previous_commit")
+	private String previous_commit;
+	@JsonProperty("order_commit")
+	private Integer order_commit;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -36,24 +36,24 @@ public class Commit {
 		this.commit = commit;
 	}
 
-	@JsonProperty("previousCommit")
-	public String getPreviousCommit() {
-		return previousCommit;
+	@JsonProperty("previous_commit")
+	public String getPrevious_commit() {
+		return previous_commit;
 	}
 
-	@JsonProperty("previousCommit")
-	public void setPreviousCommit(String previousCommit) {
-		this.previousCommit = previousCommit;
+	@JsonProperty("previous_commit")
+	public void setPrevious_commit(String previous_commit) {
+		this.previous_commit = previous_commit;
 	}
 
-	@JsonProperty("orderCommit")
-	public Integer getOrderCommit() {
-		return orderCommit;
+	@JsonProperty("order_commit")
+	public Integer getOrder_commit() {
+		return order_commit;
 	}
 
-	@JsonProperty("orderCommit")
-	public void setOrderCommit(Integer orderCommit) {
-		this.orderCommit = orderCommit;
+	@JsonProperty("order_commit")
+	public void setOrder_commit(Integer order_commit) {
+		this.order_commit = order_commit;
 	}
 
 	@JsonAnyGetter

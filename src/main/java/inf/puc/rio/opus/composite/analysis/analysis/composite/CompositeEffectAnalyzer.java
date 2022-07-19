@@ -39,8 +39,9 @@ public class CompositeEffectAnalyzer {
 			csv.write("Refactorings");
 			//TODO - tem que pegar o details, ele n tem no DTO do summarized
 			csv.write("Refactoring Details");
-			csv.write("Previous Commit");
-			csv.write("Current Commit");
+			csv.write("Commits of Refactorings");
+			csv.write("Previous Commit of Composite");
+			csv.write("Current Commit of Composite");
 			csv.write("Code Smells Before");
 			csv.write("Code Smells After");
 
@@ -49,21 +50,26 @@ public class CompositeEffectAnalyzer {
 			csv.endRecord();
 
 			for (CompositeDTO compositeDTO : compositeDTOS) {
-				csv.write(compositeDTO.getId());
 
-				String refactoringDetails = CompositeUtils.getRefactoringDetails(compositeDTO.getRefactoringsList());
-				String codeSmellBeforeAsText = CompositeUtils.getSmellBeforeDetails(compositeDTO.getCodeSmells());
-				String codeSmellAfterAsText = CompositeUtils.getSmellAfterDetails(compositeDTO.getCodeSmells());
 
-				csv.write(compositeDTO.getProject());
-				csv.write(compositeDTO.getRefactorings());
-				csv.write(refactoringDetails);
-				csv.write(compositeDTO.getPreviousCommit());
-				csv.write(compositeDTO.getCurrentCommit());
-				csv.write(codeSmellBeforeAsText);
-				csv.write(codeSmellAfterAsText);
 
-				csv.endRecord();
+				if(compositeDTO.getRefactoringsList() != null && compositeDTO.getCodeSmells() != null ){
+					String refactoringDetails = CompositeUtils.getRefactoringDetails(compositeDTO.getRefactoringsList());
+					String infoCommit = CompositeUtils.getRefactoringInfoAboutCommit(compositeDTO.getRefactoringsList());
+					String codeSmellBeforeAsText = CompositeUtils.getSmellBeforeDetails(compositeDTO.getCodeSmells());
+					String codeSmellAfterAsText = CompositeUtils.getSmellAfterDetails(compositeDTO.getCodeSmells());
+
+					csv.write(compositeDTO.getId());
+					csv.write(compositeDTO.getProject());
+					csv.write(compositeDTO.getRefactorings());
+					csv.write(refactoringDetails);
+					csv.write(infoCommit);
+					csv.write(compositeDTO.getPreviousCommit());
+					csv.write(compositeDTO.getCurrentCommit());
+					csv.write(codeSmellBeforeAsText);
+					csv.write(codeSmellAfterAsText);
+					csv.endRecord();
+				}
 			}
 
 		} catch (IOException e) {

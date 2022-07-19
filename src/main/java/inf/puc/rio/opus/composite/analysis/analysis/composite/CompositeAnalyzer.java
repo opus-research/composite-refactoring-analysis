@@ -66,23 +66,26 @@ public class CompositeAnalyzer {
         List<CompositeDTO> compositesDTOWithRefactorings = collector.getCompositesByIdsWithRefsObj(compositeIDs);
         for (CompositeGroup summarizedGroup : summarizedGroups) {
 
-            for (CompositeDTO compositeDTO : summarizedGroup.getComposites()) {
+        for (CompositeDTO compositeDTO : summarizedGroup.getComposites()) {
 
                 for (String compositeID : compositeIDList) {
 
                     String compositeIDFormatted = compositeDTO.getProject() + "-" + compositeDTO.getId();
-                    if(compositeIDFormatted.equals(compositeID)){
-                          CompositeDTO compositeWithRefs = compositesDTOWithRefactorings.stream()
-                                .filter(comp -> comp.getId().equals(compositeID))
-                                .findFirst()
-                                .get();
+                    compositeID = compositeID.trim();
+                    if(compositeIDFormatted.equals(compositeID)) {
 
-                        compositeDTO.setRefactoringsList(compositeWithRefs.getRefactoringsList());
-                        compositeDTOS.add(compositeDTO);
+                        for (CompositeDTO compositesDTOWithRefactoring : compositesDTOWithRefactorings) {
+
+                            if (compositesDTOWithRefactoring.getId().equals(compositeID)) {
+                                compositeDTO.setRefactoringsList(compositesDTOWithRefactoring.getRefactoringsList());
+                            }
+                        }
                     }
+                    compositeDTOS.add(compositeDTO);
                 }
             }
         }
+
 
         return new ArrayList<>(compositeDTOS);
     }

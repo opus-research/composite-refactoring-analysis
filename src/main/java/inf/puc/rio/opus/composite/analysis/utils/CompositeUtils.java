@@ -73,30 +73,55 @@ public class CompositeUtils {
 
 	public static String getSmellBeforeDetails(List<CodeSmellDTO> codeSmells) {
 
-		String smellDetails = "";
+		StringBuilder smellDetails = new StringBuilder();
 
 		for (CodeSmellDTO codeSmell : codeSmells) {
-			smellDetails += codeSmell.getType() + ":" + codeSmell.getBeforeComposite() + "\n";
+			smellDetails.append(codeSmell.getType())
+					    .append(":").append(codeSmell.getBeforeComposite())
+					    .append("\n");
 		}
-		return smellDetails;
+		return smellDetails.toString();
 	}
 
 	public static String getRefactoringDetails(List<Refactoring> refactorings) {
 
-		String details = "";
+		StringBuilder details = new StringBuilder();
 		for (Refactoring refactoring : refactorings) {
-			details += refactoring.getRefactoringDetail() + "\n";
+
+			details.append("ID: ")
+					.append(refactoring.getRefactoringId())
+					.append(" Details: ")
+					.append(refactoring.getRefactoringDetail())
+					.append("\n");
 		}
-		return details;
+		return details.toString();
 	}
 
 	public static String getSmellAfterDetails(List<CodeSmellDTO> codeSmells) {
-		String smellDetails = "";
+		StringBuilder smellDetails = new StringBuilder();
 
 		for (CodeSmellDTO codeSmell : codeSmells) {
-			smellDetails += codeSmell.getType() + ":" + codeSmell.getAfterComposite() + "\n";
+			    smellDetails
+					.append(codeSmell.getType())
+					.append(":")
+					.append(codeSmell.getAfterComposite())
+					.append("\n");
 		}
-		return smellDetails;
+		return smellDetails.toString();
+	}
+
+	public static String getRefactoringInfoAboutCommit(List<Refactoring> refactorings) {
+		StringBuilder commitInfo = new StringBuilder();
+		for (Refactoring refactoring : refactorings) {
+
+			commitInfo.append("Order Commit:")
+					.append(refactoring.getCurrentCommit().getOrder_commit().toString())
+					.append(" Previous commit: ")
+					.append(refactoring.getCurrentCommit().getPrevious_commit())
+					.append(" Current Commit: ").append(refactoring.getCurrentCommit().getCommit())
+					.append("\n");
+		}
+		return commitInfo.toString();
 	}
 
 	public List<CompositeRefactoring> getComposites(String pathComposites){
