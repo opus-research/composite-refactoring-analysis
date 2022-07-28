@@ -61,12 +61,14 @@ public class CompositeCollector {
         List<CompositeDTO> composites = new ArrayList<>();
 
         for (String compositeID : compositeIDList) {
-            if(compositeID.equals("genie-1218")){
-                System.out.println("oi genie 1218");
-            }
+
             CompositeRefactoring composite = compositeRepository.getCompositeById(compositeID);
 
+            if(composite == null){
+                System.out.println();
+            }
             List<Refactoring> refactorings = new ArrayList<>();
+
 
             for (String refactoringID : composite.getRefactoringIDs()) {
                 Refactoring refactoring = refactoringRepository.getRefactoringById(refactoringID);
