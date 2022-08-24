@@ -66,6 +66,10 @@ public class CompositeCollector {
             }
             CompositeRefactoring composite = compositeRepository.getCompositeById(compositeID);
 
+            if(composite == null){
+                System.out.println("");
+            }
+
             List<Refactoring> refactorings = new ArrayList<>();
 
             for (String refactoringID : composite.getRefactoringIDs()) {

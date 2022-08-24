@@ -39,7 +39,6 @@ public class CompositeEffectAnalyzer {
 			csv.write("Refactorings");
 			//TODO - tem que pegar o details, ele n tem no DTO do summarized
 			csv.write("Refactoring Details");
-			csv.write("Commits of Refactorings");
 			csv.write("Previous Commit of Composite");
 			csv.write("Current Commit of Composite");
 			csv.write("Code Smells Before");
@@ -52,10 +51,9 @@ public class CompositeEffectAnalyzer {
 			for (CompositeDTO compositeDTO : compositeDTOS) {
 
 
-
-				if(compositeDTO.getRefactoringsList() != null && compositeDTO.getCodeSmells() != null ){
+				if(CompositeUtils.isAcceptableComposite(compositeDTO) && compositeDTO.getCodeSmells() != null ){
 					String refactoringDetails = CompositeUtils.getRefactoringDetails(compositeDTO.getRefactoringsList());
-					String infoCommit = CompositeUtils.getRefactoringInfoAboutCommit(compositeDTO.getRefactoringsList());
+					String commitInfo = CompositeUtils.getRefactoringInfoAboutCommit(compositeDTO.getRefactoringsList());
 					String codeSmellBeforeAsText = CompositeUtils.getSmellBeforeDetails(compositeDTO.getCodeSmells());
 					String codeSmellAfterAsText = CompositeUtils.getSmellAfterDetails(compositeDTO.getCodeSmells());
 
@@ -63,7 +61,7 @@ public class CompositeEffectAnalyzer {
 					csv.write(compositeDTO.getProject());
 					csv.write(compositeDTO.getRefactorings());
 					csv.write(refactoringDetails);
-					csv.write(infoCommit);
+					csv.write(commitInfo);
 					csv.write(compositeDTO.getPreviousCommit());
 					csv.write(compositeDTO.getCurrentCommit());
 					csv.write(codeSmellBeforeAsText);

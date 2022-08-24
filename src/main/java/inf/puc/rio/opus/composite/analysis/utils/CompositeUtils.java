@@ -110,6 +110,21 @@ public class CompositeUtils {
 		return smellDetails.toString();
 	}
 
+	public static boolean isAcceptableComposite(CompositeDTO compositeDTO){
+
+		if(compositeDTO.getRefactoringsList() !=null && compositeDTO.getRefactoringsList().size() <= 7) {
+			int countSameOrderCommit = 0;
+			int orderCommit = compositeDTO.getRefactoringsList().get(0).getCurrentCommit().getOrder_commit();
+			for (Refactoring refactoring : compositeDTO.getRefactoringsList()) {
+				if (refactoring.getCurrentCommit().getOrder_commit() == orderCommit) {
+					countSameOrderCommit++;
+				}
+			}
+			return countSameOrderCommit == compositeDTO.getRefactoringsList().size();
+		}
+		return false;
+	}
+
 	public static String getRefactoringInfoAboutCommit(List<Refactoring> refactorings) {
 		StringBuilder commitInfo = new StringBuilder();
 		for (Refactoring refactoring : refactorings) {
