@@ -99,23 +99,23 @@ public class CompositeAnalyzer {
         List<CompositeDTO> compositesDTOWithRefactorings = collector.getCompositesByIdsWithRefsObj(compositeIDs);
         for (CompositeGroup summarizedGroup : summarizedGroups) {
 
-        for (CompositeDTO compositeDTO : summarizedGroup.getComposites()) {
+            for (CompositeDTO compositeDTO : summarizedGroup.getComposites()) {
 
-                for (String compositeID : compositeIDList) {
+                    for (String compositeID : compositeIDList) {
 
-                    String compositeIDFormatted = compositeDTO.getProject() + "-" + compositeDTO.getId();
-                    compositeID = compositeID.trim();
-                    if(compositeIDFormatted.equals(compositeID)) {
+                        String compositeIDFormatted = compositeDTO.getProject() + "-" + compositeDTO.getId();
+                        compositeID = compositeID.trim();
+                        if(compositeIDFormatted.equals(compositeID)) {
 
-                        for (CompositeDTO compositesDTOWithRefactoring : compositesDTOWithRefactorings) {
+                            for (CompositeDTO compositesDTOWithRefactoring : compositesDTOWithRefactorings) {
 
-                            if (compositesDTOWithRefactoring.getId().equals(compositeID)) {
-                                compositeDTO.setRefactoringsList(compositesDTOWithRefactoring.getRefactoringsList());
+                                if (compositesDTOWithRefactoring.getId().equals(compositeID)) {
+                                    compositeDTO.setRefactoringsList(compositesDTOWithRefactoring.getRefactoringsList());
+                                }
                             }
                         }
+                        compositeDTOS.add(compositeDTO);
                     }
-                    compositeDTOS.add(compositeDTO);
-                }
             }
         }
 
