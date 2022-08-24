@@ -2,10 +2,8 @@ package inf.puc.rio.opus.composite.database.composites;
 
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
 import inf.puc.rio.opus.composite.database.Repository;
-import inf.puc.rio.opus.composite.model.CompositeRefactoring;
-import org.bson.Document;
+import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
 
 import java.util.ArrayList;
 import java.util.List;

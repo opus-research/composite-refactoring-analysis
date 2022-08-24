@@ -3,17 +3,12 @@ package inf.puc.rio.opus.composite.analysis.analysis.composite;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.database.composites.CompositeCollector;
-import inf.puc.rio.opus.composite.database.composites.CompositeRepository;
-import inf.puc.rio.opus.composite.database.refactorings.RefactoringRepository;
-import inf.puc.rio.opus.composite.model.CompositeRefactoring;
-import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 import inf.puc.rio.opus.composite.model.group.CompositeGroup;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Ref;
 import java.util.*;
 import java.util.List;
 

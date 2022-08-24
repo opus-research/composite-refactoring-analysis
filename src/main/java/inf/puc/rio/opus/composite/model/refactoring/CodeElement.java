@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.model;
+package inf.puc.rio.opus.composite.model.refactoring;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

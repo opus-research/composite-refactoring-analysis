@@ -1,6 +1,6 @@
 package inf.puc.rio.opus.composite.model.effect;
 
-import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.refactoring.Refactoring;
 
 import java.util.ArrayList;
 import java.util.List;

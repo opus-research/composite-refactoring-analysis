@@ -9,11 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringAnalyzer;
 import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
-import inf.puc.rio.opus.composite.model.RefactoringTypesEnum;
+import inf.puc.rio.opus.composite.model.refactoring.RefactoringTypesEnum;
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 import inf.puc.rio.opus.composite.model.group.CompositeGroup;
-import inf.puc.rio.opus.composite.model.SummarizedRefactoringTypesEnum;
+import inf.puc.rio.opus.composite.model.refactoring.SummarizedRefactoringTypesEnum;
 
 public class CompositeGroupAnalyzer {
 

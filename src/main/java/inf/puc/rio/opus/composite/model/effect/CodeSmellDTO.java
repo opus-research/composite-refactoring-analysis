@@ -8,6 +8,7 @@ public class CodeSmellDTO {
 	private int addedSmells;
 	private int removedSmells;
 	private int notAffectSmells;
+	private String id;
 	
 	
 	public String getType() {
@@ -60,13 +61,13 @@ public class CodeSmellDTO {
 	public void setNotAffectSmells(int notAffectSmells) {
 		this.notAffectSmells = notAffectSmells;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

@@ -1,4 +1,4 @@
-package inf.puc.rio.opus.composite.model;
+package inf.puc.rio.opus.composite.model.refactoring;
 
 public enum RefactoringTypesEnum {
 

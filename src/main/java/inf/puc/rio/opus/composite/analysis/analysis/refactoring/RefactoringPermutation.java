@@ -3,7 +3,7 @@ package inf.puc.rio.opus.composite.analysis.analysis.refactoring;
 import java.util.ArrayList;
 import java.util.List;
 
-import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.refactoring.Refactoring;
 
 
 

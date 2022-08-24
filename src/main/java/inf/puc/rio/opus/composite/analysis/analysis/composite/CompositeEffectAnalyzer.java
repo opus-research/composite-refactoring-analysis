@@ -11,10 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringAnalyzer;
 import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
-import inf.puc.rio.opus.composite.model.*;
 
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
+import inf.puc.rio.opus.composite.model.effect.CompositeEffect;
+import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
+import inf.puc.rio.opus.composite.model.smell.CodeSmell;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -405,20 +407,49 @@ public class CompositeEffectAnalyzer {
 				
 			}
 		}
-		
-		
-		for(String id: ids) {
-			
-			System.out.println(id);
-			
-		}
-		
-		
+
 		return new ArrayList<CompositeDTO>(completeComposites);
 	}
-	
-	
-	
+
+
+	public List<CompositeDTO> getCompleteCompositeByEffect(List<CompositeEffect> composites){
+
+		Set<CompositeDTO> completeComposites = new HashSet<CompositeDTO>();
+		
+		for(CompositeEffect composite : composites) {
+
+				if(composite.getCodeSmellsAfter().size() < composite.getCodeSmellsBefore().size()) {
+
+					CompositeDTO dto = new CompositeDTO();
+					dto.setId(composite.getCompositeId());
+					dto.setRefactoringsList(composite.getComposite().getRefactorings());
+					
+					dto.setCodeSmellsAfter(new ArrayList<>());
+					dto.setCodeSmellsBefore(new ArrayList<>());
+
+					//Smells Before
+					for (CodeSmell smellEffect : composite.getCodeSmellsBefore()) {
+						CodeSmellDTO smellDTO = new CodeSmellDTO();
+						smellDTO.setType(smellEffect.getName());
+						smellDTO.setId(smellEffect.getSmellId());
+
+						dto.getCodeSmellsBefore().add(smellDTO);
+					}
+
+					//Smells After
+					for (CodeSmell smellEffect : composite.getCodeSmellsAfter()) {
+						CodeSmellDTO smellDTO = new CodeSmellDTO();
+						smellDTO.setType(smellEffect.getName());
+						smellDTO.setId(smellEffect.getSmellId());
+						
+						dto.getCodeSmellsAfter().add(smellDTO);
+					}
+				}
+		}
+
+		return new ArrayList<>(completeComposites);
+	}
+
 	
 	
 	private void writeGroups(Map<String, List<CompositeDTO>> groups, String path) {
@@ -596,14 +627,9 @@ public class CompositeEffectAnalyzer {
 	}
 
 
-	public List<CompositeDTO> getCompositeEffectDetails(List<CompositeDTO> composites){
-	
+	public CompositeDTO getCompositeEffectDetails(CompositeDTO composite){
 		
-		for(CompositeDTO composite : composites) {
-			
-			
 			for(CodeSmellDTO smell : composite.getCodeSmells()) {
-				
 				
 				if(smell.getBeforeComposite() > smell.getAfterComposite()) {	
 					int smellRemoved = smell.getBeforeComposite() - smell.getAfterComposite();
@@ -625,11 +651,9 @@ public class CompositeEffectAnalyzer {
 					smell.setNotAffectSmells(smellNotAffected);
 				}
 				
-				
 			}
 			
-		}
-		return composites; 
+			return composite;
 	}
 
 	public List<CompositeDTO> getCompositesThatHaveSpecificSmellTypes(List<String> smellTypes, List<CompositeDTO> composites){

@@ -3,11 +3,7 @@ package inf.puc.rio.opus.composite.database.refactorings;
 
 import com.mongodb.BasicDBObject;
 import inf.puc.rio.opus.composite.database.Repository;
-import inf.puc.rio.opus.composite.model.CompositeRefactoring;
-import inf.puc.rio.opus.composite.model.Refactoring;
-
-import java.util.ArrayList;
-import java.util.List;
+import inf.puc.rio.opus.composite.model.refactoring.Refactoring;
 
 
 public class RefactoringRepository extends Repository {

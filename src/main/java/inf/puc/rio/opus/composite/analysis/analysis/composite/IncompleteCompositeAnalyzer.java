@@ -15,9 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringPermutation;
 import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
-import inf.puc.rio.opus.composite.model.CompositeRefactoring;
+import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.effect.IncompleteCompositeDTO;
-import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.refactoring.Refactoring;
 
 public class IncompleteCompositeAnalyzer {
 	

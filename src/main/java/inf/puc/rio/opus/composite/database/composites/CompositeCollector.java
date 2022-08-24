@@ -2,8 +2,8 @@ package inf.puc.rio.opus.composite.database.composites;
 
 import inf.puc.rio.opus.composite.analysis.utils.CompositeUtils;
 import inf.puc.rio.opus.composite.database.refactorings.RefactoringRepository;
-import inf.puc.rio.opus.composite.model.CompositeRefactoring;
-import inf.puc.rio.opus.composite.model.Refactoring;
+import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
+import inf.puc.rio.opus.composite.model.refactoring.Refactoring;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
 
 import java.util.ArrayList;
