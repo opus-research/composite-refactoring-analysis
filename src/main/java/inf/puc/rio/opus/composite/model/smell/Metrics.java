@@ -145,6 +145,9 @@ public class Metrics {
     @JsonProperty("LCOM3")
     private float LCOM3;
 
+    public Metrics(){
+
+    }
 
     @JsonProperty
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();

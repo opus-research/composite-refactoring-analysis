@@ -27,6 +27,10 @@ public class CompositeEffectAnalyzer {
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
+		String projectName = "quasar";
+        List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
+		List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
+		effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composites-" + projectName + ".json");
 
 	}
 
@@ -80,7 +84,7 @@ public class CompositeEffectAnalyzer {
 
 	}
 
-	private List<CompositeDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
+	public List<CompositeDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
 		ObjectMapper mapper = new ObjectMapper();
 		List<CompositeDTO> compositeList = new ArrayList<>();
 		try {
@@ -97,9 +101,22 @@ public class CompositeEffectAnalyzer {
 		return compositeList;
 	}
 
+	private List<CompositeEffect> getCompositeEffectFromJson(String compositeEffectPath){
+		ObjectMapper mapper = new ObjectMapper();
+		List<CompositeEffect> compositeList = new ArrayList<>();
+		try {
 
+			CompositeEffect[] composites = mapper.readValue(new File(compositeEffectPath),
+					CompositeEffect[].class);
 
+			compositeList = new ArrayList<>(Arrays.asList(composites));
 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return compositeList;
+	}
 
 	public List<CompositeRefactoring> filterCompositeByIds(List<String> ids, List<CompositeRefactoring> allComposites){
 
@@ -412,7 +429,7 @@ public class CompositeEffectAnalyzer {
 	}
 
 
-	public List<CompositeDTO> getCompleteCompositeByEffect(List<CompositeEffect> composites){
+	public List<CompositeDTO> getCompleteCompositeByEffect(List<CompositeEffect> composites, String project){
 
 		Set<CompositeDTO> completeComposites = new HashSet<CompositeDTO>();
 		
@@ -421,7 +438,8 @@ public class CompositeEffectAnalyzer {
 				if(composite.getCodeSmellsAfter().size() < composite.getCodeSmellsBefore().size()) {
 
 					CompositeDTO dto = new CompositeDTO();
-					dto.setId(composite.getCompositeId());
+					dto.setId(composite.getId());
+					dto.setProject(project);
 					dto.setRefactoringsList(composite.getComposite().getRefactorings());
 					
 					dto.setCodeSmellsAfter(new ArrayList<>());
@@ -444,7 +462,11 @@ public class CompositeEffectAnalyzer {
 						
 						dto.getCodeSmellsAfter().add(smellDTO);
 					}
+                    dto = getCodeSmellEffect(dto);
+					dto = getCompositeEffectDetails(dto);
+					completeComposites.add(dto);
 				}
+
 		}
 
 		return new ArrayList<>(completeComposites);
@@ -480,8 +502,7 @@ public class CompositeEffectAnalyzer {
 		}
 		
 		groups.entrySet().forEach(group -> {
-			
-			
+
 			try {
 				
 				List<CompositeDTO> composites = group.getValue();
@@ -570,13 +591,11 @@ public class CompositeEffectAnalyzer {
 		
 	}
 	
-	private void getCodeSmellEffect(List<CompositeDTO> compositeEffectDTOs){
+	private CompositeDTO getCodeSmellEffect(CompositeDTO compositeEffect){
 
-		for(CompositeDTO composite : compositeEffectDTOs) {
             HashMap<String, CodeSmellDTO> codeSmells = new HashMap<>();
 
-
-            for (CodeSmellDTO codeSmellDTOBefore : composite.getCodeSmellsBefore()) {
+            for (CodeSmellDTO codeSmellDTOBefore : compositeEffect.getCodeSmellsBefore()) {
 
                 if (!codeSmells.containsKey(codeSmellDTOBefore.getType().trim())) {
 
@@ -589,7 +608,7 @@ public class CompositeEffectAnalyzer {
                 }
             }
 
-            for (CodeSmellDTO codeSmellDTOAfter : composite.getCodeSmellsAfter()) {
+            for (CodeSmellDTO codeSmellDTOAfter : compositeEffect.getCodeSmellsAfter()) {
 
                 if (!codeSmells.containsKey(codeSmellDTOAfter.getType().trim())) {
 
@@ -602,10 +621,8 @@ public class CompositeEffectAnalyzer {
                 }
             }
 
-
-            composite.setCodeSmells(new ArrayList<>(codeSmells.values()));
-
-        }
+            compositeEffect.setCodeSmells(new ArrayList<>(codeSmells.values()));
+			return compositeEffect;
 	}
 
 	private List<CompositeDTO> convertCompositeToCompositeEffectDTO(List<CompositeRefactoring> composites){

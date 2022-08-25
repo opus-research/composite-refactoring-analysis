@@ -18,16 +18,31 @@ import inf.puc.rio.opus.composite.model.refactoring.SummarizedRefactoringTypesEn
 public class CompositeGroupAnalyzer {
 
 	public static void main(String[] args) {
-
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
-
-		Set<String> projects = groupAnalyzer.getProjectsOfSummarizedGroupFromPath("summarized-groups.json");
-
-		for (String project : projects) {
-			System.out.println(project);
-		}
+		groupAnalyzer.collectGroups();
 
 	}
+
+	public void collectGroups(){
+		String projectName = "quasar";
+
+		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
+		List<CompositeDTO> dtos = effectAnalyzer.getCompositeEffectDTOFromJson("data\\complete-composites\\" + "complete-composites-" + projectName + ".json");
+		Map<String, List<CompositeDTO>>  groups = createCompositeGroups(dtos);
+		List<CompositeGroup> summarizedGroup = summarizeGroupSet(groups);
+
+		writeCompositeGroupAsJson(groups, "groups-complete-composites-" + projectName + ".json");
+		writeCompositeGroup(summarizedGroup, "summarized-group-" + projectName + ".csv");
+		writeSummarizedGroupAsJson(summarizedGroup, "summarized-group-" + projectName + ".json");
+		collectRankGroups(projectName, summarizedGroup);
+
+	}
+
+	public void collectRankGroups(String projectName, List<CompositeGroup> groups){
+		Map<String, Integer> rankCombinations =  rankGroupCombinations(groups);
+		writeRankOfCompositeGroup(rankCombinations, "rank-complete-composites-" + projectName + ".csv");
+	}
+
 
 
 	public List<CompositeGroup> getSummarizedGroup(List<CompositeDTO> compositeDTOS){
@@ -45,8 +60,15 @@ public class CompositeGroupAnalyzer {
 		System.out.println(composites.size());
 		
 		for(CompositeDTO composite : composites) {
-			
-			List<String> refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
+
+			List<String> refs = new ArrayList<>();
+			if(composite.getRefactorings() != null) {
+				refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactorings());
+			}
+			else
+			  if(composite.getRefactoringsList() != null){
+				  refs = CompositeUtils.convertRefactoringsTextToRefactoringsList(composite.getRefactoringsList().toString());
+			}
 
 			Collections.sort(refs);
 			
@@ -135,9 +157,7 @@ public class CompositeGroupAnalyzer {
 				for(SummarizedRefactoringTypesEnum refTypeEnum: SummarizedRefactoringTypesEnum.values()) {
 					
 					if(equalsToRefactoringTypes(refType, refTypeEnum)) {
-
 						groupSet.add(refTypeEnum.name().trim());
-						
 					}
 					
 				}

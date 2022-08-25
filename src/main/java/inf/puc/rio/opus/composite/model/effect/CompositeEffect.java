@@ -51,6 +51,10 @@ public class CompositeEffect {
         this.codeSmellsAfter = codeSmellsAfter;
     }
 
+    public CompositeEffect(){
+
+    }
+
     public String getId() {
         return id;
     }
