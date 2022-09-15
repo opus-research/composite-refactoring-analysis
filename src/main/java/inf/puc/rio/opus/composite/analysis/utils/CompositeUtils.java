@@ -114,9 +114,9 @@ public class CompositeUtils {
 
 		if(compositeDTO.getRefactoringsList() !=null && compositeDTO.getRefactoringsList().size() <= 7) {
 			int countSameOrderCommit = 0;
-			int orderCommit = compositeDTO.getRefactoringsList().get(0).getCurrentCommit().getOrder_commit();
+			int orderCommit = compositeDTO.getRefactoringsList().get(0).getCurrentCommit().getOrderCommit();
 			for (Refactoring refactoring : compositeDTO.getRefactoringsList()) {
-				if (refactoring.getCurrentCommit().getOrder_commit() == orderCommit) {
+				if (refactoring.getCurrentCommit().getOrderCommit() == orderCommit) {
 					countSameOrderCommit++;
 				}
 			}
@@ -130,9 +130,9 @@ public class CompositeUtils {
 		for (Refactoring refactoring : refactorings) {
 
 			commitInfo.append("Order Commit:")
-					.append(refactoring.getCurrentCommit().getOrder_commit().toString())
+					.append(refactoring.getCurrentCommit().getOrderCommit().toString())
 					.append(" Previous commit: ")
-					.append(refactoring.getCurrentCommit().getPrevious_commit())
+					.append(refactoring.getCurrentCommit().getPreviousCommit())
 					.append(" Current Commit: ").append(refactoring.getCurrentCommit().getCommit())
 					.append("\n");
 		}
@@ -185,6 +185,7 @@ public class CompositeUtils {
 
 
 	public static List<String> generateCombinations(Collection<String> collection, int r){
+
 		List<Object> combinations =  Generator.combination(collection)
 				.simple(r)
 				.stream().collect(Collectors.toList());
@@ -192,7 +193,6 @@ public class CompositeUtils {
 		List<String> combinationList = combinations.stream()
 				.map(object -> Objects.toString(object, null))
 				.collect(Collectors.toList());
-
 	   	System.out.println(combinationList);
 		return combinationList;
 	}

@@ -1,6 +1,12 @@
 package inf.puc.rio.opus.composite.model.smell;
 
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CodeSmell {
 
@@ -12,7 +18,12 @@ public class CodeSmell {
     private String details;
     private String commit;
     private Metrics metrics;
+    @JsonIgnore
+    private Object _id;
 
+
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public CodeSmell(String smellId,
                      String name,
@@ -98,5 +109,27 @@ public class CodeSmell {
 
     public void setMetrics(Metrics metrics) {
         this.metrics = metrics;
+    }
+
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    @JsonAnyGetter
+    public Object get_id() {
+        return _id;
+    }
+
+    @JsonAnySetter
+    public void set_id(Object _id) {
+        this._id = _id;
     }
 }

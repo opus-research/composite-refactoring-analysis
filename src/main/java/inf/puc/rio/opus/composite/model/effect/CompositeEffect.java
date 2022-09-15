@@ -1,10 +1,15 @@
 package inf.puc.rio.opus.composite.model.effect;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.smell.CodeSmell;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CompositeEffect {
 
@@ -28,6 +33,12 @@ public class CompositeEffect {
 
     @JsonProperty("codeSmellsAfter")
     private List<CodeSmell> codeSmellsAfter;
+
+    @JsonProperty("currentCommit")
+    private String currentCommit;
+
+    @JsonProperty("previousCommit")
+    private String previousCommit;
 
 
     public CompositeEffect(String id,
@@ -53,6 +64,22 @@ public class CompositeEffect {
 
     public CompositeEffect(){
 
+    }
+
+    public String getCurrentCommit() {
+        return currentCommit;
+    }
+
+    public void setCurrentCommit(String currentCommit) {
+        this.currentCommit = currentCommit;
+    }
+
+    public String getPreviousCommit() {
+        return previousCommit;
+    }
+
+    public void setPreviousCommit(String previousCommit) {
+        this.previousCommit = previousCommit;
     }
 
     public String getId() {
@@ -110,4 +137,6 @@ public class CompositeEffect {
     public void setCodeSmellsAfter(List<CodeSmell> codeSmellsAfter) {
         this.codeSmellsAfter = codeSmellsAfter;
     }
+
+
 }

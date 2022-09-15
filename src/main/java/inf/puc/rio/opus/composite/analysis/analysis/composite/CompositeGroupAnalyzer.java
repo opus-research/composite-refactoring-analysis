@@ -18,13 +18,40 @@ import inf.puc.rio.opus.composite.model.refactoring.SummarizedRefactoringTypesEn
 public class CompositeGroupAnalyzer {
 
 	public static void main(String[] args) {
+		String projectName = "all-projects-v2";
+
+		List<String> projects = new ArrayList<>();
+	//	projects.add("activiti");
+	//	projects.add("androidasync");
+	//	projects.add("asynchttpclient");
+	//	projects.add("bytebuddy");
+	//	projects.add("checkstyle");
+	//	projects.add("geoserver");
+	//	projects.add("jacksondatabind");
+	//	projects.add("javadriver");
+	//	projects.add("jitwatch");
+	//	projects.add("materialdrawer");
+	//	projects.add("mockito");
+	//	projects.add("netty");
+		projects.add("restassured");
+	//	projects.add("retrolambda");
+	//	projects.add("realmjava");
+	//	projects.add("xabberandroid");
+
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
-		groupAnalyzer.collectGroups();
+
+		for (String project : projects) {
+			groupAnalyzer.collectGroups(project);
+		}
+
+		// List<CompositeGroup> groupsOfAllProjects = groupAnalyzer.getCompositeGroupFromJson("data\\groups\\" + "summarized-group-hikaricp.json");
+		//groupsOfAllProjects.addAll(groupAnalyzer.getCompositeGroupFromJson("data\\groups\\" + "summarized-group-achilles.json"));
+
+		//groupAnalyzer.collectRankGroups(projectName, groupsOfAllProjects);
 
 	}
 
-	public void collectGroups(){
-		String projectName = "quasar";
+	public void collectGroups(String projectName){
 
 		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
 		List<CompositeDTO> dtos = effectAnalyzer.getCompositeEffectDTOFromJson("data\\complete-composites\\" + "complete-composites-" + projectName + ".json");
@@ -32,9 +59,9 @@ public class CompositeGroupAnalyzer {
 		List<CompositeGroup> summarizedGroup = summarizeGroupSet(groups);
 
 		writeCompositeGroupAsJson(groups, "groups-complete-composites-" + projectName + ".json");
-		writeCompositeGroup(summarizedGroup, "summarized-group-" + projectName + ".csv");
-		writeSummarizedGroupAsJson(summarizedGroup, "summarized-group-" + projectName + ".json");
-		collectRankGroups(projectName, summarizedGroup);
+		writeCompositeGroup(summarizedGroup, "summarized-groups-" + projectName + ".csv");
+		writeSummarizedGroupAsJson(summarizedGroup, "summarized-groups-" + projectName + ".json");
+
 
 	}
 
@@ -97,9 +124,6 @@ public class CompositeGroupAnalyzer {
 
 			List<String> refs = composite.getRefactoringsAsTextList();
 
-			if(refs == null){
-				System.out.println("Sim");
-			}
 			String groupId = refs.toString();
 
 			if(groups.containsKey(groupId)) {
@@ -234,20 +258,21 @@ public class CompositeGroupAnalyzer {
 			int size = group.getGroupSet().size();
 
 			for(int r = 2; r <= size; r++){
+
 				List<String> combinations = CompositeUtils.generateCombinations(group.getGroupSet(), r);
 
 				for (String combination : combinations) {
 
-
                     if(!rankGroupCombinations.containsKey(combination)){
 
 						Integer quantityComposites = countCombination(combination, groups, r);
-						rankGroupCombinations.put(combination, quantityComposites);
+						List<String> combinationAsList = CompositeUtils.convertRefactoringsTextToRefactoringsList(combination);
+						Collections.sort(combinationAsList);
+						rankGroupCombinations.put(combinationAsList.toString(), quantityComposites);
 					}
 				}
 			}
 		}
-
 
 		return rankGroupCombinations;
 	}

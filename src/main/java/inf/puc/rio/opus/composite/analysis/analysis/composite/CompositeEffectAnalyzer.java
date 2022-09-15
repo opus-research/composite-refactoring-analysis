@@ -27,7 +27,7 @@ public class CompositeEffectAnalyzer {
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
-		String projectName = "quasar";
+		String projectName = "restassured";
         List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
 		List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
 		effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composites-" + projectName + ".json");
