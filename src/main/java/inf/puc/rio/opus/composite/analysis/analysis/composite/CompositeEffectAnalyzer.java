@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringAnalyzer;
@@ -14,6 +15,7 @@ import inf.puc.rio.opus.composite.analysis.utils.CsvWriter;
 
 import inf.puc.rio.opus.composite.model.effect.CodeSmellDTO;
 import inf.puc.rio.opus.composite.model.effect.CompositeDTO;
+import inf.puc.rio.opus.composite.model.effect.CompositeDTOldModel;
 import inf.puc.rio.opus.composite.model.effect.CompositeEffect;
 import inf.puc.rio.opus.composite.model.refactoring.CompositeRefactoring;
 import inf.puc.rio.opus.composite.model.smell.CodeSmell;
@@ -27,13 +29,62 @@ public class CompositeEffectAnalyzer {
 	public static void main(String[] args) {
 		
 		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
-		String projectName = "restassured";
-        List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
-		List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
-		effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composites-" + projectName + ".json");
+
+		List<String> projects = new ArrayList<>();
+		projects.add("achilles");
+		projects.add("activiti");
+		projects.add("androidasync");
+		projects.add("asynchttpclient");
+		projects.add("bytebuddy");
+		projects.add("checkstyle");
+		projects.add("geoserver");
+		projects.add("hikaricp");
+		projects.add("hystrix");
+		projects.add("jacksondatabind");
+		projects.add("javadriver");
+		projects.add("jitwatch");
+		projects.add("materialdialogs");
+		projects.add("materialdrawer");
+		projects.add("mockito");
+		projects.add("netty");
+		projects.add("quasar");
+		projects.add("realmjava");
+		projects.add("restassured");
+		projects.add("retrolambda");
+		projects.add("xabberandroid");
+
+
+       effectAnalyzer.writeCompleteCompositeDetailsPerProject(projects);
+
+        //List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
+		//List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
+		//effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composites-" + projectName + ".json");
 
 	}
 
+	public void writeCompleteCompositeDetailsPerProject(List<String> projectNames){
+
+		CsvWriter csv = new CsvWriter("complete-composites-details-per-project.csv", ',', Charset.forName("ISO-8859-1"));
+
+		try {
+			csv.write("Project");
+			csv.write("# Complete Composites");
+            csv.endRecord();
+			for (String project : projectNames) {
+				List<CompositeDTO> completeComposites = getCompositeEffectDTOFromJson("data\\complete-composites\\" + "complete-composites-" + project + ".json");
+				csv.write(project);
+				csv.write(String.valueOf(completeComposites.size()));
+				csv.endRecord();
+
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		csv.close();
+
+	}
 
 	public void writeCompositeEffectAsCSV(List<CompositeDTO> compositeDTOS) {
 
@@ -50,12 +101,9 @@ public class CompositeEffectAnalyzer {
 			csv.write("Code Smells Before");
 			csv.write("Code Smells After");
 
-
-
 			csv.endRecord();
 
 			for (CompositeDTO compositeDTO : compositeDTOS) {
-
 
 				if(CompositeUtils.isAcceptableComposite(compositeDTO) && compositeDTO.getCodeSmells() != null ){
 					String refactoringDetails = CompositeUtils.getRefactoringDetails(compositeDTO.getRefactoringsList());
@@ -82,6 +130,23 @@ public class CompositeEffectAnalyzer {
 
 		csv.close();
 
+	}
+
+	public List<CompositeDTOldModel> getCompositeDTOldModelFromJson(String compositeEffectPath){
+		ObjectMapper mapper = new ObjectMapper();
+		List<CompositeDTOldModel> compositeList = new ArrayList<>();
+		try {
+
+			CompositeDTOldModel[] composites = mapper.readValue(new File(compositeEffectPath),
+					CompositeDTOldModel[].class);
+
+			compositeList = new ArrayList<CompositeDTOldModel>(Arrays.asList(composites));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return compositeList;
 	}
 
 	public List<CompositeDTO> getCompositeEffectDTOFromJson(String compositeEffectPath){
@@ -192,7 +257,19 @@ public class CompositeEffectAnalyzer {
 			e1.printStackTrace();
 		}
 	}
-	
+
+	public List<CompositeDTO> getCompositeDTOFromOldModel(String path){
+		List<CompositeDTOldModel> oldModels = getCompositeDTOldModelFromJson(path);
+		List<CompositeDTO> compositeDTOS = new ArrayList<>();
+
+		for (CompositeDTOldModel oldModel : oldModels) {
+			CompositeDTO dto = parserOldModelToNewModel(oldModel);
+			compositeDTOS.add(dto);
+		}
+
+		return compositeDTOS;
+	}
+
 	private List<CompositeDTO> getCompositeEffectDTO1(String path){
 		List<CompositeDTO> composites = new ArrayList<CompositeDTO>();
 		
@@ -398,7 +475,23 @@ public class CompositeEffectAnalyzer {
 		return composites;
 		
 	}
-	
+
+
+
+	public CompositeDTO parserOldModelToNewModel(CompositeDTOldModel oldModel){
+
+		CompositeDTO dto = new CompositeDTO();
+		dto.setId(oldModel.getId());
+		dto.setProject(oldModel.getRefactorings().get(0).getProject());
+		String refsAsText = CompositeUtils.converterRefactoringListToText(oldModel.getRefactorings());
+		dto.setRefactorings(refsAsText);
+
+		dto.setCodeSmellsAfter(new ArrayList<>());
+		dto.setCodeSmellsBefore(new ArrayList<>());
+		dto.setCodeSmells(new ArrayList<>());
+
+		return dto;
+	}
 	//TODO - Implementar esse metodo em termos de valores de removed, added e not_affected
 	public List<CompositeDTO> getCompleteComposite(List<CompositeDTO> composites){
 		

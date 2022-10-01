@@ -18,51 +18,50 @@ import inf.puc.rio.opus.composite.model.refactoring.SummarizedRefactoringTypesEn
 public class CompositeGroupAnalyzer {
 
 	public static void main(String[] args) {
-		String projectName = "all-projects-v2";
+		//String projectName = "all-projects";
 
 		List<String> projects = new ArrayList<>();
-	//	projects.add("activiti");
-	//	projects.add("androidasync");
-	//	projects.add("asynchttpclient");
-	//	projects.add("bytebuddy");
-	//	projects.add("checkstyle");
-	//	projects.add("geoserver");
-	//	projects.add("jacksondatabind");
-	//	projects.add("javadriver");
-	//	projects.add("jitwatch");
-	//	projects.add("materialdrawer");
-	//	projects.add("mockito");
-	//	projects.add("netty");
-		projects.add("restassured");
-	//	projects.add("retrolambda");
-	//	projects.add("realmjava");
-	//	projects.add("xabberandroid");
+		projects.add("couchbase-java-client");
+		projects.add("dubbo");
+		projects.add("fresco");
+		projects.add("jgit");
+		projects.add("okhttp");
+		/*projects.add("ant");
+		projects.add("deltachat-android");
+		projects.add("egit");
+		projects.add("genie");
+		projects.add("jfreechart");
+		projects.add("junit4");
+		projects.add("leakcanary");
+		projects.add("sitewhere");
+		projects.add("spymemcached");
+		projects.add("thumbnailator");*/
 
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
+		List<CompositeGroup> groupsOfAllProjects = new ArrayList<>();
 
 		for (String project : projects) {
-			groupAnalyzer.collectGroups(project);
+			System.out.println(project);
+
+			CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
+			List<CompositeDTO> dtos = effectAnalyzer.getCompositeDTOFromOldModel("data\\complete-composites\\" + "complete-composites-" + project + ".json");
+
+			groupAnalyzer.collectGroups(project, dtos);
+			//groupsOfAllProjects.addAll(groupAnalyzer.getCompositeGroupFromJson("data\\summarized-groups\\" + "summarized-groups-" + project +".json"));
 		}
 
-		// List<CompositeGroup> groupsOfAllProjects = groupAnalyzer.getCompositeGroupFromJson("data\\groups\\" + "summarized-group-hikaricp.json");
-		//groupsOfAllProjects.addAll(groupAnalyzer.getCompositeGroupFromJson("data\\groups\\" + "summarized-group-achilles.json"));
-
-		//groupAnalyzer.collectRankGroups(projectName, groupsOfAllProjects);
-
+	//	groupAnalyzer.collectRankGroups(projectName, groupsOfAllProjects);
 	}
 
-	public void collectGroups(String projectName){
 
-		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
-		List<CompositeDTO> dtos = effectAnalyzer.getCompositeEffectDTOFromJson("data\\complete-composites\\" + "complete-composites-" + projectName + ".json");
+	public void collectGroups(String projectName, List<CompositeDTO> dtos){
+
 		Map<String, List<CompositeDTO>>  groups = createCompositeGroups(dtos);
 		List<CompositeGroup> summarizedGroup = summarizeGroupSet(groups);
 
 		writeCompositeGroupAsJson(groups, "groups-complete-composites-" + projectName + ".json");
 		writeCompositeGroup(summarizedGroup, "summarized-groups-" + projectName + ".csv");
 		writeSummarizedGroupAsJson(summarizedGroup, "summarized-groups-" + projectName + ".json");
-
-
 	}
 
 	public void collectRankGroups(String projectName, List<CompositeGroup> groups){

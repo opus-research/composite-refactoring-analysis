@@ -18,6 +18,7 @@ public class CompositeUtils {
 
 
 
+
 	public static void countComposites(List<String> projects){
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -183,6 +184,17 @@ public class CompositeUtils {
 		return filteredComposites;
 	}
 
+
+	public static String converterRefactoringListToText(List<Refactoring> refactorings){
+
+		List<String> refs = new ArrayList<>();
+
+		refactorings.forEach( refactoring -> {
+			refs.add(refactoring.getRefactoringType());
+		});
+
+		return refs.toString();
+	}
 
 	public static List<String> generateCombinations(Collection<String> collection, int r){
 
