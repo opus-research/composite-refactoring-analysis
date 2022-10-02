@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import inf.puc.rio.opus.composite.analysis.analysis.refactoring.RefactoringAnalyzer;
@@ -31,7 +30,8 @@ public class CompositeEffectAnalyzer {
 		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
 
 		List<String> projects = new ArrayList<>();
-		projects.add("achilles");
+
+		/*projects.add("achilles");
 		projects.add("activiti");
 		projects.add("androidasync");
 		projects.add("asynchttpclient");
@@ -52,9 +52,21 @@ public class CompositeEffectAnalyzer {
 		projects.add("restassured");
 		projects.add("retrolambda");
 		projects.add("xabberandroid");
+        */
+
+		projects.add("argouml");
+		projects.add("derby");
+		projects.add("elasticsearch");
+		projects.add("prestodb");
 
 
-       effectAnalyzer.writeCompleteCompositeDetailsPerProject(projects);
+		for (String project : projects) {
+			System.out.println(project);
+			List<CompositeDTO> completeComposites = effectAnalyzer.getCompositeEffectDTOFromBatchCSV("complete-composite-" + project + ".csv");
+			effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composite" + project + ".json");
+		}
+
+
 
         //List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
 		//List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
@@ -270,7 +282,7 @@ public class CompositeEffectAnalyzer {
 		return compositeDTOS;
 	}
 
-	private List<CompositeDTO> getCompositeEffectDTO1(String path){
+	private List<CompositeDTO> getCompositeEffectDTOFromBatchCSV(String path){
 		List<CompositeDTO> composites = new ArrayList<CompositeDTO>();
 		
 		String[] FILE_HEADER_MAPPING = { "Validator", "projectName", "Batch ID", "Refactorings", "Code Elements",
@@ -375,7 +387,7 @@ public class CompositeEffectAnalyzer {
 	}
 
 	
-	public List<CompositeDTO> getCompositeEffectDTO(String path){
+	public List<CompositeDTO> getCompositeEffectDTOFromCSV(String path){
 		
 		
 		List<CompositeDTO> composites = new ArrayList<CompositeDTO>();

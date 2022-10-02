@@ -18,39 +18,60 @@ import inf.puc.rio.opus.composite.model.refactoring.SummarizedRefactoringTypesEn
 public class CompositeGroupAnalyzer {
 
 	public static void main(String[] args) {
-		//String projectName = "all-projects";
+		String projectName = "all-projects";
 
 		List<String> projects = new ArrayList<>();
+		projects.add("achilles");
+		projects.add("activiti");
+		projects.add("androidasync");
+		projects.add("ant");
+		projects.add("argouml");
+		projects.add("asynchttpclient");
+		projects.add("bytebuddy");
+		projects.add("checkstyle");
 		projects.add("couchbase-java-client");
-		projects.add("dubbo");
-		projects.add("fresco");
-		projects.add("jgit");
-		projects.add("okhttp");
-		/*projects.add("ant");
 		projects.add("deltachat-android");
+		projects.add("derby");
+		projects.add("dubbo");
 		projects.add("egit");
+		projects.add("elasticsearch");
+		projects.add("fresco");
 		projects.add("genie");
-		projects.add("jfreechart");
+		projects.add("geoserver");
+		projects.add("hikaricp");
+		projects.add("hystrix");
+		projects.add("jacksondatabind");
+		projects.add("javadriver");
+		projects.add("jitwatch");
 		projects.add("junit4");
+		projects.add("jgit");
+		projects.add("jfreechart");
 		projects.add("leakcanary");
+		projects.add("materialdrawer");
+		projects.add("materialdialogs");
+		projects.add("mockito");
+		projects.add("netty");
+		projects.add("okhttp");
+		projects.add("quasar");
+		projects.add("realmjava");
+		projects.add("restassured");
+		projects.add("retrolambda");
 		projects.add("sitewhere");
 		projects.add("spymemcached");
-		projects.add("thumbnailator");*/
+		projects.add("thumbnailator");
+		projects.add("xabberandroid");
 
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
-		List<CompositeGroup> groupsOfAllProjects = new ArrayList<>();
+		List<CompositeGroup> groups = new ArrayList<>();
 
 		for (String project : projects) {
 			System.out.println(project);
 
-			CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
-			List<CompositeDTO> dtos = effectAnalyzer.getCompositeDTOFromOldModel("data\\complete-composites\\" + "complete-composites-" + project + ".json");
-
-			groupAnalyzer.collectGroups(project, dtos);
-			//groupsOfAllProjects.addAll(groupAnalyzer.getCompositeGroupFromJson("data\\summarized-groups\\" + "summarized-groups-" + project +".json"));
+			List<CompositeGroup> groupsAux = groupAnalyzer.getCompositeGroupFromJson("data\\summarized-groups\\summarized-groups-" + project + ".json");
+			groups.addAll(groupsAux);
 		}
 
-	//	groupAnalyzer.collectRankGroups(projectName, groupsOfAllProjects);
+		groupAnalyzer.collectRankGroups(projectName, groups);
 	}
 
 
