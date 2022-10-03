@@ -62,7 +62,9 @@ public class CompositeGroupAnalyzer {
 		projects.add("xabberandroid");
 
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
+
 		List<CompositeGroup> groups = new ArrayList<>();
+		String refactoringType = "MOVE_CLASS";
 
 		for (String project : projects) {
 			System.out.println(project);
@@ -71,7 +73,36 @@ public class CompositeGroupAnalyzer {
 			groups.addAll(groupsAux);
 		}
 
-		groupAnalyzer.collectRankGroups(projectName, groups);
+		groupAnalyzer.writeCountingByRefactoring(groups, refactoringType);
+
+//		groupAnalyzer.collectRankGroups(projectName, groups);
+	}
+
+	private void writeCountingByRefactoring(List<CompositeGroup> groups, String refactoringType) {
+
+		CsvWriter csv = new CsvWriter("total-groups-with-" + refactoringType + ".csv", ',',
+				Charset.forName("ISO-8859-1"));
+
+		try {
+			csv.write("Group");
+			csv.write("Total");
+			csv.endRecord();
+
+			for (CompositeGroup group : groups) {
+				if(group.getGroupSet().contains("EXTRACT_METHOD") && group.getGroupSet().contains("MOVE_METHOD")){
+					csv.write(group.getGroupSet().toString());
+					csv.write(String.valueOf(group.getComposites().size()));
+					csv.endRecord();
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		csv.close();
+
+
 	}
 
 
