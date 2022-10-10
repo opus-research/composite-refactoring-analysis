@@ -42,7 +42,6 @@ public class CompositeAnalyzer {
         List<CompositeGroup> summarizedGroups =  analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-groups-dataset1.json");
         summarizedGroups.addAll(analyzer.groupAnalyzer.getCompositeGroupFromJson("summarized-groups-dataset2.json"));
 
-
         List<CompositeDTO> composites = analyzer.getCompositesByIdsFromGroup(compositeIds, summarizedGroups);
         analyzer.effectAnalyzer.writeCompositeEffectAsCSV(composites);
 

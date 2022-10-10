@@ -18,15 +18,16 @@ import inf.puc.rio.opus.composite.model.refactoring.SummarizedRefactoringTypesEn
 public class CompositeGroupAnalyzer {
 
 	public static void main(String[] args) {
-		String projectName = "all-projects";
+		String projectName = "meyercontrol";
 
 		List<String> projects = new ArrayList<>();
+
 		projects.add("achilles");
 		projects.add("activiti");
 		projects.add("androidasync");
+		projects.add("asynchttpclient");
 		projects.add("ant");
 		projects.add("argouml");
-		projects.add("asynchttpclient");
 		projects.add("bytebuddy");
 		projects.add("checkstyle");
 		projects.add("couchbase-java-client");
@@ -34,48 +35,41 @@ public class CompositeGroupAnalyzer {
 		projects.add("derby");
 		projects.add("dubbo");
 		projects.add("egit");
-		projects.add("elasticsearch");
 		projects.add("fresco");
+		projects.add("elasticsearch");
 		projects.add("genie");
 		projects.add("geoserver");
 		projects.add("hikaricp");
 		projects.add("hystrix");
 		projects.add("jacksondatabind");
 		projects.add("javadriver");
+		projects.add("jfreechart");
+		projects.add("jgit");
 		projects.add("jitwatch");
 		projects.add("junit4");
-		projects.add("jgit");
-		projects.add("jfreechart");
-		projects.add("leakcanary");
-		projects.add("materialdrawer");
 		projects.add("materialdialogs");
+		projects.add("materialdrawer");
+		projects.add("meyercontrol");
 		projects.add("mockito");
 		projects.add("netty");
-		projects.add("okhttp");
 		projects.add("quasar");
 		projects.add("realmjava");
 		projects.add("restassured");
 		projects.add("retrolambda");
 		projects.add("sitewhere");
 		projects.add("spymemcached");
-		projects.add("thumbnailator");
 		projects.add("xabberandroid");
 
 		CompositeGroupAnalyzer groupAnalyzer = new CompositeGroupAnalyzer();
-
+		CompositeEffectAnalyzer effectAnalyzer = new CompositeEffectAnalyzer();
 		List<CompositeGroup> groups = new ArrayList<>();
-		String refactoringType = "MOVE_CLASS";
 
 		for (String project : projects) {
-			System.out.println(project);
 
-			List<CompositeGroup> groupsAux = groupAnalyzer.getCompositeGroupFromJson("data\\summarized-groups\\summarized-groups-" + project + ".json");
-			groups.addAll(groupsAux);
+			groups.addAll(groupAnalyzer.getCompositeGroupFromJson("data\\summarized-groups\\summarized-groups-" + project + ".json"));
+
 		}
-
-		groupAnalyzer.writeCountingByRefactoring(groups, refactoringType);
-
-//		groupAnalyzer.collectRankGroups(projectName, groups);
+		groupAnalyzer.collectEffectByGroup(groups);
 	}
 
 	private void writeCountingByRefactoring(List<CompositeGroup> groups, String refactoringType) {
@@ -102,8 +96,31 @@ public class CompositeGroupAnalyzer {
 
 		csv.close();
 
+	}
+
+	public void collectEffectByGroup(List<CompositeGroup> groups){
+
+		List<CompositeDTO> compositesByGroup = new ArrayList<>();
+		Set<String> groupSet = new HashSet<>();
+		groupSet.add("EXTRACT_METHOD");
+		groupSet.add("MOVE_METHOD");
+		groupSet.add("CHANGE_VARIABLE_TYPE");
+
+		CompositeGroup groupOfGroups = new CompositeGroup(groupSet);
+
+		for (CompositeGroup group : groups) {
+			if(group.getGroupSet().contains("EXTRACT_METHOD") && group.getGroupSet().contains("MOVE_METHOD")
+					&& group.getGroupSet().contains("CHANGE_VARIABLE_TYPE")){
+				compositesByGroup.addAll(group.getComposites());
+
+			}
+		}
+
+		groupOfGroups.setComposites(compositesByGroup);
+		writeEffectByGroup(groupOfGroups,groupSet.toString());
 
 	}
+
 
 
 	public void collectGroups(String projectName, List<CompositeDTO> dtos){
@@ -458,7 +475,7 @@ public class CompositeGroupAnalyzer {
 
     }
     
-    public void writeEffectByGroup(Map<String, Set<CodeSmellDTO>> effectByGroup, String groupId){
+    public void writeEffectByGroup(CompositeGroup effectByGroup, String groupId){
 
         CsvWriter csv = new CsvWriter("effect-by-group-" + groupId +"-composites.csv", ',',
                 Charset.forName("ISO-8859-1"));
@@ -470,20 +487,23 @@ public class CompositeGroupAnalyzer {
             csv.write("Not Affected");
             csv.endRecord();
 
-            if(effectByGroup.get(groupId) != null){
+            if(effectByGroup.getGroupSet().toString().equals(groupId)){
 
-				for (CodeSmellDTO  codeSmellDTO: effectByGroup.get(groupId)) {
-					csv.write(codeSmellDTO.getType());
+				for (CompositeDTO composite : effectByGroup.getComposites()) {
 
-					csv.write(String.valueOf(codeSmellDTO.getAddedSmells()));
-					csv.write(String.valueOf(codeSmellDTO.getRemovedSmells()));
-					csv.write(String.valueOf(codeSmellDTO.getNotAffectSmells()));
+					if(composite.getCodeSmells() != null) {
+						for (CodeSmellDTO codeSmellDTO : composite.getCodeSmells()) {
+							csv.write(codeSmellDTO.getType());
 
-					csv.endRecord();
+							csv.write(String.valueOf(codeSmellDTO.getAddedSmells()));
+							csv.write(String.valueOf(codeSmellDTO.getRemovedSmells()));
+							csv.write(String.valueOf(codeSmellDTO.getNotAffectSmells()));
+
+							csv.endRecord();
+						}
+					}
 				}
 			}
-
-
 
         } catch (IOException e) {
             e.printStackTrace();

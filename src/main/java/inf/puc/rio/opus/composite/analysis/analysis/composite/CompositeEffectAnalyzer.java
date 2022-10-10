@@ -31,20 +31,29 @@ public class CompositeEffectAnalyzer {
 
 		List<String> projects = new ArrayList<>();
 
-		/*projects.add("achilles");
+		projects.add("achilles");
 		projects.add("activiti");
 		projects.add("androidasync");
 		projects.add("asynchttpclient");
+		projects.add("ant");
 		projects.add("bytebuddy");
 		projects.add("checkstyle");
+		projects.add("couchbase-java-client");
+		projects.add("deltachat-android");
+		projects.add("dubbo");
+		projects.add("egit");
+		projects.add("elasticsearch");
+		projects.add("genie");
 		projects.add("geoserver");
 		projects.add("hikaricp");
 		projects.add("hystrix");
 		projects.add("jacksondatabind");
 		projects.add("javadriver");
 		projects.add("jitwatch");
+		projects.add("junit4");
 		projects.add("materialdialogs");
 		projects.add("materialdrawer");
+		projects.add("meyercontrol");
 		projects.add("mockito");
 		projects.add("netty");
 		projects.add("quasar");
@@ -52,12 +61,7 @@ public class CompositeEffectAnalyzer {
 		projects.add("restassured");
 		projects.add("retrolambda");
 		projects.add("xabberandroid");
-        */
 
-		projects.add("argouml");
-		projects.add("derby");
-		projects.add("elasticsearch");
-		projects.add("prestodb");
 
 
 		for (String project : projects) {
@@ -67,10 +71,10 @@ public class CompositeEffectAnalyzer {
 		}
 
 
-
-        //List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
-		//List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
-		//effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composites-" + projectName + ".json");
+		String projectName = "meyercontrol";
+        List<CompositeEffect> effects = effectAnalyzer.getCompositeEffectFromJson("data\\effect\\" + projectName + "-composite-effect.json");
+		List<CompositeDTO> completeComposites = effectAnalyzer.getCompleteCompositeByEffect(effects, projectName);
+		effectAnalyzer.writeCompositeEffectAsJson(completeComposites, "complete-composites-" + projectName + ".json");
 
 	}
 
