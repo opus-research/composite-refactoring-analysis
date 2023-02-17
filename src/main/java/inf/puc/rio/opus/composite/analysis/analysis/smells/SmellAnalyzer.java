@@ -5,6 +5,7 @@ import com.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,11 @@ public class SmellAnalyzer {
 
     public static void main(String[] args) {
         SmellAnalyzer analyzer = new SmellAnalyzer();
-        analyzer.analyzeRelevantMetrics();
+        List<String> relevantMetrics = analyzer.analyzeRelevantMetrics();
+
+        relevantMetrics.stream().forEach(System.out::println);
+
+
     }
 
     public Map<String, Double> populateMapFromCSV(String path) {
@@ -58,12 +63,12 @@ public class SmellAnalyzer {
         return items;
     }
 
-    public void analyzeRelevantMetrics() {
+    public List<String> analyzeRelevantMetrics() {
         String pathLM = "C:\\Users\\anaca\\Documents\\lm-lem\\xabberandroid\\median_lm_xabberandroid.csv";
         String pathLEM = "C:\\Users\\anaca\\Documents\\lm-lem\\xabberandroid\\median_lem_xabberandroid.csv";
         Map<String, Double> metricsLM = populateMapFromCSV(pathLM);
         Map<String, Double> metricsLEM = populateMapFromCSV(pathLEM);
-
+        List<String> relevantMetrics = new ArrayList<>();
 
         for (Map.Entry<String, Double> entryLM : metricsLM.entrySet()) {
             String keyLM = entryLM.getKey();
@@ -75,12 +80,20 @@ public class SmellAnalyzer {
                 Double valueLEM = entryLEM.getValue();
 
                 if (keyLM.equals(keyLEM)) {
-                    System.out.println("Chave: " + keyLM + ", Valor: " + valueLEM);
+                   // System.out.println("Chave: " + keyLM + ", Valor: " + valueLEM);
+
+                    double difference = valueLM - valueLEM;
+                    difference = Math.abs(difference);
+
+                    if(difference >= 0.2){
+                        relevantMetrics.add(keyLEM);
+                    }
                 }
             }
 
         }
 
+        return relevantMetrics;
 
     }
 
