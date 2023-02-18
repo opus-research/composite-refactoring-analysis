@@ -2,32 +2,34 @@ package inf.puc.rio.opus.composite.analysis.analysis.smells;
 
 import com.opencsv.CSVReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 public class SmellAnalyzer {
 
 
-    /*
-     * To projects Ant, Presto, Tomcat
-     * */
-    public void getSmellsFromComposites() {
-        // Get composites
-        // Get refactorings from composites
-        // Get commits from refactorings
-        // Get smells from commits running Organic
-    }
-
     public static void main(String[] args) {
         SmellAnalyzer analyzer = new SmellAnalyzer();
-        List<String> relevantMetrics = analyzer.analyzeRelevantMetrics();
 
-        relevantMetrics.stream().forEach(System.out::println);
+
+        String projects[]={"geoserver", "hystrix", "javadriver", "jitwatch",
+                "materialdialogs", "materialdrawer", "mockito", "quasar",
+                "restassured", "xabberandroid" };
+
+        ArrayList<String> projectList = new ArrayList<String>(Arrays.asList(projects));
+
+
+
+        projectList.forEach( project-> {
+
+            List<String> relevantMetrics = analyzer.analyzeRelevantMetrics(project);
+
+            relevantMetrics.stream().forEach(System.out::println);
+
+            analyzer.writeRelevantMetrics(project, relevantMetrics);
+        });
+
+
 
 
     }
@@ -63,9 +65,9 @@ public class SmellAnalyzer {
         return items;
     }
 
-    public List<String> analyzeRelevantMetrics() {
-        String pathLM = "C:\\Users\\anaca\\Documents\\lm-lem\\xabberandroid\\median_lm_xabberandroid.csv";
-        String pathLEM = "C:\\Users\\anaca\\Documents\\lm-lem\\xabberandroid\\median_lem_xabberandroid.csv";
+    public List<String> analyzeRelevantMetrics(String project) {
+        String pathLM = "C:\\Users\\anaca\\Documents\\lm-lem\\" + project + "\\median_lm_" + project +".csv";
+        String pathLEM = "C:\\Users\\anaca\\Documents\\lm-lem\\" + project +"\\median_lem_" + project +".csv";
         Map<String, Double> metricsLM = populateMapFromCSV(pathLM);
         Map<String, Double> metricsLEM = populateMapFromCSV(pathLEM);
         List<String> relevantMetrics = new ArrayList<>();
@@ -74,13 +76,11 @@ public class SmellAnalyzer {
             String keyLM = entryLM.getKey();
             Double valueLM = entryLM.getValue();
 
-
             for (Map.Entry<String, Double> entryLEM : metricsLEM.entrySet()) {
                 String keyLEM = entryLEM.getKey();
                 Double valueLEM = entryLEM.getValue();
 
                 if (keyLM.equals(keyLEM)) {
-                   // System.out.println("Chave: " + keyLM + ", Valor: " + valueLEM);
 
                     double difference = valueLM - valueLEM;
                     difference = Math.abs(difference);
@@ -94,6 +94,28 @@ public class SmellAnalyzer {
         }
 
         return relevantMetrics;
+
+    }
+
+
+
+    public void writeRelevantMetrics(String project, List<String> relevantMetrics){
+        File relevantMetricsFile = new File("relevant-metrics-" + project + ".txt");
+        try {
+            FileWriter writer = new FileWriter(relevantMetricsFile);
+
+            for (String relevantMetric : relevantMetrics) {
+
+                    writer.write(relevantMetric);
+            }
+
+            writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
 
     }
 
